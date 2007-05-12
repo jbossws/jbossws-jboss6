@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ============================================================ -->
+<!--  JBoss, the OpenSource J2EE webOS                            -->
+<!--  Distributable under LGPL license.                           -->
+<!--  See terms of license at http://www.gnu.org.                 -->
+<!-- ============================================================ -->
+
+<!-- $Id$ -->
+
+<project>
+  
+  <property name="tests.dir" value="${testsuite.dir}/src"/>
+  
+  <import file="${build.dir}/ant-import/build-testsuite.xml"/>
+  <import file="${testsuite.dir}/ant-import/build-testsuite.xml"/>
+  
+  <property name="jboss.home" value="${jboss50.home}"/>
+  <property name="jbossws.integration.target" value="jboss50"/>
+  <property name="excludesfile" value="${basedir}/src/test/resources/excludes.txt"/>
+  
+  <!--
+    Init the various classpaths
+  -->
+  <target name="tests-init" depends="tests-prepare">
+
+    <path id="jbossws.classpath">
+      <pathelement location="${spi.dir}/output/lib/jbossws-spi.jar"/>
+      <pathelement location="${core.dir}/output/lib/jboss-jaxrpc.jar"/>
+      <pathelement location="${core.dir}/output/lib/jboss-jaxws.jar"/>
+      <pathelement location="${core.dir}/output/lib/jboss-saaj.jar"/>
+      <pathelement location="${core.dir}/output/lib/jbossws-core.jar"/>
+      <pathelement location="${core.dir}/output/lib/jbossws-client.jar"/>
+    </path>
+
+    <!-- The combined compile classpath -->
+    <path id="javac.classpath">
+      <path refid="jbossws.classpath"/>
+      <pathelement location="${core.dir}/thirdparty/junit.jar"/>
+      <pathelement location="${jboss.client}/jboss-common-core.jar"/>
+      <pathelement location="${jboss.client}/jboss-logging-spi.jar"/>
+      <pathelement location="${jboss.client}/jboss-javaee.jar"/>
+    </path>
+
+    <!-- The test client classpath -->
+    <path id="tests.client.classpath">
+      <path refid="jbossws.classpath"/>
+      <pathelement location="${jboss.client}/activation.jar"/>
+      <pathelement location="${jboss.client}/javassist.jar"/>
+      <pathelement location="${jboss.client}/jaxb-api.jar"/>
+      <pathelement location="${jboss.client}/jaxb-impl.jar"/>
+      <pathelement location="${jboss.client}/jboss-xml-binding.jar"/>
+      <pathelement location="${jboss.client}/mail.jar"/>
+      <pathelement location="${jboss.client}/wsdl4j.jar"/>
+      <pathelement location="${jboss.server.lib}/jbosssx.jar"/>
+      <pathelement location="${jboss.client}/log4j.jar"/>
+      <pathelement location="${jboss.client}/jbossall-client.jar"/>
+      <path refid="javac.classpath"/>
+    </path>
+    
+  </target>
+
+</project>
