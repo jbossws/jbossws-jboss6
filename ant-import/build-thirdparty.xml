@@ -13,11 +13,27 @@
 
 <project>
 
+  <property file="${basedir}/version.properties"/>
+  
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
 
-  <target name="thirdparty" depends="prepare,thirdparty-get,thirdparty-classpath">
+  <target name="thirdparty" depends="thirdparty-init,thirdparty-get,thirdparty-classpath">
+  </target>
+  
+  <target name="thirdparty-init" depends="prepare">
+    
+    <property name="thirdparty.dir" value="${basedir}/thirdparty"/>
+    <checksum file="${basedir}/version.properties" fileext=".md5" verifyproperty="checksum.ok"/>
+    <condition property="force.thirdparty.get">
+      <or>
+        <not>
+          <available file="${thirdparty.dir}" type="dir"/>
+        </not>
+        <isfalse value="${checksum.ok}"/>
+      </or>
+    </condition>
   </target>
   
   <!-- 
@@ -53,17 +69,14 @@
     <get src="${jboss.repository}/wscommons-policy/${wscommons-policy}/lib/policy.jar" dest="${thirdparty.dir}/policy.jar" usetimestamp="true" verbose="true"/>
   </target>
   
-  <target name="thirdparty-classpath" >
+  <target name="thirdparty-classpath" depends="thirdparty-init,core-thirdparty-classpath">
     
     <!-- The compile classpath for jboss50 integration -->
     <path id="jboss50.integration.classpath">
-      <pathelement location="${spi.dir}/output/lib/jbossws-spi.jar"/>
-      
-      <pathelement location="${core.dir}/output/lib/jbossws-core.jar"/>
-      <pathelement location="${core.dir}/output/lib/jboss-jaxrpc.jar"/>
-      <pathelement location="${core.dir}/output/lib/jboss-jaxws.jar"/>
-      <pathelement location="${core.dir}/output/lib/jboss-saaj.jar"/>
-      
+      <path refid="core.thirdparty.classpath"/>
+      <pathelement location="${spi.dir}/output/classes"/>
+      <pathelement location="${core.dir}/output/classes"/>
+      <pathelement location="${core.dir}/output/classes14"/>
       <pathelement location="${jboss50.lib}/jboss-aop-jdk50.jar"/>
       <pathelement location="${jboss50.lib}/jboss-deployers.jar"/>
       <pathelement location="${jboss50.lib}/jboss-j2se.jar"/>
