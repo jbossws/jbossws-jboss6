@@ -40,7 +40,7 @@
   <!-- Initialization                                                     -->
   <!-- ================================================================== -->
   
-  <target name="jboss50-init" depends="prepare, thirdparty">
+  <target name="jboss50-init" depends="prepare,thirdparty">
     <fail message="Not available: ${jboss50.available.file}" unless="jboss50.available"/>
   </target>
   
@@ -132,7 +132,7 @@
       <fileset dir="${core.dir}/output/lib">
         <include name="jbossws-core.jar"/>
       </fileset>
-      <fileset dir="${thirdparty.dir}">
+      <fileset dir="${core.thirdparty.dir}">
         <include name="policy.jar"/>
         <include name="wsdl4j.jar"/>
         <include name="xmlsec.jar"/>

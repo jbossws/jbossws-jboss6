@@ -45,30 +45,6 @@
     description="Gets the thirdparty libraries">
 
     <mkdir dir="${thirdparty.dir}"/>
-    <get src="${jboss.repository}/apache-xmlsec/${apache-xmlsec}/lib/xmlsec.jar" dest="${thirdparty.dir}/xmlsec.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/ibm-wsdl4j/${ibm-wsdl4j}/lib/wsdl4j.jar" dest="${thirdparty.dir}/wsdl4j.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/ibm-wsdl4j/${ibm-wsdl4j}/lib/wsdl4j-src.jar" dest="${thirdparty.dir}/wsdl4j-src.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/common-core/${jboss-common-core}/lib/jboss-common-core.jar" dest="${thirdparty.dir}/jboss-common-core.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/common-core/${jboss-common-core}/lib/jboss-common-core-sources.jar" dest="${thirdparty.dir}/jboss-common-core-sources.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/common-logging-log4j/${jboss-common-logging-log4j}/lib/jboss-logging-log4j.jar" dest="${thirdparty.dir}/jboss-logging-log4j.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/common-logging-spi/${jboss-common-logging-spi}/lib/jboss-logging-spi.jar" dest="${thirdparty.dir}/jboss-logging-spi.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/jaxr/${jboss-jaxr}/lib/juddi-service.sar" dest="${thirdparty.dir}/juddi-service.sar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/jbossws-wsconsume-impl/${jbossws-wsconsume-impl}/lib/jbossws-wsconsume-impl.jar" dest="${thirdparty.dir}/jbossws-wsconsume-impl.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/jbossxb/${jboss-jbossxb}/lib/jboss-xml-binding.jar" dest="${thirdparty.dir}/jboss-xml-binding.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/jbossxb/${jboss-jbossxb}/lib/jboss-xml-binding-sources.jar" dest="${thirdparty.dir}/jboss-xml-binding-sources.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/microcontainer/${jboss-microcontainer}/lib/jboss-container.jar" dest="${thirdparty.dir}/jboss-container.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/microcontainer/${jboss-microcontainer}/lib/jboss-dependency.jar" dest="${thirdparty.dir}/jboss-dependency.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/microcontainer/${jboss-microcontainer}/lib/jboss-dependency-src.zip" dest="${thirdparty.dir}/jboss-dependency-src.zip" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/microcontainer/${jboss-microcontainer}/lib/jboss-deployers.jar" dest="${thirdparty.dir}/jboss-deployers.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/microcontainer/${jboss-microcontainer}/lib/jboss-deployers-src.zip" dest="${thirdparty.dir}/jboss-deployers-src.zip" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/microcontainer/${jboss-microcontainer}/lib/jboss-microcontainer.jar" dest="${thirdparty.dir}/jboss-microcontainer.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/microcontainer/${jboss-microcontainer}/lib/jboss-microcontainer-src.zip" dest="${thirdparty.dir}/jboss-microcontainer-src.zip" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/jboss/security-spi/${jboss-security-spi}/lib/jboss-security-spi.jar" dest="${thirdparty.dir}/jboss-security-spi.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/sun-jaxb/${sun-jaxb}/lib/jaxb-api.jar" dest="${thirdparty.dir}/jaxb-api.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/sun-jaxb/${sun-jaxb}/lib/jaxb-impl.jar" dest="${thirdparty.dir}/jaxb-impl.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/sun-jaxb/${sun-jaxb}/lib/jaxb-xjc.jar" dest="${thirdparty.dir}/jaxb-xjc.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/sun-servlet/${sun-servlet}/lib/servlet-api.jar" dest="${thirdparty.dir}/servlet-api.jar" usetimestamp="true" verbose="true"/>
-    <get src="${jboss.repository}/wscommons-policy/${wscommons-policy}/lib/policy.jar" dest="${thirdparty.dir}/policy.jar" usetimestamp="true" verbose="true"/>
     
     <checksum file="${basedir}/version.properties" fileext=".md5"/>
   </target>
@@ -77,7 +53,6 @@
     
     <!-- The compile classpath for jboss50 integration -->
     <path id="jboss50.integration.classpath">
-      <path refid="core.thirdparty.classpath"/>
       <pathelement location="${spi.dir}/output/classes"/>
       <pathelement location="${core.dir}/output/classes"/>
       <pathelement location="${core.dir}/output/classes14"/>
@@ -94,16 +69,7 @@
       <pathelement location="${jboss50.server.deployers}/ejb3.deployer/jboss-annotations-ejb3.jar"/>
       <pathelement location="${jboss50.server.deployers}/ejb3.deployer/jboss-ejb3.jar"/>
       <pathelement location="${jboss50.server.deployers}/ejb3.deployer/jboss-ejb3x.jar"/>
-      <pathelement location="${thirdparty.dir}/jaxb-api.jar"/>
-      <pathelement location="${thirdparty.dir}/jaxb-impl.jar"/>
-      <pathelement location="${thirdparty.dir}/jaxb-xjc.jar"/>
-      <pathelement location="${thirdparty.dir}/jboss-common-core.jar"/>
-      <pathelement location="${thirdparty.dir}/jboss-dependency.jar"/>
-      <pathelement location="${thirdparty.dir}/jboss-logging-spi.jar"/>
-      <pathelement location="${thirdparty.dir}/jboss-microcontainer.jar"/>
-      <pathelement location="${thirdparty.dir}/jboss-security-spi.jar"/>
-      <pathelement location="${thirdparty.dir}/jboss-xml-binding.jar"/>
-      <pathelement location="${thirdparty.dir}/servlet-api.jar"/>
+      <path refid="core.thirdparty.classpath"/>
     </path>
     
   </target>

@@ -27,7 +27,7 @@
         <include name="jboss-saaj.jar"/>
         <include name="jbossws-client.jar"/>
       </fileset>
-      <fileset dir="${thirdparty.dir}">
+      <fileset dir="${core.thirdparty.dir}">
         <include name="jaxb-api.jar"/>
         <include name="jaxb-impl.jar"/>
         <include name="jaxb-xjc.jar"/>
@@ -36,7 +36,7 @@
       </fileset>
     </copy>
     <copy todir="${jboss50.home}/lib" overwrite="true">
-      <fileset dir="${thirdparty.dir}">
+      <fileset dir="${core.thirdparty.dir}">
         <include name="jaxb-api.jar"/>
         <include name="jaxb-impl.jar"/>
       </fileset>
