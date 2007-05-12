@@ -26,21 +26,21 @@
   <!-- Setup                                                              -->
   <!-- ================================================================== -->
   
-  <property name="jboss50.dir" value="${basedir}"/>
-  <property name="jboss50.src.dir" value="${jboss50.dir}/src/main"/>
-  <property name="jboss50.etc.dir" value="${jboss50.src.dir}/etc"/>
-  <property name="jboss50.java.dir" value="${jboss50.src.dir}/java"/>
-  <property name="jboss50.resources.dir" value="${jboss50.src.dir}/resources"/>
-  <property name="jboss50.output.dir" value="${jboss50.dir}/output"/>
-  <property name="jboss50.output.classes.dir" value="${jboss50.output.dir}/classes"/>
-  <property name="jboss50.output.etc.dir" value="${jboss50.output.dir}/etc"/>
-  <property name="jboss50.output.lib.dir" value="${jboss50.output.dir}/lib"/>
+  <property name="jbws50.dir" value="${basedir}"/>
+  <property name="jbws50.src.dir" value="${jbws50.dir}/src/main"/>
+  <property name="jbws50.etc.dir" value="${jbws50.src.dir}/etc"/>
+  <property name="jbws50.java.dir" value="${jbws50.src.dir}/java"/>
+  <property name="jbws50.resources.dir" value="${jbws50.src.dir}/resources"/>
+  <property name="jbws50.output.dir" value="${jbws50.dir}/output"/>
+  <property name="jbws50.output.classes.dir" value="${jbws50.output.dir}/classes"/>
+  <property name="jbws50.output.etc.dir" value="${jbws50.output.dir}/etc"/>
+  <property name="jbws50.output.lib.dir" value="${jbws50.output.dir}/lib"/>
 	
   <!-- ================================================================== -->
   <!-- Initialization                                                     -->
   <!-- ================================================================== -->
   
-  <target name="jboss50-init" depends="prepare,thirdparty">
+  <target name="jbws50-init" depends="prepare,thirdparty">
     <fail message="Not available: ${jboss50.available.file}" unless="jboss50.available"/>
   </target>
   
@@ -56,23 +56,23 @@
   | documentation compiles.
   -->
   
-  <target name="jboss50-compile" depends="jboss50-init,core-compile,jboss50-compile-classes,jboss50-compile-etc" description="Compile all source files."/>
+  <target name="jbws50-compile" depends="jbws50-init,core-compile,jbws50-compile-classes,jbws50-compile-etc" description="Compile all source files."/>
   
   <!-- Compile java sources -->
-  <target name="jboss50-compile-classes" depends="jboss50-init">
-    <mkdir dir="${jboss50.output.classes.dir}"/>
-    <javac srcdir="${jboss50.java.dir}" sourcepath="" destdir="${jboss50.output.classes.dir}" encoding="utf-8" debug="${javac.debug}" verbose="${javac.verbose}"
+  <target name="jbws50-compile-classes" depends="jbws50-init">
+    <mkdir dir="${jbws50.output.classes.dir}"/>
+    <javac srcdir="${jbws50.java.dir}" sourcepath="" destdir="${jbws50.output.classes.dir}" encoding="utf-8" debug="${javac.debug}" verbose="${javac.verbose}"
       deprecation="${javac.deprecation}" failonerror="${javac.fail.onerror}">
       <include name="org/jboss/ws/integration/jboss50/**"/>
-      <classpath refid="jboss50.integration.classpath"/>
+      <classpath refid="jbws50.integration.classpath"/>
     </javac>
   </target>
   
   <!-- Compile etc files (manifests and such) -->
-  <target name="jboss50-compile-etc" depends="jboss50-init">
-    <mkdir dir="${jboss50.output.etc.dir}"/>
-    <copy todir="${jboss50.output.etc.dir}" filtering="yes" overwrite="yes">
-      <fileset dir="${jboss50.etc.dir}">
+  <target name="jbws50-compile-etc" depends="jbws50-init">
+    <mkdir dir="${jbws50.output.etc.dir}"/>
+    <copy todir="${jbws50.output.etc.dir}" filtering="yes" overwrite="yes">
+      <fileset dir="${jbws50.etc.dir}">
         <include name="component-info.xml"/>
         <include name="default.mf"/>
   	  </fileset>
@@ -94,38 +94,38 @@
   <!--
   | Build all jar files.
   -->
-  <target name="jboss50-jars" depends="jboss50-compile,core-jars,jboss50-module-jars" description="Builds all jar files.">
+  <target name="jbws50-jars" depends="jbws50-compile,core-jars,jbws50-module-jars" description="Builds all jar files.">
   </target>
   
   <!--
   |  Build all jar files.
   -->
-  <target name="jboss50-module-jars" depends="jboss50-init">
+  <target name="jbws50-module-jars" depends="jbws50-init">
     
     <!-- Build jbossws-jboss50.jar -->
-    <mkdir dir="${jboss50.output.lib.dir}"/>
-    <jar jarfile="${jboss50.output.lib.dir}/jbossws-jboss50.jar" manifest="${jboss50.output.etc.dir}/default.mf">
-      <fileset dir="${jboss50.output.classes.dir}">
+    <mkdir dir="${jbws50.output.lib.dir}"/>
+    <jar jarfile="${jbws50.output.lib.dir}/jbossws-jboss50.jar" manifest="${jbws50.output.etc.dir}/default.mf">
+      <fileset dir="${jbws50.output.classes.dir}">
         <include name="org/jboss/ws/integration/jboss50/**"/>
       </fileset>
-      <metainf dir="${jboss50.resources.dir}/jbossws-jboss50.jar/META-INF"/>
+      <metainf dir="${jbws50.resources.dir}/jbossws-jboss50.jar/META-INF"/>
     </jar>
     
     <!-- Build jbossws-context.war -->
-    <war warfile="${jboss50.output.lib.dir}/jbossws50-context.war" webxml="${jboss50.resources.dir}/jbossws-context.war/WEB-INF/web.xml">
-      <fileset dir="${jboss50.resources.dir}/jbossws-context.war">
+    <war warfile="${jbws50.output.lib.dir}/jbossws50-context.war" webxml="${jbws50.resources.dir}/jbossws-context.war/WEB-INF/web.xml">
+      <fileset dir="${jbws50.resources.dir}/jbossws-context.war">
         <include name="index.html"/>
         <include name="styles.css"/>
       </fileset>
-      <webinf dir="${jboss50.resources.dir}/jbossws-context.war/WEB-INF">
+      <webinf dir="${jbws50.resources.dir}/jbossws-context.war/WEB-INF">
         <include name="jboss-web.xml"/>
       </webinf>
     </war>
     
     <!-- Build jbossws50.sar -->
-    <jar jarfile="${jboss50.output.lib.dir}/jbossws50.sar" manifest="${jboss50.output.etc.dir}/default.mf">
+    <jar jarfile="${jbws50.output.lib.dir}/jbossws50.sar" manifest="${jbws50.output.etc.dir}/default.mf">
       <!-- [JBAS-4379] MC beans deployed twice because of jacc service
-      <fileset dir="${jboss50.output.lib.dir}">
+      <fileset dir="${jbws50.output.lib.dir}">
         <include name="jbossws-context.war"/>
       </fileset>
       -->
@@ -140,24 +140,24 @@
       <metainf dir="${core.dir}/src/main/resources/standard-config">
         <include name="standard-*-config.xml"/>
       </metainf>
-      <metainf dir="${jboss50.resources.dir}/jbossws.sar/META-INF">
+      <metainf dir="${jbws50.resources.dir}/jbossws.sar/META-INF">
         <include name="jbossws-beans.xml"/>
       </metainf>
     </jar>
     
     <!-- Build jbossws50.deployer -->
-    <zip zipfile="${jboss50.output.lib.dir}/jbossws50-deployer.zip">
-      <fileset dir="${jboss50.output.lib.dir}">
+    <zip zipfile="${jbws50.output.lib.dir}/jbossws50-deployer.zip">
+      <fileset dir="${jbws50.output.lib.dir}">
         <include name="jbossws-jboss50.jar"/>
       </fileset>
-      <fileset dir="${jboss50.resources.dir}/jbossws.deployer">
+      <fileset dir="${jbws50.resources.dir}/jbossws.deployer">
         <include name="META-INF/jbossws-deployer-beans.xml"/>
       </fileset>
     </zip>
     
     <!-- Build jbossws50-src.zip -->
-    <zip zipfile="${jboss50.output.lib.dir}/jbossws50-src.zip" >
-      <fileset dir="${jboss50.java.dir}"/>
+    <zip zipfile="${jbws50.output.lib.dir}/jbossws50-src.zip" >
+      <fileset dir="${jbws50.java.dir}"/>
     </zip>
     
    </target>
@@ -167,12 +167,16 @@
   <!-- ================================================================== -->
   
   <target name="clean" depends="prepare" description="Cleans up most generated files.">
-    <delete dir="${jboss50.output.dir}"/>
+    <delete dir="${jbws50.output.dir}"/>
+  </target>
+  
+  <target name="clobber" depends="clean" description="Cleans up all generated files.">
+    <delete dir="${basedir}/output-tests"/>
   </target>
   
   <target name="main" description="Executes the default target (most)." depends="most"/>
   
-  <target name="most" description="Builds almost everything." depends="jboss50-jars"/>
+  <target name="most" description="Builds almost everything." depends="jbws50-jars,tests-main"/>
   
   <target name="all" description="Create a distribution zip file" depends="main">
   </target>

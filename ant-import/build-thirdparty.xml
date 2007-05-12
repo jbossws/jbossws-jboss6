@@ -52,7 +52,7 @@
   <target name="thirdparty-classpath" depends="thirdparty-init,core-thirdparty-classpath">
     
     <!-- The compile classpath for jboss50 integration -->
-    <path id="jboss50.integration.classpath">
+    <path id="jbws50.integration.classpath">
       <pathelement location="${spi.dir}/output/classes"/>
       <pathelement location="${core.dir}/output/classes"/>
       <pathelement location="${core.dir}/output/classes14"/>

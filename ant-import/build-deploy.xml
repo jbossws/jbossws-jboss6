@@ -18,7 +18,7 @@
   <!-- ================================================================== -->
   
   <!-- Deploy jbossws to jboss50 -->
-  <target name="deploy" depends="jboss50-jars,remove-jbossws,remove-jbosswsri" description="Deploy jbossws">
+  <target name="deploy" depends="jbws50-jars,remove-jbossws,remove-jbwsri" description="Deploy jbossws">
 
     <copy todir="${jboss50.home}/client" overwrite="true">
       <fileset dir="${core.dir}/output/lib">
@@ -52,10 +52,10 @@
       </fileset>
     </copy>
     <mkdir dir="${jboss50.home}/server/${jboss.server.instance}/deployers/jbossws.deployer"/>
-    <unzip dest="${jboss50.home}/server/${jboss.server.instance}/deployers/jbossws.deployer" src="${jboss50.output.lib.dir}/jbossws50-deployer.zip"/>
+    <unzip dest="${jboss50.home}/server/${jboss.server.instance}/deployers/jbossws.deployer" src="${jbws50.output.lib.dir}/jbossws50-deployer.zip"/>
     <mkdir dir="${jboss50.home}/server/${jboss.server.instance}/deploy/jbossws.sar"/>
-    <unjar dest="${jboss50.home}/server/${jboss.server.instance}/deploy/jbossws.sar" src="${jboss50.output.lib.dir}/jbossws50.sar"/>
-    <copy file="${jboss50.output.lib.dir}/jbossws50-context.war" tofile="${jboss50.home}/server/${jboss.server.instance}/deploy/jbossws-context.war" overwrite="true"/>
+    <unjar dest="${jboss50.home}/server/${jboss.server.instance}/deploy/jbossws.sar" src="${jbws50.output.lib.dir}/jbossws50.sar"/>
+    <copy tofile="${jboss50.home}/server/${jboss.server.instance}/deploy/jbossws-context.war" file="${jbws50.output.lib.dir}/jbossws50-context.war" overwrite="true"/>
   </target>
     
   <!-- Remove jbossws from jboss50 -->
@@ -84,7 +84,7 @@
   </target>
   
   <!-- Remove jbossws/sunri from jboss50 -->
-  <target name="remove-jbosswsri" depends="prepare" description="Remove jbossws/sunri">
+  <target name="remove-jbwsri" depends="prepare" description="Remove jbossws/sunri">
 
     <delete dir="${jboss50.home}/server/${jboss.server.instance}/deployers/jbosswsri.deployer"/>
     <delete dir="${jboss50.home}/server/${jboss.server.instance}/deploy/jbosswsri.sar"/>

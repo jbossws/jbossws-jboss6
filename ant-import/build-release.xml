@@ -14,21 +14,21 @@
 <project>
 
   <!-- Release to jboss.local.repository -->
-  <target name="release" depends="jboss50-jars" 
+  <target name="release" depends="jbws50-jars" 
     description="Release to jboss.local.repository">
 
     <!-- jboss/jbossws-jboss50 -->
     <property name="jboss.repository.dir" value="${jboss.local.repository}/jboss"/>
     <mkdir dir="${jboss.repository.dir}/jbossws-jboss50/${repository.id}/lib"/>
     <copy todir="${jboss.repository.dir}/jbossws-jboss50/${repository.id}/lib" overwrite="true">
-      <fileset dir="${jboss50.output.lib.dir}">
+      <fileset dir="${jbws50.output.lib.dir}">
         <include name="jbossws-jboss50.jar"/>
         <include name="jbossws50.sar"/>
         <include name="jbossws50-deployer.zip"/>
         <include name="jbossws50-src.zip"/>
       </fileset>
     </copy>
-    <copy tofile="${jboss.repository.dir}/jbossws-jboss50/${repository.id}/component-info.xml" file="${jboss50.etc.dir}/component-info.xml" filtering="true" overwrite="true">
+    <copy tofile="${jboss.repository.dir}/jbossws-jboss50/${repository.id}/component-info.xml" file="${jbws50.etc.dir}/component-info.xml" filtering="true" overwrite="true">
       <filterset>
         <filtersfile file="${basedir}/version.properties"/>
       </filterset>

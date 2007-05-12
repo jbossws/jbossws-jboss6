@@ -10,19 +10,17 @@
 
 <project>
   
-  <property name="tests.dir" value="${testsuite.dir}/src"/>
-  
-  <import file="${build.dir}/ant-import/build-testsuite.xml"/>
-  <import file="${testsuite.dir}/ant-import/build-testsuite.xml"/>
+  <property name="tests.dir" value="${basedir}/src/test"/>
   
   <property name="jboss.home" value="${jboss50.home}"/>
-  <property name="jbossws.integration.target" value="jboss50"/>
   <property name="excludesfile" value="${basedir}/src/test/resources/excludes.txt"/>
+  
+  <import file="${build.dir}/ant-import/build-testsuite.xml"/>
   
   <!--
     Init the various classpaths
   -->
-  <target name="tests-init" depends="tests-prepare">
+  <target name="tests-init" depends="tests-prepare,spi-thirdparty">
 
     <path id="jbossws.classpath">
       <pathelement location="${spi.dir}/output/lib/jbossws-spi.jar"/>
@@ -36,15 +34,11 @@
     <!-- The combined compile classpath -->
     <path id="javac.classpath">
       <path refid="jbossws.classpath"/>
-      <pathelement location="${core.dir}/thirdparty/junit.jar"/>
-      <pathelement location="${jboss.client}/jboss-common-core.jar"/>
-      <pathelement location="${jboss.client}/jboss-logging-spi.jar"/>
-      <pathelement location="${jboss.client}/jboss-javaee.jar"/>
+      <path refid="spi.thirdparty.classpath"/>
     </path>
 
     <!-- The test client classpath -->
     <path id="tests.client.classpath">
-      <path refid="jbossws.classpath"/>
       <pathelement location="${jboss.client}/activation.jar"/>
       <pathelement location="${jboss.client}/javassist.jar"/>
       <pathelement location="${jboss.client}/jaxb-api.jar"/>
@@ -60,4 +54,34 @@
     
   </target>
 
+  <!-- ================================================================== -->
+  <!-- Compiling                                                          -->
+  <!-- ================================================================== -->
+
+  <target name="tests-compile" depends="tests-compile15" description="Compile sources"/>
+
+  <target name="tests-compile15" depends="tests-init" if="HAVE_JDK_1.5">
+    <mkdir dir="${tests.output.dir}/classes"/>
+    <javac destdir="${tests.output.dir}/classes" debug="${javac.debug}" encoding="utf-8" verbose="${javac.verbose}" deprecation="${javac.deprecation}"
+      failonerror="${javac.fail.onerror}" excludesfile="${excludesfile}">
+      <src path="${testsuite.dir}/src/java"/>
+      <src path="${tests.java.dir}"/>
+      <classpath refid="javac.classpath"/>
+    </javac>
+  </target>
+  
+  <!-- ================================================================== -->
+  <!-- Building                                                           -->
+  <!-- ================================================================== -->
+  
+  <!-- Copy resources -->
+  <target name="tests-copy-resources" depends="tests-init" description="Copy the deployment resources.">
+    <copy-test-resources srcdir="${testsuite.dir}/src"/>
+    <copy-test-resources srcdir="${basedir}/src/test"/>
+  </target>
+  
+  <target name="tests-main" depends="tests-compile,tests-copy-resources" description="Build the deployments.">
+    <ant antfile="${testsuite.dir}/ant-import/build-jars-jaxws.xml" target="build-jars-jaxws" inheritall="true"/>
+  </target>
+  
 </project>
