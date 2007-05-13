@@ -11,22 +11,17 @@
 
 <!-- $Id$ -->
 
-<project default="main"  basedir="../jbws-jboss50" name="JBossWS-JBoss50">
+<project default="main"  basedir="../.." name="Integration-JBoss50">
   
-  <import file="${basedir}/../build/ant-import/build-setup.xml"/>
+  <import file="${basedir}/build/ant-import/build-setup.xml"/>
   
-  <import file="${basedir}/ant-import/build-deploy.xml"/>
-  <import file="${basedir}/ant-import/build-release.xml"/>
-  <import file="${basedir}/ant-import/build-thirdparty.xml"/>
-  <import file="${basedir}/ant-import/build-testsuite.xml"/>
-  
-  <import file="${core.dir}/build.xml"/>
+  <import file="${int.jboss50.dir}/ant-import/build-thirdparty.xml"/>
   
   <!-- ================================================================== -->
   <!-- Setup                                                              -->
   <!-- ================================================================== -->
   
-  <property name="jbws50.dir" value="${basedir}"/>
+  <property name="jbws50.dir" value="${int.jboss50.dir}"/>
   <property name="jbws50.src.dir" value="${jbws50.dir}/src/main"/>
   <property name="jbws50.etc.dir" value="${jbws50.src.dir}/etc"/>
   <property name="jbws50.java.dir" value="${jbws50.src.dir}/java"/>
@@ -40,8 +35,9 @@
   <!-- Initialization                                                     -->
   <!-- ================================================================== -->
   
-  <target name="jbws50-init" depends="prepare,thirdparty">
+  <target name="init" depends="prepare,thirdparty">
     <fail message="Not available: ${jboss50.available.file}" unless="jboss50.available"/>
+    <ant antfile="${core.dir}/build.xml" target="main" inheritall="false"/>
   </target>
   
   <!-- ================================================================== -->
@@ -56,10 +52,10 @@
   | documentation compiles.
   -->
   
-  <target name="jbws50-compile" depends="jbws50-init,core-compile,jbws50-compile-classes,jbws50-compile-etc" description="Compile all source files."/>
+  <target name="compile" depends="init,compile-classes,compile-etc" description="Compile all source files."/>
   
   <!-- Compile java sources -->
-  <target name="jbws50-compile-classes" depends="jbws50-init">
+  <target name="compile-classes" depends="init">
     <mkdir dir="${jbws50.output.classes.dir}"/>
     <javac srcdir="${jbws50.java.dir}" sourcepath="" destdir="${jbws50.output.classes.dir}" encoding="utf-8" debug="${javac.debug}" verbose="${javac.verbose}"
       deprecation="${javac.deprecation}" failonerror="${javac.fail.onerror}">
@@ -69,7 +65,7 @@
   </target>
   
   <!-- Compile etc files (manifests and such) -->
-  <target name="jbws50-compile-etc" depends="jbws50-init">
+  <target name="compile-etc" depends="init">
     <mkdir dir="${jbws50.output.etc.dir}"/>
     <copy todir="${jbws50.output.etc.dir}" filtering="yes" overwrite="yes">
       <fileset dir="${jbws50.etc.dir}">
@@ -95,13 +91,13 @@
   <!--
   | Build all jar files.
   -->
-  <target name="jbws50-jars" depends="jbws50-compile,core-jars,jbws50-module-jars" description="Builds all jar files.">
+  <target name="jars" depends="compile,module-jars" description="Builds all jar files.">
   </target>
   
   <!--
   |  Build all jar files.
   -->
-  <target name="jbws50-module-jars" depends="jbws50-init">
+  <target name="module-jars" depends="init">
     
     <!-- Build jbossws-jboss50.jar -->
     <mkdir dir="${jbws50.output.lib.dir}"/>
@@ -133,7 +129,7 @@
       <fileset dir="${core.dir}/output/lib">
         <include name="jbossws-core.jar"/>
       </fileset>
-      <fileset dir="${core.thirdparty.dir}">
+      <fileset dir="${core.dir}/thirdparty">
         <include name="policy.jar"/>
         <include name="wsdl4j.jar"/>
         <include name="xmlsec.jar"/>
@@ -172,14 +168,14 @@
   </target>
   
   <target name="clobber" depends="clean" description="Cleans up all generated files.">
-    <delete dir="${basedir}/output-tests"/>
+    <delete dir="${int.jboss50.dir}/output-tests"/>
   </target>
   
   <target name="main" description="Executes the default target (most)." depends="most"/>
   
-  <target name="most" description="Builds almost everything." depends="jbws50-jars,tests-main"/>
+  <target name="most" description="Builds almost everything." depends="jars"/>
   
-  <target name="all" description="Create a distribution zip file" depends="main">
+  <target name="all" description="Create a distribution zip file" depends="most">
   </target>
   
 </project>
