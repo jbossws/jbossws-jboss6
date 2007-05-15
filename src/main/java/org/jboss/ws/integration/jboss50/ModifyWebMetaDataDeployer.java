@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ws.integration.jboss50.jbossws;
+package org.jboss.ws.integration.jboss50;
 
 //$Id$
 
@@ -28,8 +28,6 @@ import java.util.Iterator;
 import org.jboss.metadata.NameValuePair;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.Servlet;
-import org.jboss.ws.core.deployment.ServiceEndpointPublisher;
-import org.jboss.ws.core.utils.JavaUtils;
 import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.deployment.AbstractDeployer;
 import org.jboss.ws.integration.deployment.Deployment;
@@ -42,11 +40,11 @@ import org.jboss.ws.integration.deployment.Deployment;
  */
 public class ModifyWebMetaDataDeployer extends AbstractDeployer
 {
-   private ServiceEndpointPublisher serviceEndpointPublisher;
+   private String servletClass;
 
-   public void setServiceEndpointPublisher(ServiceEndpointPublisher serviceEndpointPublisher)
+   public void setServletClass(String servletClass)
    {
-      this.serviceEndpointPublisher = serviceEndpointPublisher;
+      this.servletClass = servletClass;
    }
 
    @Override
@@ -69,7 +67,7 @@ public class ModifyWebMetaDataDeployer extends AbstractDeployer
             // Nothing to do if we have an <init-param>
             if (!isAlreadyModified(servlet) && !isJavaxServlet(orgServletClass, dep.getClassLoader()))
             {
-               servlet.setServletClass(serviceEndpointPublisher.getServletClass());
+               servlet.setServletClass(servletClass);
                NameValuePair initParam = new NameValuePair(Endpoint.SEPID_DOMAIN_ENDPOINT, orgServletClass);
                servlet.addInitParam(initParam);
             }
@@ -85,7 +83,7 @@ public class ModifyWebMetaDataDeployer extends AbstractDeployer
          try
          {
             Class servletClass = loader.loadClass(orgServletClass);
-            isServlet = JavaUtils.isAssignableFrom(javax.servlet.Servlet.class, servletClass);
+            isServlet = javax.servlet.Servlet.class.isAssignableFrom(servletClass);
             if (isServlet == true)
             {
                log.info("Ignore servlet: " + orgServletClass);

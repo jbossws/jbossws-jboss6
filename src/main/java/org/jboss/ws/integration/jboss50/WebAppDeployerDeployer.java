@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ws.integration.jboss50.jbossws;
+package org.jboss.ws.integration.jboss50;
 
 // $Id$
 
@@ -34,9 +34,9 @@ import org.jboss.deployers.spi.structure.DeploymentState;
 import org.jboss.logging.Logger;
 import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
-import org.jboss.ws.core.deployment.ServiceEndpointPublisher;
 import org.jboss.ws.integration.deployment.Deployer;
 import org.jboss.ws.integration.deployment.Deployment;
+import org.jboss.ws.integration.deployment.ServiceEndpointPublisher;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
 import org.jboss.ws.integration.deployment.WSDeploymentException;
 

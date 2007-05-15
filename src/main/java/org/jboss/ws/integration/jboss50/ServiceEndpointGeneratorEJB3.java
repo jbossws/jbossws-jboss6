@@ -19,17 +19,18 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ws.integration.jboss50.jbossws;
+package org.jboss.ws.integration.jboss50;
 
 //$Id$
 
 import java.util.Iterator;
-import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
+
+import org.jboss.ejb3.EJBContainer;
+import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.logging.Logger;
-import org.jboss.metadata.ApplicationMetaData;
-import org.jboss.metadata.AssemblyDescriptorMetaData;
-import org.jboss.ws.core.server.ServiceEndpointGeneratorEJB;
+import org.jboss.ws.integration.deployment.SecurityRolesHandler;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
 import org.jboss.ws.utils.DOMUtils;
 import org.w3c.dom.Element;
@@ -40,29 +41,31 @@ import org.w3c.dom.Element;
  * @author Thomas.Diesler@jboss.org
  * @since 12-May-2006
  */
-public class ServiceEndpointGeneratorEJB21 extends ServiceEndpointGeneratorEJB
+public class ServiceEndpointGeneratorEJB3 implements SecurityRolesHandler
 {
    // logging support
-   protected Logger log = Logger.getLogger(ServiceEndpointGeneratorEJB21.class);
+   protected Logger log = Logger.getLogger(ServiceEndpointGeneratorEJB3.class);
 
    /** Add the roles from ejb-jar.xml to the security roles
     */
-   protected void addEJBSecurityRoles(Element webApp, UnifiedDeploymentInfo udi)
+   public void addSecurityRoles(Element webApp, UnifiedDeploymentInfo udi)
    {
-      // Fix: http://jira.jboss.org/jira/browse/JBWS-309
-      ApplicationMetaData applMetaData = (ApplicationMetaData)udi.getAttachment(ApplicationMetaData.class);
-      AssemblyDescriptorMetaData assemblyDescriptor = applMetaData.getAssemblyDescriptor();
-      if (assemblyDescriptor != null)
+      Ejb3Deployment ejb3Deployment = udi.getAttachment(Ejb3Deployment.class);
+      if (ejb3Deployment != null)
       {
-         Map securityRoles = assemblyDescriptor.getSecurityRoles();
-         if (securityRoles != null)
+         Iterator it = ejb3Deployment.getEjbContainers().values().iterator();
+         while (it.hasNext())
          {
-            Iterator it = securityRoles.keySet().iterator();
-            while (it.hasNext())
+            EJBContainer container = (EJBContainer)it.next();
+            RolesAllowed anRolesAllowed = (RolesAllowed)container.resolveAnnotation(RolesAllowed.class);
+            if (anRolesAllowed != null)
             {
-               Element securityRole = (Element)webApp.appendChild(DOMUtils.createElement("security-role"));
-               Element roleName = (Element)securityRole.appendChild(DOMUtils.createElement("role-name"));
-               roleName.appendChild(DOMUtils.createTextNode((String)it.next()));
+               for (String role : anRolesAllowed.value())
+               {
+                  Element securityRole = (Element)webApp.appendChild(DOMUtils.createElement("security-role"));
+                  Element roleName = (Element)securityRole.appendChild(DOMUtils.createElement("role-name"));
+                  roleName.appendChild(DOMUtils.createTextNode(role));
+               }
             }
          }
       }

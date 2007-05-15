@@ -37,7 +37,7 @@
   
   <target name="init" depends="prepare,thirdparty">
     <fail message="Not available: ${jboss50.available.file}" unless="jboss50.available"/>
-    <ant antfile="${core.dir}/build.xml" target="main" inheritall="false"/>
+    <ant antfile="${spi.dir}/build.xml" target="main" inheritall="false"/>
   </target>
   
   <!-- ================================================================== -->
@@ -68,9 +68,6 @@
   <target name="compile-etc" depends="init">
     <mkdir dir="${jbws50.output.etc.dir}"/>
     <copy todir="${jbws50.output.etc.dir}" filtering="yes" overwrite="yes">
-      <fileset dir="${jbws50.etc.dir}">
-        <include name="component-info.xml"/>
-  	  </fileset>
       <fileset dir="${build.dir}/etc">
         <include name="default.mf"/>
   	  </fileset>
@@ -108,52 +105,8 @@
       <metainf dir="${jbws50.resources.dir}/jbossws-jboss50.jar/META-INF"/>
     </jar>
     
-    <!-- Build jbossws-context.war -->
-    <war warfile="${jbws50.output.lib.dir}/jbossws50-context.war" webxml="${jbws50.resources.dir}/jbossws-context.war/WEB-INF/web.xml">
-      <fileset dir="${jbws50.resources.dir}/jbossws-context.war">
-        <include name="index.html"/>
-        <include name="styles.css"/>
-      </fileset>
-      <webinf dir="${jbws50.resources.dir}/jbossws-context.war/WEB-INF">
-        <include name="jboss-web.xml"/>
-      </webinf>
-    </war>
-    
-    <!-- Build jbossws50.sar -->
-    <jar jarfile="${jbws50.output.lib.dir}/jbossws50.sar" manifest="${jbws50.output.etc.dir}/default.mf">
-      <!-- [JBAS-4379] MC beans deployed twice because of jacc service
-      <fileset dir="${jbws50.output.lib.dir}">
-        <include name="jbossws-context.war"/>
-      </fileset>
-      -->
-      <fileset dir="${core.dir}/output/lib">
-        <include name="jbossws-core.jar"/>
-      </fileset>
-      <fileset dir="${core.dir}/thirdparty">
-        <include name="policy.jar"/>
-        <include name="wsdl4j.jar"/>
-        <include name="xmlsec.jar"/>
-      </fileset>
-      <metainf dir="${core.dir}/src/main/resources/standard-config">
-        <include name="standard-*-config.xml"/>
-      </metainf>
-      <metainf dir="${jbws50.resources.dir}/jbossws.sar/META-INF">
-        <include name="jbossws-beans.xml"/>
-      </metainf>
-    </jar>
-    
-    <!-- Build jbossws50.deployer -->
-    <zip zipfile="${jbws50.output.lib.dir}/jbossws50-deployer.zip">
-      <fileset dir="${jbws50.output.lib.dir}">
-        <include name="jbossws-jboss50.jar"/>
-      </fileset>
-      <fileset dir="${jbws50.resources.dir}/jbossws.deployer">
-        <include name="META-INF/jbossws-deployer-beans.xml"/>
-      </fileset>
-    </zip>
-    
     <!-- Build jbossws50-src.zip -->
-    <zip zipfile="${jbws50.output.lib.dir}/jbossws50-src.zip" >
+    <zip zipfile="${jbws50.output.lib.dir}/jbossws-jboss50-src.zip" >
       <fileset dir="${jbws50.java.dir}"/>
     </zip>
     
