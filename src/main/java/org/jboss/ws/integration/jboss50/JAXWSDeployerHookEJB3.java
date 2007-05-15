@@ -35,7 +35,7 @@ import org.jboss.ejb3.stateless.StatelessContainer;
 import org.jboss.ws.integration.BasicEndpoint;
 import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.Service;
-import org.jboss.ws.integration.deployment.BasicDeploymentImpl;
+import org.jboss.ws.integration.deployment.BasicDeployment;
 import org.jboss.ws.integration.deployment.Deployment;
 import org.jboss.ws.integration.deployment.Deployment.DeploymentType;
 import org.jboss.ws.utils.ObjectNameFactory;
@@ -58,7 +58,7 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      Deployment dep = new BasicDeploymentImpl();
+      Deployment dep = createDeployment();
       dep.setType(getDeploymentType());
       dep.setClassLoader(unit.getClassLoader());
 
@@ -81,11 +81,14 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
             Class epBean = container.getBeanClass();
 
             // Create the endpoint
-            Endpoint endpoint = new BasicEndpoint(service, epBean);
+            Endpoint ep = createEndpoint();
+            ep.setService(service);
+            ep.setEndpointImpl(epBean);
+            
             String nameStr = Endpoint.SEPID_DOMAIN + ":" + Endpoint.SEPID_PROPERTY_ENDPOINT + "=" + ejbName;
-            endpoint.setName(ObjectNameFactory.create(nameStr));
+            ep.setName(ObjectNameFactory.create(nameStr));
 
-            service.addEndpoint(endpoint);
+            service.addEndpoint(ep);
          }
       }
 

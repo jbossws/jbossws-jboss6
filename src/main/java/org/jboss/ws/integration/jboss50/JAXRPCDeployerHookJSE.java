@@ -29,7 +29,7 @@ import org.jboss.metadata.web.Servlet;
 import org.jboss.ws.integration.BasicEndpoint;
 import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.Service;
-import org.jboss.ws.integration.deployment.BasicDeploymentImpl;
+import org.jboss.ws.integration.deployment.BasicDeployment;
 import org.jboss.ws.integration.deployment.Deployment;
 import org.jboss.ws.integration.deployment.Deployment.DeploymentType;
 import org.jboss.ws.metadata.webservices.PortComponentMetaData;
@@ -58,7 +58,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      Deployment dep = new BasicDeploymentImpl();
+      Deployment dep = createDeployment();
       dep.setType(getDeploymentType());
       dep.setClassLoader(unit.getClassLoader());
 
@@ -93,11 +93,14 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
                Class<?> epBean = loader.loadClass(servletClass.trim());
 
                // Create the endpoint
-               Endpoint endpoint = new BasicEndpoint(service, epBean);
+               Endpoint ep = createEndpoint();
+               ep.setService(service);
+               ep.setEndpointImpl(epBean);
+               
                String nameStr = Endpoint.SEPID_DOMAIN + ":" + Endpoint.SEPID_PROPERTY_ENDPOINT + "=" + servletLink;
-               endpoint.setName(ObjectNameFactory.create(nameStr));
+               ep.setName(ObjectNameFactory.create(nameStr));
 
-               service.addEndpoint(endpoint);
+               service.addEndpoint(ep);
             }
             catch (ClassNotFoundException ex)
             {

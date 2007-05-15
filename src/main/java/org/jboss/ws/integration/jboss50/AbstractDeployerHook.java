@@ -25,7 +25,11 @@ package org.jboss.ws.integration.jboss50;
 
 import org.jboss.deployers.spi.deployer.DeploymentUnit;
 import org.jboss.logging.Logger;
+import org.jboss.ws.integration.Endpoint;
+import org.jboss.ws.integration.Service;
 import org.jboss.ws.integration.deployment.DeployerManager;
+import org.jboss.ws.integration.deployment.Deployment;
+import org.jboss.ws.integration.deployment.WSDeploymentException;
 
 /**
  * An abstract web service deployer.
@@ -39,15 +43,70 @@ public abstract class AbstractDeployerHook implements DeployerHook
    protected final Logger log = Logger.getLogger(getClass());
 
    protected DeployerManager deployerManager;
-
-   public DeployerManager getDeployerManager()
-   {
-      return deployerManager;
-   }
+   protected String deploymentClass;
+   protected String serviceClass;
+   protected String endpointClass;
 
    public void setDeployerManager(DeployerManager deploymentManager)
    {
       this.deployerManager = deploymentManager;
+   }
+
+   public void setDeploymentClass(String deploymentClass)
+   {
+      this.deploymentClass = deploymentClass;
+   }
+
+   public void setEndpointClass(String endpointClass)
+   {
+      this.endpointClass = endpointClass;
+   }
+
+   public void setServiceClass(String serviceClass)
+   {
+      this.serviceClass = serviceClass;
+   }
+
+   public Deployment createDeployment()
+   {
+      try
+      {
+         ClassLoader loader = Thread.currentThread().getContextClassLoader();
+         Class<?> clazz = loader.loadClass(deploymentClass);
+         return (Deployment)clazz.newInstance();
+      }
+      catch (Exception ex)
+      {
+         throw new WSDeploymentException("Cannot load: " + deploymentClass);
+      }
+   }
+
+   public Service createService()
+   {
+      try
+      {
+         ClassLoader loader = Thread.currentThread().getContextClassLoader();
+         Class<?> clazz = loader.loadClass(serviceClass);
+         return (Service)clazz.newInstance();
+      }
+      catch (Exception ex)
+      {
+         throw new WSDeploymentException("Cannot load: " + serviceClass);
+      }
+   }
+
+   public Endpoint createEndpoint()
+   {
+      try
+      {
+         ClassLoader loader = Thread.currentThread().getContextClassLoader();
+         Class<?> clazz = loader.loadClass(endpointClass);
+         return (Endpoint)clazz.newInstance();
+      }
+      catch (Exception ex)
+      {
+         throw new WSDeploymentException("Cannot load: " + endpointClass);
+      }
    }
 
    /** Return true if this deployment should be ignored

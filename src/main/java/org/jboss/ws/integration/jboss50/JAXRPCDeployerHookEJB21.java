@@ -55,7 +55,7 @@ public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      Deployment dep = new BasicDeploymentImpl();
+      Deployment dep = createDeployment();
       dep.setType(getDeploymentType());
       dep.setClassLoader(unit.getClassLoader());
 
@@ -92,11 +92,14 @@ public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
                Class<?> epBean = loader.loadClass(ejbClass.trim());
                
                // Create the endpoint
-               Endpoint endpoint = new BasicEndpoint(service, epBean);
+               Endpoint ep = createEndpoint();
+               ep.setService(service);
+               ep.setEndpointImpl(epBean);
+               
                String nameStr = Endpoint.SEPID_DOMAIN + ":" + Endpoint.SEPID_PROPERTY_ENDPOINT + "=" + ejbLink;
-               endpoint.setName(ObjectNameFactory.create(nameStr));
+               ep.setName(ObjectNameFactory.create(nameStr));
 
-               service.addEndpoint(endpoint);
+               service.addEndpoint(ep);
             }
             catch (ClassNotFoundException ex)
             {
