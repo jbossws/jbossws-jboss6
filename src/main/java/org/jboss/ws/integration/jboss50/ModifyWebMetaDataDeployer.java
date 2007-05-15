@@ -42,6 +42,11 @@ public class ModifyWebMetaDataDeployer extends AbstractDeployer
 {
    private String servletClass;
 
+   public String getServletClass()
+   {
+      return servletClass;
+   }
+
    public void setServletClass(String servletClass)
    {
       this.servletClass = servletClass;

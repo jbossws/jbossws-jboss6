@@ -67,7 +67,7 @@
   <!-- Compile etc files (manifests and such) -->
   <target name="compile-etc" depends="init">
     <mkdir dir="${jbws50.output.etc.dir}"/>
-    <copy todir="${jbws50.output.etc.dir}" filtering="yes" overwrite="yes">
+    <copy todir="${jbws50.output.etc.dir}" filtering="yes">
       <fileset dir="${build.dir}/etc">
         <include name="default.mf"/>
   	  </fileset>

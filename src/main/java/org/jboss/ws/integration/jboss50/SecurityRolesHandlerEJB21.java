@@ -26,7 +26,6 @@ package org.jboss.ws.integration.jboss50;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.jboss.logging.Logger;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.AssemblyDescriptorMetaData;
 import org.jboss.ws.integration.deployment.SecurityRolesHandler;
@@ -40,11 +39,8 @@ import org.w3c.dom.Element;
  * @author Thomas.Diesler@jboss.org
  * @since 12-May-2006
  */
-public class ServiceEndpointGeneratorEJB21 implements SecurityRolesHandler
+public class SecurityRolesHandlerEJB21 implements SecurityRolesHandler
 {
-   // logging support
-   protected Logger log = Logger.getLogger(ServiceEndpointGeneratorEJB21.class);
-
    /** Add the roles from ejb-jar.xml to the security roles
     */
    public void addSecurityRoles(Element webApp, UnifiedDeploymentInfo udi)

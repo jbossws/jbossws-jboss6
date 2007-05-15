@@ -29,7 +29,6 @@ import javax.annotation.security.RolesAllowed;
 
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
-import org.jboss.logging.Logger;
 import org.jboss.ws.integration.deployment.SecurityRolesHandler;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
 import org.jboss.ws.utils.DOMUtils;
@@ -41,11 +40,8 @@ import org.w3c.dom.Element;
  * @author Thomas.Diesler@jboss.org
  * @since 12-May-2006
  */
-public class ServiceEndpointGeneratorEJB3 implements SecurityRolesHandler
+public class SecurityRolesHandlerEJB3 implements SecurityRolesHandler
 {
-   // logging support
-   protected Logger log = Logger.getLogger(ServiceEndpointGeneratorEJB3.class);
-
    /** Add the roles from ejb-jar.xml to the security roles
     */
    public void addSecurityRoles(Element webApp, UnifiedDeploymentInfo udi)
