@@ -25,11 +25,14 @@ package org.jboss.ws.integration.jboss50;
 
 import java.lang.reflect.Method;
 
+import javax.xml.rpc.server.ServiceLifecycle;
+import javax.xml.rpc.server.ServletEndpointContext;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.WebServiceException;
 
 import org.jboss.ws.integration.Endpoint;
+import org.jboss.ws.integration.invocation.Invocation;
 import org.jboss.ws.integration.invocation.InvocationContext;
-import org.jboss.ws.integration.invocation.InvocationHandler;
 import org.jboss.ws.integration.invocation.WebServiceContextInjector;
 
 /**
@@ -38,41 +41,60 @@ import org.jboss.ws.integration.invocation.WebServiceContextInjector;
  * @author Thomas.Diesler@jboss.org
  * @since 25-Apr-2007
  */
-public class InvocationHandlerJSE implements InvocationHandler
+public class InvocationHandlerJSE extends AbstractInvocationHandler
 {
+   private Object targetBean;
+
    public void create(Endpoint ep)
    {
-      // Nothing to do
+      try
+      {
+         Class epImpl = ep.getTargetBean();
+         targetBean = epImpl.newInstance();
+      }
+      catch (Exception ex)
+      {
+         throw new WebServiceException("Cannot load target bean");
+      }
    }
 
-   public void start(Endpoint endpoint)
+   public void invoke(Endpoint ep, Invocation epInv) throws Exception
    {
-      // Nothing to do
-   }
+      try
+      {
+         InvocationContext invContext = epInv.getInvocationContext();
+         WebServiceContext wsContext = invContext.getAttachment(WebServiceContext.class);
+         if (wsContext != null)
+         {
+            new WebServiceContextInjector().injectContext(targetBean, (WebServiceContext)wsContext);
+         }
 
-   public void stop(Endpoint endpoint)
-   {
-      // Nothing to do
-   }
+         if (targetBean instanceof ServiceLifecycle)
+         {
+            ServletEndpointContext sepContext = invContext.getAttachment(ServletEndpointContext.class);
+            if (sepContext == null)
+               throw new IllegalStateException("Cannot obtain ServletEndpointContext");
+            
+            ((ServiceLifecycle)targetBean).init(sepContext);
+         }
 
-   public void destroy(Endpoint ep)
-   {
-      // Nothing to do
-   }
-
-   public Object getTargetBean(Endpoint endpoint) throws InstantiationException, IllegalAccessException
-   {
-      Class epImpl = endpoint.getTargetBean();
-      Object targetBean = epImpl.newInstance();
-      return targetBean;
-   }
-
-   public Object invoke(Endpoint endpoint, Object targetBean, Method method, Object[] args, InvocationContext context) throws Exception
-   {
-      if (context instanceof WebServiceContext)
-         new WebServiceContextInjector().injectContext(targetBean, (WebServiceContext)context);
-
-      Object retObj = method.invoke(targetBean, args);
-      return retObj;
+         try
+         {
+            Method method = getImplMethod(ep.getTargetBean(), epInv.getJavaMethod());
+            Object retObj = method.invoke(targetBean, epInv.getArgs());
+            epInv.setReturn(retObj);
+         }
+         finally
+         {
+            if (targetBean instanceof ServiceLifecycle)
+            {
+               ((ServiceLifecycle)targetBean).destroy();
+            }
+         }
+      }
+      catch (Exception e)
+      {
+         handleInvocationException(e);
+      }
    }
 }

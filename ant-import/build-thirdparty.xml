@@ -36,6 +36,7 @@
       <pathelement location="${spi.dir}/thirdparty/jaxws-api.jar"/>
       <pathelement location="${spi.dir}/thirdparty/jaxrpc-api.jar"/>
       <pathelement location="${spi.dir}/thirdparty/jsr181-api.jar"/>
+      <pathelement location="${spi.dir}/thirdparty/saaj-api.jar"/>
       <pathelement location="${jboss50.lib}/jboss-aop-jdk50.jar"/>
       <pathelement location="${jboss50.lib}/jboss-common-core.jar"/>
       <pathelement location="${jboss50.lib}/jboss-deployers.jar"/>

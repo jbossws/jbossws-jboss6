@@ -28,13 +28,15 @@ import java.security.Principal;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import javax.xml.rpc.handler.MessageContext;
+import javax.xml.rpc.handler.soap.SOAPMessageContext;
 import javax.xml.ws.WebServiceException;
 
 import org.jboss.ejb.EjbModule;
 import org.jboss.ejb.Interceptor;
 import org.jboss.ejb.StatelessSessionContainer;
 import org.jboss.ejb.plugins.AbstractInterceptor;
-import org.jboss.invocation.Invocation;
+import org.jboss.invocation.InvocationKey;
 import org.jboss.invocation.InvocationType;
 import org.jboss.invocation.PayloadKey;
 import org.jboss.logging.Logger;
@@ -43,8 +45,7 @@ import org.jboss.security.SecurityAssociation;
 import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
 import org.jboss.ws.integration.invocation.HandlerCallback;
-import org.jboss.ws.integration.invocation.InvocationContext;
-import org.jboss.ws.integration.invocation.InvocationHandler;
+import org.jboss.ws.integration.invocation.Invocation;
 import org.jboss.ws.metadata.j2ee.UnifiedApplicationMetaData;
 import org.jboss.ws.metadata.j2ee.UnifiedBeanMetaData;
 import org.jboss.ws.utils.ObjectNameFactory;
@@ -55,7 +56,7 @@ import org.jboss.ws.utils.ObjectNameFactory;
  * @author Thomas.Diesler@jboss.org
  * @since 25-Apr-2007
  */
-public class InvocationHandlerEJB21 implements InvocationHandler
+public class InvocationHandlerEJB21 extends AbstractInvocationHandler
 {
    // provide logging
    private static final Logger log = Logger.getLogger(InvocationHandlerEJB21.class);
@@ -64,15 +65,16 @@ public class InvocationHandlerEJB21 implements InvocationHandler
    private MBeanServer server;
    private ObjectName objectName;
 
-   public void create(Endpoint endpoint)
+   public void create(Endpoint ep)
    {
-      server = MBeanServerLocator.locateJBoss();
+      super.create(ep);
 
-      String ejbName = endpoint.getName().getKeyProperty(Endpoint.SEPID_PROPERTY_ENDPOINT);
+      ObjectName epName = ep.getName();
+      String ejbName = epName.getKeyProperty(Endpoint.SEPID_PROPERTY_ENDPOINT);
       if (ejbName == null)
          throw new WebServiceException("Cannot obtain ejb-link from port component");
 
-      UnifiedDeploymentInfo udi = endpoint.getService().getDeployment().getContext().getAttachment(UnifiedDeploymentInfo.class);
+      UnifiedDeploymentInfo udi = ep.getService().getDeployment().getContext().getAttachment(UnifiedDeploymentInfo.class);
       UnifiedApplicationMetaData applMetaData = (UnifiedApplicationMetaData)udi.metaData;
       UnifiedBeanMetaData beanMetaData = (UnifiedBeanMetaData)applMetaData.getBeanByEjbName(ejbName);
       if (beanMetaData == null)
@@ -83,7 +85,10 @@ public class InvocationHandlerEJB21 implements InvocationHandler
       if (jndiName == null)
          throw new WebServiceException("Cannot obtain JNDI name for: " + ejbName);
 
+      server = MBeanServerLocator.locateJBoss();
       objectName = ObjectNameFactory.create("jboss.j2ee:jndiName=" + jndiName + ",service=EJB");
+      if (server.isRegistered(objectName) == false)
+         throw new WebServiceException("Cannot find service endpoint target: " + objectName);
 
       // Dynamically add the service endpoint interceptor
       // http://jira.jboss.org/jira/browse/JBWS-758
@@ -100,7 +105,7 @@ public class InvocationHandlerEJB21 implements InvocationHandler
             if (next.getNext() == null)
             {
                log.debug("Inject service endpoint interceptor after: " + prev.getClass().getName());
-               AbstractInterceptor sepInterceptor = endpoint.getAttachment(AbstractInterceptor.class);
+               AbstractInterceptor sepInterceptor = ep.getAttachment(AbstractInterceptor.class);
                if (sepInterceptor == null)
                   throw new IllegalStateException("Cannot obtain endpoint interceptor");
 
@@ -118,52 +123,46 @@ public class InvocationHandlerEJB21 implements InvocationHandler
          log.warn("Cannot add service endpoint interceptor", ex);
       }
 
-      if (server.isRegistered(objectName) == false)
-         throw new WebServiceException("Cannot find service endpoint target: " + objectName);
-
    }
 
-   public void start(Endpoint ep)
+   public void invoke(Endpoint ep, Invocation epInv) throws Exception
    {
-   }
+      log.debug("Invoke: " + epInv.getJavaMethod().getName());
 
-   public Object getTargetBean(Endpoint ep) throws InstantiationException, IllegalAccessException
-   {
-      return null;
-   }
-
-   public Object invoke(Endpoint ep, Object targetBean, Method method, Object[] args, InvocationContext context) throws Exception
-   {
       // these are provided by the ServerLoginHandler
       Principal principal = SecurityAssociation.getPrincipal();
       Object credential = SecurityAssociation.getCredential();
 
-      Invocation inv = new Invocation(null, method, args, null, principal, credential);
+      // invoke on the container
+      try
+      {
+         // setup the invocation
+         Method method = epInv.getJavaMethod();
+         Object[] args = epInv.getArgs();
+         org.jboss.invocation.Invocation inv = new org.jboss.invocation.Invocation(null, method, args, null, principal, credential);
 
-      //inv.setValue(InvocationKey.SOAP_MESSAGE_CONTEXT, msgContext);
-      //inv.setValue(InvocationKey.SOAP_MESSAGE, msgContext.getSOAPMessage());
-      inv.setType(InvocationType.SERVICE_ENDPOINT);
+         // EJB2.1 endpoints will only get an JAXRPC context 
+         MessageContext msgContext = epInv.getInvocationContext().getAttachment(MessageContext.class);
+         if (msgContext == null)
+            throw new IllegalStateException("Cannot obtain MessageContext");
+         
+         HandlerCallback callback = epInv.getInvocationContext().getAttachment(HandlerCallback.class);
+         if (callback == null)
+            throw new IllegalStateException("Cannot obtain HandlerCallback");
+         
+         inv.setValue(InvocationKey.SOAP_MESSAGE_CONTEXT, msgContext);
+         inv.setValue(InvocationKey.SOAP_MESSAGE, ((SOAPMessageContext)msgContext).getMessage());
+         inv.setType(InvocationType.SERVICE_ENDPOINT);
+         inv.setValue(HandlerCallback.class.getName(), callback, PayloadKey.TRANSIENT);
+         inv.setValue(Invocation.class.getName(), epInv, PayloadKey.TRANSIENT);
 
-      HandlerCallback callback = ep.getAttachment(HandlerCallback.class);
-      if (callback == null)
-         throw new IllegalStateException("Cannot obtain handler callback");
-
-      inv.setValue(HandlerCallback.class.getName(), callback, PayloadKey.TRANSIENT);
-      inv.setValue(InvocationContext.class.getName(), context, PayloadKey.TRANSIENT);
-
-      String[] sig = { Invocation.class.getName() };
-      Object retObj = server.invoke(objectName, "invoke", new Object[] { inv }, sig);
-
-      return retObj;
-   }
-
-   public void stop(Endpoint ep)
-   {
-      // Nothing to do
-   }
-
-   public void destroy(Endpoint ep)
-   {
-      // Nothing to do
+         String[] sig = { Invocation.class.getName() };
+         Object retObj = server.invoke(objectName, "invoke", new Object[] { inv }, sig);
+         epInv.setReturn(retObj);
+      }
+      catch (Exception e)
+      {
+         handleInvocationException(e);
+      }
    }
 }

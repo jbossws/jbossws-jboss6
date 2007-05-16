@@ -23,7 +23,7 @@ package org.jboss.ws.integration.jboss50;
 
 // $Id$
 
-import javax.xml.rpc.handler.MessageContext;
+import javax.xml.rpc.handler.soap.SOAPMessageContext;
 
 import org.jboss.ejb.plugins.AbstractInterceptor;
 import org.jboss.invocation.Invocation;
@@ -53,29 +53,49 @@ public class ServiceEndpointInterceptor extends AbstractInterceptor
    public Object invoke(final Invocation mi) throws Exception
    {
       // If no msgContext, it's not for us
-      MessageContext msgContext = (MessageContext)mi.getPayloadValue(InvocationKey.SOAP_MESSAGE_CONTEXT);
+      SOAPMessageContext msgContext = (SOAPMessageContext)mi.getPayloadValue(InvocationKey.SOAP_MESSAGE_CONTEXT);
       if (msgContext == null)
       {
          return getNext().invoke(mi);
       }
 
+      // Get the endpoint invocation 
+      org.jboss.ws.integration.invocation.Invocation epInv = (org.jboss.ws.integration.invocation.Invocation)mi
+            .getValue(org.jboss.ws.integration.invocation.Invocation.class.getName());
+
       // Get the handler callback 
       HandlerCallback callback = (HandlerCallback)mi.getValue(HandlerCallback.class.getName());
 
       // Handlers need to be Tx. Therefore we must invoke the handler chain after the TransactionInterceptor.
-      if (callback != null)
+      if (callback != null && epInv != null)
       {
          try
          {
             // call the request handlers
             boolean handlersPass = callback.callRequestHandlerChain(HandlerType.ENDPOINT);
             handlersPass = handlersPass && callback.callRequestHandlerChain(HandlerType.POST);
-            
-            Object resObj = getNext().invoke(mi);
+
+            // Call the next interceptor in the chain
+            if (handlersPass)
+            {
+               // The SOAPContentElements stored in the EndpointInvocation might have changed after
+               // handler processing. Get the updated request payload. This should be a noop if request
+               // handlers did not modify the incomming SOAP message.
+               Object[] reqParams = epInv.getArgs();
+               mi.setArguments(reqParams);
+               Object resObj = getNext().invoke(mi);
+
+               // Setting the message to null should trigger binding of the response message
+               msgContext.setMessage(null);
+               epInv.setReturn(resObj);
+            }
 
             // call the response handlers
             handlersPass = callback.callResponseHandlerChain(HandlerType.POST);
             handlersPass = handlersPass && callback.callResponseHandlerChain(HandlerType.ENDPOINT);
+
+            // update the return value after response handler processing
+            Object resObj = epInv.getReturn();
 
             return resObj;
          }
@@ -92,6 +112,10 @@ public class ServiceEndpointInterceptor extends AbstractInterceptor
                log.warn("Cannot process handlerChain.handleFault, ignoring: ", subEx);
             }
             throw ex;
+         }
+         finally
+         {
+            // do nothing
          }
       }
       else

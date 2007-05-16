@@ -27,7 +27,6 @@ import java.lang.reflect.Method;
 
 import javax.ejb.EJBContext;
 import javax.management.ObjectName;
-import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.WebServiceException;
 
 import org.jboss.aop.Dispatcher;
@@ -38,11 +37,10 @@ import org.jboss.ejb3.EJBContainerInvocation;
 import org.jboss.ejb3.stateless.StatelessBeanContext;
 import org.jboss.ejb3.stateless.StatelessContainer;
 import org.jboss.injection.lang.reflect.BeanProperty;
-import org.jboss.logging.Logger;
 import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
-import org.jboss.ws.integration.invocation.InvocationContext;
-import org.jboss.ws.integration.invocation.InvocationHandler;
+import org.jboss.ws.integration.invocation.Invocation;
+import org.jboss.ws.integration.invocation.WebServiceContextEJB;
 import org.jboss.ws.utils.ObjectNameFactory;
 
 /**
@@ -51,20 +49,19 @@ import org.jboss.ws.utils.ObjectNameFactory;
  * @author Thomas.Diesler@jboss.org
  * @since 25-Apr-2007
  */
-public class InvocationHandlerEJB3 implements InvocationHandler
+public class InvocationHandlerEJB3 extends AbstractInvocationHandler
 {
-   // provide logging
-   private static final Logger log = Logger.getLogger(InvocationHandlerEJB3.class);
-
    private ObjectName objectName;
 
-   public void create(Endpoint endpoint)
+   public void create(Endpoint ep)
    {
-      String ejbName = endpoint.getName().getKeyProperty(Endpoint.SEPID_PROPERTY_ENDPOINT);
+      super.create(ep);
+
+      String ejbName = ep.getName().getKeyProperty(Endpoint.SEPID_PROPERTY_ENDPOINT);
       if (ejbName == null)
          throw new WebServiceException("Cannot obtain ejb-link");
 
-      UnifiedDeploymentInfo udi = endpoint.getService().getDeployment().getContext().getAttachment(UnifiedDeploymentInfo.class);
+      UnifiedDeploymentInfo udi = ep.getService().getDeployment().getContext().getAttachment(UnifiedDeploymentInfo.class);
       String nameStr = "jboss.j2ee:name=" + ejbName + ",service=EJB3,jar=" + udi.simpleName;
       if (udi.parent != null)
       {
@@ -76,79 +73,68 @@ public class InvocationHandlerEJB3 implements InvocationHandler
 
    public void start(Endpoint ep)
    {
+      super.start(ep);
+
       Dispatcher dispatcher = Dispatcher.singleton;
       if (dispatcher.getRegistered(objectName.getCanonicalName()) == null)
          throw new WebServiceException("Cannot find service endpoint target: " + objectName);
    }
 
-   public Object getTargetBean(Endpoint ep) throws InstantiationException, IllegalAccessException
+   public void invoke(Endpoint ep, Invocation epInv) throws Exception
    {
-      return null;
-   }
-
-   public Object invoke(Endpoint ep, Object targetBean, Method method, Object[] args, InvocationContext context) throws Exception
-   {
-      Dispatcher dispatcher = Dispatcher.singleton;
-      StatelessContainer container = (StatelessContainer)dispatcher.getRegistered(objectName.getCanonicalName());
-
-      MethodInfo info = container.getMethodInfo(method);
-
-      EJBContainerInvocation<StatelessContainer, StatelessBeanContext> ejb3Inv = new EJBContainerInvocation<StatelessContainer, StatelessBeanContext>(info);
-      ejb3Inv.setAdvisor(container);
-      ejb3Inv.setArguments(args);
-      ejb3Inv.setContextCallback(new ContextCallback(context));
-
-      Object retObj;
       try
       {
-         retObj = ejb3Inv.invokeNext();
+         Dispatcher dispatcher = Dispatcher.singleton;
+         StatelessContainer container = (StatelessContainer)dispatcher.getRegistered(objectName.getCanonicalName());
+         Class beanClass = container.getBeanClass();
+
+         Method method = getImplMethod(beanClass, epInv.getJavaMethod());
+         Object[] args = epInv.getArgs();
+
+         MethodInfo info = container.getMethodInfo(method);
+         EJBContainerInvocation<StatelessContainer, StatelessBeanContext> ejb3Inv = new EJBContainerInvocation<StatelessContainer, StatelessBeanContext>(info);
+         ejb3Inv.setAdvisor(container);
+         ejb3Inv.setArguments(args);
+         ejb3Inv.setContextCallback(new CallbackImpl(epInv));
+
+         Object retObj = ejb3Inv.invokeNext();
+
+         epInv.setReturn(retObj);
       }
-      catch (Exception ex)
+      catch (Throwable th)
       {
-         throw ex;
+         handleInvocationException(th);
       }
-      catch (Throwable ex)
-      {
-         throw new RuntimeException(ex);
-      }
-      return retObj;
    }
 
-   public void stop(Endpoint ep)
+   static class CallbackImpl implements BeanContextLifecycleCallback
    {
-      // Nothing to do
-   }
+      private javax.xml.ws.handler.MessageContext jaxwsMessageContext;
+      private javax.xml.rpc.handler.MessageContext jaxrpcMessageContext;
 
-   public void destroy(Endpoint ep)
-   {
-      // Nothing to do
-   }
-
-   class ContextCallback implements BeanContextLifecycleCallback
-   {
-      private WebServiceContext wsContext;
-
-      public ContextCallback(InvocationContext context)
+      public CallbackImpl(Invocation epInv)
       {
-         if (context instanceof WebServiceContext)
-            this.wsContext = (WebServiceContext)context;
+         jaxrpcMessageContext = epInv.getInvocationContext().getAttachment(javax.xml.rpc.handler.MessageContext.class);
+         jaxwsMessageContext = epInv.getInvocationContext().getAttachment(javax.xml.ws.handler.MessageContext.class);
       }
 
       public void attached(BeanContext beanCtx)
       {
          StatelessBeanContext sbc = (StatelessBeanContext)beanCtx;
+         sbc.setMessageContextJAXRPC(jaxrpcMessageContext);
 
          BeanProperty beanProp = sbc.getWebServiceContextProperty();
-         if (beanProp != null && wsContext instanceof WebServiceContext)
+         if (beanProp != null)
          {
             EJBContext ejbCtx = beanCtx.getEJBContext();
-            beanProp.set(beanCtx.getInstance(), wsContext);
+            beanProp.set(beanCtx.getInstance(), new WebServiceContextEJB(jaxwsMessageContext, ejbCtx));
          }
       }
 
       public void released(BeanContext beanCtx)
       {
          StatelessBeanContext sbc = (StatelessBeanContext)beanCtx;
+         sbc.setMessageContextJAXRPC(null);
 
          BeanProperty beanProp = sbc.getWebServiceContextProperty();
          if (beanProp != null)
