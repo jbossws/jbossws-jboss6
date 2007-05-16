@@ -62,7 +62,7 @@ public class InvocationHandlerJSE implements InvocationHandler
 
    public Object getTargetBean(Endpoint endpoint) throws InstantiationException, IllegalAccessException
    {
-      Class epImpl = endpoint.getEndpointImpl();
+      Class epImpl = endpoint.getTargetBean();
       Object targetBean = epImpl.newInstance();
       return targetBean;
    }

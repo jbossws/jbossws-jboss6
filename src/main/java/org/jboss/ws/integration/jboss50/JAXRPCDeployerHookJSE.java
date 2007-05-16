@@ -95,7 +95,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
                // Create the endpoint
                Endpoint ep = createEndpoint();
                ep.setService(service);
-               ep.setEndpointImpl(epBean);
+               ep.setTargetBean(epBean);
                
                String nameStr = Endpoint.SEPID_DOMAIN + ":" + Endpoint.SEPID_PROPERTY_ENDPOINT + "=" + servletLink;
                ep.setName(ObjectNameFactory.create(nameStr));

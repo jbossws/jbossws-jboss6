@@ -92,7 +92,7 @@ public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
                // Create the endpoint
                Endpoint ep = createEndpoint();
                ep.setService(service);
-               ep.setEndpointImpl(epBean);
+               ep.setTargetBean(epBean);
                
                String nameStr = Endpoint.SEPID_DOMAIN + ":" + Endpoint.SEPID_PROPERTY_ENDPOINT + "=" + ejbLink;
                ep.setName(ObjectNameFactory.create(nameStr));
