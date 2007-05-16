@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="/spi/thirdparty/jaxws-api.jar"/>
 	<classpathentry kind="lib" path="/spi/thirdparty/jsr181-api.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jboss-5.0.x"/>
+	<classpathentry kind="lib" path="/spi/thirdparty/jaxrpc-api.jar"/>
 	<classpathentry kind="output" path="output-eclipse"/>
 </classpath>
