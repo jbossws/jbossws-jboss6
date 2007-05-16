@@ -35,7 +35,7 @@ import javax.xml.ws.WebServiceException;
 import org.jboss.ejb.EjbModule;
 import org.jboss.ejb.Interceptor;
 import org.jboss.ejb.StatelessSessionContainer;
-import org.jboss.ejb.plugins.AbstractInterceptor;
+import org.jboss.invocation.Invocation;
 import org.jboss.invocation.InvocationKey;
 import org.jboss.invocation.InvocationType;
 import org.jboss.invocation.PayloadKey;
@@ -45,7 +45,7 @@ import org.jboss.security.SecurityAssociation;
 import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
 import org.jboss.ws.integration.invocation.HandlerCallback;
-import org.jboss.ws.integration.invocation.Invocation;
+import org.jboss.ws.integration.invocation.EndpointInvocation;
 import org.jboss.ws.metadata.j2ee.UnifiedApplicationMetaData;
 import org.jboss.ws.metadata.j2ee.UnifiedBeanMetaData;
 import org.jboss.ws.utils.ObjectNameFactory;
@@ -105,10 +105,7 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
             if (next.getNext() == null)
             {
                log.debug("Inject service endpoint interceptor after: " + prev.getClass().getName());
-               AbstractInterceptor sepInterceptor = ep.getAttachment(AbstractInterceptor.class);
-               if (sepInterceptor == null)
-                  throw new IllegalStateException("Cannot obtain endpoint interceptor");
-
+               ServiceEndpointInterceptor sepInterceptor = new ServiceEndpointInterceptor();
                prev.setNext(sepInterceptor);
                sepInterceptor.setNext(next);
                injectionPointFound = true;
@@ -125,7 +122,7 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
    }
 
-   public void invoke(Endpoint ep, Invocation epInv) throws Exception
+   public void invoke(Endpoint ep, EndpointInvocation epInv) throws Exception
    {
       log.debug("Invoke: " + epInv.getJavaMethod().getName());
 
@@ -139,26 +136,26 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
          // setup the invocation
          Method method = epInv.getJavaMethod();
          Object[] args = epInv.getArgs();
-         org.jboss.invocation.Invocation inv = new org.jboss.invocation.Invocation(null, method, args, null, principal, credential);
+         Invocation inv = new Invocation(null, method, args, null, principal, credential);
 
          // EJB2.1 endpoints will only get an JAXRPC context 
          MessageContext msgContext = epInv.getInvocationContext().getAttachment(MessageContext.class);
          if (msgContext == null)
             throw new IllegalStateException("Cannot obtain MessageContext");
-         
+
          HandlerCallback callback = epInv.getInvocationContext().getAttachment(HandlerCallback.class);
          if (callback == null)
             throw new IllegalStateException("Cannot obtain HandlerCallback");
-         
+
          inv.setValue(InvocationKey.SOAP_MESSAGE_CONTEXT, msgContext);
          inv.setValue(InvocationKey.SOAP_MESSAGE, ((SOAPMessageContext)msgContext).getMessage());
          inv.setType(InvocationType.SERVICE_ENDPOINT);
          inv.setValue(HandlerCallback.class.getName(), callback, PayloadKey.TRANSIENT);
-         inv.setValue(Invocation.class.getName(), epInv, PayloadKey.TRANSIENT);
+         inv.setValue(EndpointInvocation.class.getName(), epInv, PayloadKey.TRANSIENT);
 
-         String[] sig = { Invocation.class.getName() };
+         String[] sig = { org.jboss.invocation.Invocation.class.getName() };
          Object retObj = server.invoke(objectName, "invoke", new Object[] { inv }, sig);
-         epInv.setReturn(retObj);
+         epInv.setReturnValue(retObj);
       }
       catch (Exception e)
       {

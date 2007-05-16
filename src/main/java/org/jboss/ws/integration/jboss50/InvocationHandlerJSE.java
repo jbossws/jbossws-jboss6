@@ -31,7 +31,7 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.WebServiceException;
 
 import org.jboss.ws.integration.Endpoint;
-import org.jboss.ws.integration.invocation.Invocation;
+import org.jboss.ws.integration.invocation.EndpointInvocation;
 import org.jboss.ws.integration.invocation.InvocationContext;
 import org.jboss.ws.integration.invocation.WebServiceContextInjector;
 
@@ -58,7 +58,7 @@ public class InvocationHandlerJSE extends AbstractInvocationHandler
       }
    }
 
-   public void invoke(Endpoint ep, Invocation epInv) throws Exception
+   public void invoke(Endpoint ep, EndpointInvocation epInv) throws Exception
    {
       try
       {
@@ -82,7 +82,7 @@ public class InvocationHandlerJSE extends AbstractInvocationHandler
          {
             Method method = getImplMethod(ep.getTargetBean(), epInv.getJavaMethod());
             Object retObj = method.invoke(targetBean, epInv.getArgs());
-            epInv.setReturn(retObj);
+            epInv.setReturnValue(retObj);
          }
          finally
          {

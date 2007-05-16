@@ -60,8 +60,8 @@ public class ServiceEndpointInterceptor extends AbstractInterceptor
       }
 
       // Get the endpoint invocation 
-      org.jboss.ws.integration.invocation.Invocation epInv = (org.jboss.ws.integration.invocation.Invocation)mi
-            .getValue(org.jboss.ws.integration.invocation.Invocation.class.getName());
+      org.jboss.ws.integration.invocation.EndpointInvocation epInv = (org.jboss.ws.integration.invocation.EndpointInvocation)mi
+            .getValue(org.jboss.ws.integration.invocation.EndpointInvocation.class.getName());
 
       // Get the handler callback 
       HandlerCallback callback = (HandlerCallback)mi.getValue(HandlerCallback.class.getName());
@@ -87,7 +87,7 @@ public class ServiceEndpointInterceptor extends AbstractInterceptor
 
                // Setting the message to null should trigger binding of the response message
                msgContext.setMessage(null);
-               epInv.setReturn(resObj);
+               epInv.setReturnValue(resObj);
             }
 
             // call the response handlers
@@ -95,7 +95,7 @@ public class ServiceEndpointInterceptor extends AbstractInterceptor
             handlersPass = handlersPass && callback.callResponseHandlerChain(HandlerType.ENDPOINT);
 
             // update the return value after response handler processing
-            Object resObj = epInv.getReturn();
+            Object resObj = epInv.getReturnValue();
 
             return resObj;
          }
