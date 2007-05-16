@@ -25,8 +25,10 @@ package org.jboss.ws.integration.jboss50;
 
 import org.jboss.deployers.spi.deployer.DeploymentUnit;
 import org.jboss.metadata.WebMetaData;
+import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.deployment.AbstractDeployer;
 import org.jboss.ws.integration.deployment.Deployment;
+import org.jboss.ws.integration.deployment.WSDeploymentException;
 
 /**
  * A deployer that injects the correct classloader into the Deployment 
@@ -46,12 +48,34 @@ public class ClassLoaderInjectionDeployer extends AbstractDeployer
       ClassLoader classLoader = unit.getClassLoader();
 
       // Get the webapp context classloader and use it as the deploymet class loader
-      WebMetaData webMetaData = unit.getAttachment(WebMetaData.class);
+      WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
       if (webMetaData != null)
       {
          classLoader = webMetaData.getContextLoader();
       }
 
       dep.setClassLoader(classLoader);
+
+      // Reload target beans with the updated class loader
+      for (Endpoint ep : dep.getService().getEndpoints())
+      {
+         Class targetBean = ep.getTargetBean();
+         if (targetBean != null)
+         {
+            String beanName = targetBean.getName();
+            if (targetBean.getClassLoader() != classLoader)
+            {
+               try
+               {
+                  targetBean = classLoader.loadClass(beanName);
+                  ep.setTargetBean(targetBean);
+               }
+               catch (ClassNotFoundException e)
+               {
+                  throw new WSDeploymentException("Cannot reload target bean: " + beanName);
+               }
+            }
+         }
+      }
    }
 }
