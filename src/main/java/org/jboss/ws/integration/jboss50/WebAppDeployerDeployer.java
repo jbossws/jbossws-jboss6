@@ -34,7 +34,7 @@ import org.jboss.deployers.spi.structure.DeploymentState;
 import org.jboss.logging.Logger;
 import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
-import org.jboss.ws.integration.deployment.Deployer;
+import org.jboss.ws.integration.deployment.AbstractDeployer;
 import org.jboss.ws.integration.deployment.Deployment;
 import org.jboss.ws.integration.deployment.ServiceEndpointPublisher;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
@@ -46,7 +46,7 @@ import org.jboss.ws.integration.deployment.WSDeploymentException;
  * @author Thomas.Diesler@jboss.org
  * @since 12-May-2006
  */
-public class WebAppDeployerDeployer implements Deployer
+public class WebAppDeployerDeployer extends AbstractDeployer
 {
    // provide logging
    private static Logger log = Logger.getLogger(WebAppDeployerDeployer.class);
@@ -126,13 +126,5 @@ public class WebAppDeployerDeployer implements Deployer
    {
       VirtualFile file = VFS.getRoot(warURL);
       return new AbstractDeploymentContext(file);
-   }
-
-   public void start(Deployment dep)
-   {
-   }
-
-   public void stop(Deployment dep)
-   {
    }
 }

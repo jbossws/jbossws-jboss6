@@ -39,6 +39,7 @@ import org.jboss.ejb3.stateless.StatelessContainer;
 import org.jboss.injection.lang.reflect.BeanProperty;
 import org.jboss.ws.integration.Endpoint;
 import org.jboss.ws.integration.deployment.UnifiedDeploymentInfo;
+import org.jboss.ws.integration.invocation.AbstractInvocationHandler;
 import org.jboss.ws.integration.invocation.EndpointInvocation;
 import org.jboss.ws.integration.invocation.WebServiceContextEJB;
 import org.jboss.ws.utils.ObjectNameFactory;
