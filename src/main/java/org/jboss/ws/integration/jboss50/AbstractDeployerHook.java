@@ -77,7 +77,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
       }
       catch (Exception ex)
       {
-         throw new WSDeploymentException("Cannot load: " + deploymentClass);
+         throw new WSDeploymentException("Cannot load Deployment class: " + deploymentClass);
       }
    }
 
@@ -91,7 +91,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
       }
       catch (Exception ex)
       {
-         throw new WSDeploymentException("Cannot load: " + serviceClass);
+         throw new WSDeploymentException("Cannot load Service class: " + serviceClass);
       }
    }
 
@@ -105,7 +105,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
       }
       catch (Exception ex)
       {
-         throw new WSDeploymentException("Cannot load: " + endpointClass);
+         throw new WSDeploymentException("Cannot load Endpoint class: " + endpointClass);
       }
    }
 
