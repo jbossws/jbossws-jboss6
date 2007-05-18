@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.jboss.virtual.VirtualFile;
-import org.jboss.wsintegration.spi.deployment.UnifiedVirtualFile;
+import org.jboss.ws.integration.UnifiedVirtualFile;
 
 // $Id$
 
