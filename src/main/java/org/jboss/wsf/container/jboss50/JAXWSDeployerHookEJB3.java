@@ -32,13 +32,10 @@ import org.jboss.deployers.spi.deployer.DeploymentUnit;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.ejb3.stateless.StatelessContainer;
-import org.jboss.wsf.spi.deployment.BasicDeployment;
-import org.jboss.wsf.spi.deployment.BasicEndpoint;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
-import org.jboss.wsf.spi.utils.ObjectNameFactory;
 
 /**
  * A deployer JAXWS EJB3 Endpoints
@@ -78,15 +75,13 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
          if (isWebServiceBean(container))
          {
             String ejbName = container.getEjbName();
-            Class epBean = container.getBeanClass();
+            String epBean = container.getBeanClassName();
 
             // Create the endpoint
             Endpoint ep = createEndpoint();
+            ep.setShortName(ejbName);
             ep.setService(service);
             ep.setTargetBean(epBean);
-            
-            String nameStr = Endpoint.SEPID_DOMAIN + ":" + Endpoint.SEPID_PROPERTY_ENDPOINT + "=" + ejbName;
-            ep.setName(ObjectNameFactory.create(nameStr));
 
             service.addEndpoint(ep);
          }

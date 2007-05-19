@@ -27,12 +27,11 @@ import java.util.Iterator;
 
 import javax.annotation.security.RolesAllowed;
 
+import org.dom4j.Element;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.wsf.spi.deployment.SecurityRolesHandler;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-import org.jboss.wsf.spi.utils.DOMUtils;
-import org.w3c.dom.Element;
 
 /**
  * Generate a service endpoint deployment for EJB endpoints 
@@ -58,9 +57,7 @@ public class SecurityRolesHandlerEJB3 implements SecurityRolesHandler
             {
                for (String role : anRolesAllowed.value())
                {
-                  Element securityRole = (Element)webApp.appendChild(DOMUtils.createElement("security-role"));
-                  Element roleName = (Element)securityRole.appendChild(DOMUtils.createElement("role-name"));
-                  roleName.appendChild(DOMUtils.createTextNode(role));
+                  webApp.addElement("security-role").addElement("role-name").addText((String)it.next());
                }
             }
          }

@@ -26,8 +26,6 @@ package org.jboss.wsf.container.jboss50;
 import org.jboss.deployers.spi.deployer.DeploymentUnit;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.Servlet;
-import org.jboss.wsf.spi.deployment.BasicDeployment;
-import org.jboss.wsf.spi.deployment.BasicEndpoint;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
@@ -35,7 +33,6 @@ import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
-import org.jboss.wsf.spi.utils.ObjectNameFactory;
 
 /**
  * A deployer JAXRPC JSE Endpoints
@@ -87,25 +84,13 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
             Servlet servlet = getServletForName(webMetaData, servletLink);
             String servletClass = servlet.getServletClass();
 
-            try
-            {
-               ClassLoader loader = unit.getClassLoader();
-               Class<?> epBean = loader.loadClass(servletClass.trim());
+            // Create the endpoint
+            Endpoint ep = createEndpoint();
+            ep.setShortName(servletLink);
+            ep.setService(service);
+            ep.setTargetBean(servletClass);
 
-               // Create the endpoint
-               Endpoint ep = createEndpoint();
-               ep.setService(service);
-               ep.setTargetBean(epBean);
-               
-               String nameStr = Endpoint.SEPID_DOMAIN + ":" + Endpoint.SEPID_PROPERTY_ENDPOINT + "=" + servletLink;
-               ep.setName(ObjectNameFactory.create(nameStr));
-
-               service.addEndpoint(ep);
-            }
-            catch (ClassNotFoundException ex)
-            {
-               log.warn("Cannot load servlet class: " + servletClass);
-            }
+            service.addEndpoint(ep);
          }
       }
 
