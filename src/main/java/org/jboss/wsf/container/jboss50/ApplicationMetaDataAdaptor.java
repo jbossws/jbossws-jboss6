@@ -64,6 +64,8 @@ public class ApplicationMetaDataAdaptor
       buildUnifiedBeanMetaData(umd, appMetaData);
       buildWebservicesMetaData(umd, appMetaData);
       umd.setSecurityDomain(appMetaData.getSecurityDomain());
+      
+      udi.addAttachment(UnifiedApplicationMetaData.class, umd);
       return umd;
    }
 

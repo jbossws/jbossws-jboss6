@@ -36,7 +36,7 @@ import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
 import org.jboss.wsf.spi.deployment.AbstractDeployer;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.ServiceEndpointPublisher;
+import org.jboss.wsf.spi.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.deployment.WSDeploymentException;
 
@@ -52,7 +52,7 @@ public class WebAppDeployerDeployer extends AbstractDeployer
    private static Logger log = Logger.getLogger(WebAppDeployerDeployer.class);
 
    private MainDeployer mainDeployer;
-   private ServiceEndpointPublisher serviceEndpointPublisher;
+   private WebXMLRewriter webXMLRewriter;
    private Map<String, DeploymentContext> contextMap = new HashMap<String, DeploymentContext>();
 
    public void setMainDeployer(MainDeployer mainDeployer)
@@ -60,9 +60,9 @@ public class WebAppDeployerDeployer extends AbstractDeployer
       this.mainDeployer = mainDeployer;
    }
 
-   public void setServiceEndpointPublisher(ServiceEndpointPublisher serviceEndpointPublisher)
+   public void setWebXMLRewriter(WebXMLRewriter serviceEndpointPublisher)
    {
-      this.serviceEndpointPublisher = serviceEndpointPublisher;
+      this.webXMLRewriter = serviceEndpointPublisher;
    }
 
    public void create(Deployment dep)
@@ -76,7 +76,7 @@ public class WebAppDeployerDeployer extends AbstractDeployer
       log.debug("publishServiceEndpoint: " + warURL);
       try
       {
-         serviceEndpointPublisher.rewriteWebXml(udi);
+         webXMLRewriter.rewriteWebXml(dep);
          DeploymentContext context = createDeploymentContext(warURL);
 
          mainDeployer.addDeploymentContext(context);

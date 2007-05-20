@@ -67,6 +67,8 @@ public class ApplicationMetaDataAdaptorEJB3
       UnifiedApplicationMetaData umd = new UnifiedApplicationMetaData();
       buildUnifiedBeanMetaData(umd, ejb3Deployment);
       buildWebservicesMetaData(umd, jarDD);
+      
+      udi.addAttachment(UnifiedApplicationMetaData.class, umd);
       return umd;
    }
 

@@ -56,8 +56,6 @@ public class InvocationHandlerEJB3 extends AbstractInvocationHandler
 
    public void create(Endpoint ep)
    {
-      super.create(ep);
-
       String ejbName = ep.getName().getKeyProperty(Endpoint.SEPID_PROPERTY_ENDPOINT);
       if (ejbName == null)
          throw new WebServiceException("Cannot obtain ejb-link");
