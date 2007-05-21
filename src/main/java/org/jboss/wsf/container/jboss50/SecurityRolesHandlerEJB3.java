@@ -57,7 +57,7 @@ public class SecurityRolesHandlerEJB3 implements SecurityRolesHandler
             {
                for (String role : anRolesAllowed.value())
                {
-                  webApp.addElement("security-role").addElement("role-name").addText((String)it.next());
+                  webApp.addElement("security-role").addElement("role-name").addText(role);
                }
             }
          }
