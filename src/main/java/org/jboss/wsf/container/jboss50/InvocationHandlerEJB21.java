@@ -40,7 +40,9 @@ import org.jboss.invocation.InvocationType;
 import org.jboss.invocation.PayloadKey;
 import org.jboss.logging.Logger;
 import org.jboss.mx.util.MBeanServerLocator;
-import org.jboss.security.SecurityAssociation;
+import org.jboss.security.SecurityContext;
+import org.jboss.security.SecurityContextUtil;
+import org.jboss.security.plugins.SecurityContextAssociation;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.invocation.AbstractInvocationHandler;
@@ -126,9 +128,16 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
    {
       log.debug("Invoke: " + inv.getJavaMethod().getName());
 
-      // these are provided by the ServerLoginHandler
-      Principal principal = SecurityAssociation.getPrincipal();
-      Object credential = SecurityAssociation.getCredential();
+      Principal principal = null;
+      Object credential = null;
+
+      SecurityContext securityContext = SecurityContextAssociation.getSecurityContext();
+      if (securityContext != null)
+      {
+         SecurityContextUtil util = securityContext.getUtil();
+         principal = util.getUserPrincipal();
+         credential = util.getCredential();
+      }
 
       // invoke on the container
       try

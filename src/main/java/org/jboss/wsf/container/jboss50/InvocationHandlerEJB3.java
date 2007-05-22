@@ -79,7 +79,7 @@ public class InvocationHandlerEJB3 extends AbstractInvocationHandler
          throw new WebServiceException("Cannot find service endpoint target: " + objectName);
    }
 
-   public void invoke(Endpoint ep, Object beanInstance, Invocation epInv) throws Exception
+   public void invoke(Endpoint ep, Object beanInstance, Invocation wsInv) throws Exception
    {
       try
       {
@@ -87,18 +87,18 @@ public class InvocationHandlerEJB3 extends AbstractInvocationHandler
          StatelessContainer container = (StatelessContainer)dispatcher.getRegistered(objectName.getCanonicalName());
          Class beanClass = container.getBeanClass();
 
-         Method method = getImplMethod(beanClass, epInv.getJavaMethod());
-         Object[] args = epInv.getArgs();
+         Method method = getImplMethod(beanClass, wsInv.getJavaMethod());
+         Object[] args = wsInv.getArgs();
 
          MethodInfo info = container.getMethodInfo(method);
-         EJBContainerInvocation<StatelessContainer, StatelessBeanContext> ejb3Inv = new EJBContainerInvocation<StatelessContainer, StatelessBeanContext>(info);
-         ejb3Inv.setAdvisor(container);
-         ejb3Inv.setArguments(args);
-         ejb3Inv.setContextCallback(new CallbackImpl(epInv));
+         EJBContainerInvocation<StatelessContainer, StatelessBeanContext> jbInv = new EJBContainerInvocation<StatelessContainer, StatelessBeanContext>(info);
+         jbInv.setAdvisor(container);
+         jbInv.setArguments(args);
+         jbInv.setContextCallback(new CallbackImpl(wsInv));
 
-         Object retObj = ejb3Inv.invokeNext();
+         Object retObj = jbInv.invokeNext();
 
-         epInv.setReturnValue(retObj);
+         wsInv.setReturnValue(retObj);
       }
       catch (Throwable th)
       {

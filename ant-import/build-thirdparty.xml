@@ -50,6 +50,7 @@
       <pathelement location="${jboss50.server.lib}/jboss.jar"/>
       <pathelement location="${jboss50.server.lib}/jboss-javaee.jar"/>
       <pathelement location="${jboss50.server.lib}/jbosssx.jar"/>
+      <pathelement location="${jboss50.server.lib}/jboss-security-spi.jar"/>
       <pathelement location="${jboss50.server.deployers}/ejb3.deployer/jboss-ejb3.jar"/>
       <pathelement location="${jboss50.server.deployers}/ejb3.deployer/jboss-annotations-ejb3.jar"/>
       
