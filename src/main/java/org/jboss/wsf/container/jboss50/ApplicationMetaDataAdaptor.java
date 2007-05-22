@@ -36,6 +36,7 @@ import org.jboss.metadata.MessageDrivenMetaData;
 import org.jboss.metadata.SessionMetaData;
 import org.jboss.metadata.ApplicationMetaData.WebserviceDescription;
 import org.jboss.metadata.ApplicationMetaData.Webservices;
+import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
@@ -55,17 +56,17 @@ public class ApplicationMetaDataAdaptor
    // logging support
    private static Logger log = Logger.getLogger(ApplicationMetaDataAdaptor.class);
 
-   public static UnifiedApplicationMetaData buildUnifiedApplicationMetaData(UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public static UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
       ApplicationMetaData appMetaData = unit.getAttachment(ApplicationMetaData.class);
-      udi.addAttachment(ApplicationMetaData.class, appMetaData);
+      dep.getContext().addAttachment(ApplicationMetaData.class, appMetaData);
       
       UnifiedApplicationMetaData umd = new UnifiedApplicationMetaData();
       buildUnifiedBeanMetaData(umd, appMetaData);
       buildWebservicesMetaData(umd, appMetaData);
       umd.setSecurityDomain(appMetaData.getSecurityDomain());
       
-      udi.addAttachment(UnifiedApplicationMetaData.class, umd);
+      dep.getContext().addAttachment(UnifiedApplicationMetaData.class, umd);
       return umd;
    }
 

@@ -39,6 +39,7 @@ import org.jboss.ejb3.metamodel.EnterpriseBean;
 import org.jboss.ejb3.metamodel.WebserviceDescription;
 import org.jboss.ejb3.metamodel.Webservices;
 import org.jboss.logging.Logger;
+import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
@@ -58,17 +59,17 @@ public class ApplicationMetaDataAdaptorEJB3
    // logging support
    private static Logger log = Logger.getLogger(ApplicationMetaDataAdaptorEJB3.class);
 
-   public static UnifiedApplicationMetaData buildUnifiedApplicationMetaData(UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public static UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
       Ejb3Deployment ejb3Deployment = unit.getAttachment(Ejb3Deployment.class);
-      udi.addAttachment(Ejb3Deployment.class, ejb3Deployment);
+      dep.getContext().addAttachment(Ejb3Deployment.class, ejb3Deployment);
       
       EjbJarDD jarDD = unit.getAttachment(EjbJarDD.class);
       UnifiedApplicationMetaData umd = new UnifiedApplicationMetaData();
       buildUnifiedBeanMetaData(umd, ejb3Deployment);
       buildWebservicesMetaData(umd, jarDD);
       
-      udi.addAttachment(UnifiedApplicationMetaData.class, umd);
+      dep.getContext().addAttachment(UnifiedApplicationMetaData.class, umd);
       return umd;
    }
 

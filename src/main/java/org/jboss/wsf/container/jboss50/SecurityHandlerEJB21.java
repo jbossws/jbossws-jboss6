@@ -29,8 +29,9 @@ import java.util.Map;
 import org.dom4j.Element;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.AssemblyDescriptorMetaData;
-import org.jboss.wsf.spi.deployment.SecurityRolesHandler;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.SecurityHandler;
+import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
 
 /**
  * Generate a service endpoint deployment for EJB endpoints 
@@ -38,14 +39,23 @@ import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
  * @author Thomas.Diesler@jboss.org
  * @since 12-May-2006
  */
-public class SecurityRolesHandlerEJB21 implements SecurityRolesHandler
+public class SecurityHandlerEJB21 implements SecurityHandler
 {
-   /** Add the roles from ejb-jar.xml to the security roles
-    */
-   public void addSecurityRoles(Element webApp, UnifiedDeploymentInfo udi)
+   public void addSecurityDomain(Element jbossWeb, Deployment dep)
+   {
+      UnifiedApplicationMetaData appMetaData = dep.getContext().getAttachment(UnifiedApplicationMetaData.class);
+      if (appMetaData == null)
+         throw new IllegalStateException("Cannot obtain application meta data");
+      
+      String securityDomain = appMetaData.getSecurityDomain();
+      if (securityDomain != null)
+         jbossWeb.addElement("security-domain").addText("java:/jaas/" + securityDomain);
+   }
+   
+   public void addSecurityRoles(Element webApp, Deployment dep)
    {
       // Fix: http://jira.jboss.org/jira/browse/JBWS-309
-      ApplicationMetaData applMetaData = (ApplicationMetaData)udi.getAttachment(ApplicationMetaData.class);
+      ApplicationMetaData applMetaData = dep.getContext().getAttachment(ApplicationMetaData.class);
       AssemblyDescriptorMetaData assemblyDescriptor = applMetaData.getAssemblyDescriptor();
       if (assemblyDescriptor != null)
       {

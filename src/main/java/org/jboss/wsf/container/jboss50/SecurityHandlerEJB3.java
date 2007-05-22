@@ -28,10 +28,11 @@ import java.util.Iterator;
 import javax.annotation.security.RolesAllowed;
 
 import org.dom4j.Element;
+import org.jboss.annotation.security.SecurityDomain;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
-import org.jboss.wsf.spi.deployment.SecurityRolesHandler;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.SecurityHandler;
 
 /**
  * Generate a service endpoint deployment for EJB endpoints 
@@ -39,13 +40,37 @@ import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
  * @author Thomas.Diesler@jboss.org
  * @since 12-May-2006
  */
-public class SecurityRolesHandlerEJB3 implements SecurityRolesHandler
+public class SecurityHandlerEJB3 implements SecurityHandler
 {
-   /** Add the roles from ejb-jar.xml to the security roles
-    */
-   public void addSecurityRoles(Element webApp, UnifiedDeploymentInfo udi)
+   public void addSecurityDomain(Element jbossWeb, Deployment dep)
    {
-      Ejb3Deployment ejb3Deployment = udi.getAttachment(Ejb3Deployment.class);
+      String securityDomain = null;
+      
+      Ejb3Deployment ejb3Deployment = dep.getContext().getAttachment(Ejb3Deployment.class);
+      if (ejb3Deployment != null)
+      {
+         Iterator it = ejb3Deployment.getEjbContainers().values().iterator();
+         while (it.hasNext())
+         {
+            EJBContainer container = (EJBContainer)it.next();
+            SecurityDomain anSecurityDomain = (SecurityDomain)container.resolveAnnotation(SecurityDomain.class);
+            if (anSecurityDomain != null)
+            {
+               if (securityDomain != null && !securityDomain.equals(anSecurityDomain.value()))
+                  throw new IllegalStateException("Multiple security domains not supported");
+               
+               securityDomain = anSecurityDomain.value();
+            }
+         }
+      }
+      
+      if (securityDomain != null)
+         jbossWeb.addElement("security-domain").addText("java:/jaas/" + securityDomain);
+   }
+
+   public void addSecurityRoles(Element webApp, Deployment dep)
+   {
+      Ejb3Deployment ejb3Deployment = dep.getContext().getAttachment(Ejb3Deployment.class);
       if (ejb3Deployment != null)
       {
          Iterator it = ejb3Deployment.getEjbContainers().values().iterator();

@@ -35,8 +35,8 @@ import org.jboss.metadata.WebSecurityMetaData;
 import org.jboss.metadata.WebSecurityMetaData.WebResourceCollection;
 import org.jboss.metadata.web.Servlet;
 import org.jboss.metadata.web.ServletMapping;
+import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedWebMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedWebSecurityMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedWebMetaData.PublishLocationAdapter;
@@ -50,10 +50,10 @@ import org.jboss.wsf.spi.metadata.j2ee.UnifiedWebSecurityMetaData.UnifiedWebReso
  */
 public class WebMetaDataAdaptor
 {
-   public static UnifiedWebMetaData buildUnifiedWebMetaData(UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public static UnifiedWebMetaData buildUnifiedWebMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
       WebMetaData wmd = unit.getAttachment(WebMetaData.class);
-      udi.addAttachment(WebMetaData.class, wmd);
+      dep.getContext().addAttachment(WebMetaData.class, wmd);
 
       UnifiedWebMetaData umd = new UnifiedWebMetaData();
       umd.setContextRoot(wmd.getContextRoot());
@@ -65,7 +65,7 @@ public class WebMetaDataAdaptor
       umd.setPublishLocationAdapter(getPublishLocationAdpater(wmd));
       umd.setSecurityMetaData(getSecurityMetaData(wmd.getSecurityContraints()));
 
-      udi.addAttachment(UnifiedWebMetaData.class, umd);
+      dep.getContext().addAttachment(UnifiedWebMetaData.class, umd);
       return umd;
    }
 

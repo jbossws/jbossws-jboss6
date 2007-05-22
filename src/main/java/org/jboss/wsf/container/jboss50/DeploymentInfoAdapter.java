@@ -29,6 +29,7 @@ import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.WebMetaData;
+import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 
 // $Id$
@@ -44,16 +45,16 @@ public class DeploymentInfoAdapter
    // logging support
    private static Logger log = Logger.getLogger(DeploymentInfoAdapter.class);
 
-   public static void buildDeploymentInfo(UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public static void buildDeploymentInfo(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
-      udi.addAttachment(DeploymentUnit.class, unit);
+      dep.getContext().addAttachment(DeploymentUnit.class, unit);
 
       try
       {
          if (unit.getDeploymentContext().getParent() != null)
          {
             udi.parent = new UnifiedDeploymentInfo(null);
-            buildDeploymentInfo(udi.parent, unit.getDeploymentContext().getParent().getDeploymentUnit());
+            buildDeploymentInfo(dep, udi.parent, unit.getDeploymentContext().getParent().getDeploymentUnit());
          }
 
          udi.vfRoot = new VirtualFileAdaptor(unit.getDeploymentContext().getRoot());
@@ -62,7 +63,7 @@ public class DeploymentInfoAdapter
          udi.simpleName = unit.getSimpleName();
          udi.url = udi.vfRoot.toURL();
 
-         buildMetaData(udi, unit);
+         buildMetaData(dep, udi, unit);
 
          // Since we create temporary classes, we need to create a delegate loader
          // This prevents CCE problems where the parent loader is available at deploy time,
@@ -81,19 +82,19 @@ public class DeploymentInfoAdapter
       }
    }
 
-   private static void buildMetaData(UnifiedDeploymentInfo udi, DeploymentUnit unit) throws Exception
+   private static void buildMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit) throws Exception
    {
       if (unit.getAttachment(Ejb3Deployment.class) != null)
       {
-         udi.metaData = ApplicationMetaDataAdaptorEJB3.buildUnifiedApplicationMetaData(udi, unit);
+         udi.metaData = ApplicationMetaDataAdaptorEJB3.buildUnifiedApplicationMetaData(dep, udi, unit);
       }
       else if (unit.getAttachment(ApplicationMetaData.class) != null)
       {
-         udi.metaData = ApplicationMetaDataAdaptor.buildUnifiedApplicationMetaData(udi, unit);
+         udi.metaData = ApplicationMetaDataAdaptor.buildUnifiedApplicationMetaData(dep, udi, unit);
       }
       else if (unit.getAttachment(WebMetaData.class) != null)
       {
-         udi.metaData = WebMetaDataAdaptor.buildUnifiedWebMetaData(udi, unit);
+         udi.metaData = WebMetaDataAdaptor.buildUnifiedWebMetaData(dep, udi, unit);
          udi.webappURL = udi.vfRoot.toURL();
       }
    }
