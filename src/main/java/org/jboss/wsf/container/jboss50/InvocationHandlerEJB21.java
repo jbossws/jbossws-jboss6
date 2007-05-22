@@ -41,13 +41,14 @@ import org.jboss.invocation.PayloadKey;
 import org.jboss.logging.Logger;
 import org.jboss.mx.util.MBeanServerLocator;
 import org.jboss.security.SecurityContext;
-import org.jboss.security.SecurityContextUtil;
 import org.jboss.security.plugins.SecurityContextAssociation;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.invocation.AbstractInvocationHandler;
 import org.jboss.wsf.spi.invocation.HandlerCallback;
 import org.jboss.wsf.spi.invocation.Invocation;
+import org.jboss.wsf.spi.invocation.SecurityAdaptor;
+import org.jboss.wsf.spi.invocation.SecurityAdaptorFactory;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
 import org.jboss.wsf.spi.utils.ObjectNameFactory;
@@ -128,16 +129,16 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
    {
       log.debug("Invoke: " + inv.getJavaMethod().getName());
 
-      Principal principal = null;
-      Object credential = null;
+      SecurityAdaptor securityAdaptor = SecurityAdaptorFactory.getSecurityAdaptor();
+      SecurityContext sc = SecurityContextAssociation.getSecurityContext();
+      Principal principal = securityAdaptor.getPrincipal();
+      Object credential = securityAdaptor.getCredential();
 
-      SecurityContext securityContext = SecurityContextAssociation.getSecurityContext();
-      if (securityContext != null)
-      {
-         SecurityContextUtil util = securityContext.getUtil();
-         principal = util.getUserPrincipal();
-         credential = util.getCredential();
-      }
+      if (principal == null && sc != null)
+         principal = sc.getUtil().getUserPrincipal();
+
+      if (credential == null && sc != null)
+         credential = sc.getUtil().getCredential();
 
       // invoke on the container
       try
