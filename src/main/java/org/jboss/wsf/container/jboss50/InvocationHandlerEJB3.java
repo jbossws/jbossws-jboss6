@@ -56,10 +56,7 @@ public class InvocationHandlerEJB3 extends AbstractInvocationHandler
 
    public void create(Endpoint ep)
    {
-      String ejbName = ep.getName().getKeyProperty(Endpoint.SEPID_PROPERTY_ENDPOINT);
-      if (ejbName == null)
-         throw new WebServiceException("Cannot obtain ejb-link");
-
+      String ejbName = ep.getShortName();
       UnifiedDeploymentInfo udi = ep.getService().getDeployment().getContext().getAttachment(UnifiedDeploymentInfo.class);
       String nameStr = "jboss.j2ee:name=" + ejbName + ",service=EJB3,jar=" + udi.simpleName;
       if (udi.parent != null)
