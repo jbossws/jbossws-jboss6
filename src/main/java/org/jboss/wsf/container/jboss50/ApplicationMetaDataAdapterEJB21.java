@@ -51,12 +51,12 @@ import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocatio
  * @author Thomas.Diesler@jboss.org
  * @since 05-May-2006
  */
-public class ApplicationMetaDataAdaptor
+public class ApplicationMetaDataAdapterEJB21
 {
    // logging support
-   private static Logger log = Logger.getLogger(ApplicationMetaDataAdaptor.class);
+   private static Logger log = Logger.getLogger(ApplicationMetaDataAdapterEJB21.class);
 
-   public static UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
       ApplicationMetaData appMetaData = unit.getAttachment(ApplicationMetaData.class);
       dep.getContext().addAttachment(ApplicationMetaData.class, appMetaData);
@@ -70,7 +70,7 @@ public class ApplicationMetaDataAdaptor
       return umd;
    }
 
-   private static void buildWebservicesMetaData(UnifiedApplicationMetaData umd, ApplicationMetaData apmd)
+   private void buildWebservicesMetaData(UnifiedApplicationMetaData umd, ApplicationMetaData apmd)
    {
       Webservices webservices = apmd.getWebservices();
       if (webservices != null)
@@ -93,7 +93,7 @@ public class ApplicationMetaDataAdaptor
       }
    }
 
-   private static PublishLocationAdapter getPublishLocationAdpater(final Webservices webservices)
+   private PublishLocationAdapter getPublishLocationAdpater(final Webservices webservices)
    {
       return new PublishLocationAdapter()
       {
@@ -112,7 +112,7 @@ public class ApplicationMetaDataAdaptor
       };
    }
 
-   private static void buildUnifiedBeanMetaData(UnifiedApplicationMetaData umd, ApplicationMetaData appMetaData)
+   private void buildUnifiedBeanMetaData(UnifiedApplicationMetaData umd, ApplicationMetaData appMetaData)
    {
       List<UnifiedBeanMetaData> beans = new ArrayList<UnifiedBeanMetaData>();
       Iterator it = appMetaData.getEnterpriseBeans();
@@ -124,7 +124,7 @@ public class ApplicationMetaDataAdaptor
       umd.setEnterpriseBeans(beans);
    }
 
-   private static UnifiedBeanMetaData buildUnifiedBeanMetaData(List<UnifiedBeanMetaData> beans, BeanMetaData bmd)
+   private UnifiedBeanMetaData buildUnifiedBeanMetaData(List<UnifiedBeanMetaData> beans, BeanMetaData bmd)
    {
       UnifiedBeanMetaData ubmd = null;
       if (bmd instanceof SessionMetaData)

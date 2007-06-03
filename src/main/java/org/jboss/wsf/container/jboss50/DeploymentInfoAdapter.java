@@ -45,7 +45,26 @@ public class DeploymentInfoAdapter
    // logging support
    private static Logger log = Logger.getLogger(DeploymentInfoAdapter.class);
 
-   public static void buildDeploymentInfo(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   private ApplicationMetaDataAdapterEJB3 applicationMetaDataAdapterEJB3 = new ApplicationMetaDataAdapterEJB3();
+   private ApplicationMetaDataAdapterEJB21 applicationMetaDataAdapterEJB21 = new ApplicationMetaDataAdapterEJB21();
+   private WebMetaDataAdapter webMetaDataAdapter = new WebMetaDataAdapter();
+
+   public void setApplicationMetaDataAdapterEJB21(ApplicationMetaDataAdapterEJB21 adapter)
+   {
+      this.applicationMetaDataAdapterEJB21 = adapter;
+   }
+
+   public void setApplicationMetaDataAdapterEJB3(ApplicationMetaDataAdapterEJB3 adapter)
+   {
+      this.applicationMetaDataAdapterEJB3 = adapter;
+   }
+
+   public void setWebMetaDataAdapter(WebMetaDataAdapter adapter)
+   {
+      this.webMetaDataAdapter = adapter;
+   }
+
+   public void buildDeploymentInfo(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
       dep.getContext().addAttachment(DeploymentUnit.class, unit);
 
@@ -82,19 +101,19 @@ public class DeploymentInfoAdapter
       }
    }
 
-   private static void buildMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit) throws Exception
+   private void buildMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit) throws Exception
    {
       if (unit.getAttachment(Ejb3Deployment.class) != null)
       {
-         udi.metaData = ApplicationMetaDataAdaptorEJB3.buildUnifiedApplicationMetaData(dep, udi, unit);
+         udi.metaData = applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, udi, unit);
       }
       else if (unit.getAttachment(ApplicationMetaData.class) != null)
       {
-         udi.metaData = ApplicationMetaDataAdaptor.buildUnifiedApplicationMetaData(dep, udi, unit);
+         udi.metaData = applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, udi, unit);
       }
       else if (unit.getAttachment(WebMetaData.class) != null)
       {
-         udi.metaData = WebMetaDataAdaptor.buildUnifiedWebMetaData(dep, udi, unit);
+         udi.metaData = webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit);
          udi.webappURL = udi.vfRoot.toURL();
       }
    }

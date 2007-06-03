@@ -48,9 +48,9 @@ import org.jboss.wsf.spi.metadata.j2ee.UnifiedWebSecurityMetaData.UnifiedWebReso
  * @author Thomas.Diesler@jboss.org
  * @since 05-May-2006
  */
-public class WebMetaDataAdaptor
+public class WebMetaDataAdapter
 {
-   public static UnifiedWebMetaData buildUnifiedWebMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public UnifiedWebMetaData buildUnifiedWebMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
       WebMetaData wmd = unit.getAttachment(WebMetaData.class);
       dep.getContext().addAttachment(WebMetaData.class, wmd);
@@ -69,7 +69,7 @@ public class WebMetaDataAdaptor
       return umd;
    }
 
-   private static PublishLocationAdapter getPublishLocationAdpater(final WebMetaData wmd)
+   private PublishLocationAdapter getPublishLocationAdpater(final WebMetaData wmd)
    {
       return new PublishLocationAdapter()
       {
@@ -80,7 +80,7 @@ public class WebMetaDataAdaptor
       };
    }
 
-   protected static List<UnifiedWebSecurityMetaData> getSecurityMetaData(final Iterator securityConstraints)
+   protected List<UnifiedWebSecurityMetaData> getSecurityMetaData(final Iterator securityConstraints)
    {
       ArrayList<UnifiedWebSecurityMetaData> unifiedsecurityMetaData = new ArrayList<UnifiedWebSecurityMetaData>();
 
@@ -107,7 +107,7 @@ public class WebMetaDataAdaptor
       return unifiedsecurityMetaData;
    }
 
-   private static Map<String, String> getServletMappings(WebMetaData wmd)
+   private Map<String, String> getServletMappings(WebMetaData wmd)
    {
       Map<String, String> mappings = new HashMap<String, String>();
       Iterator it = wmd.getServletMappings().iterator();
@@ -120,7 +120,7 @@ public class WebMetaDataAdaptor
       return mappings;
    }
 
-   private static Map<String, String> getServletClassMap(WebMetaData wmd)
+   private Map<String, String> getServletClassMap(WebMetaData wmd)
    {
       Map<String, String> mappings = new HashMap<String, String>();
       Iterator it = wmd.getServlets().iterator();

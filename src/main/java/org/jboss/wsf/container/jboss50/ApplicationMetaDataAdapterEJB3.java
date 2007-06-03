@@ -54,12 +54,12 @@ import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocatio
  * @author Thomas.Diesler@jboss.org
  * @since 14-Apr-2007
  */
-public class ApplicationMetaDataAdaptorEJB3
+public class ApplicationMetaDataAdapterEJB3
 {
    // logging support
-   private static Logger log = Logger.getLogger(ApplicationMetaDataAdaptorEJB3.class);
+   private static Logger log = Logger.getLogger(ApplicationMetaDataAdapterEJB3.class);
 
-   public static UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
       Ejb3Deployment ejb3Deployment = unit.getAttachment(Ejb3Deployment.class);
       dep.getContext().addAttachment(Ejb3Deployment.class, ejb3Deployment);
@@ -73,7 +73,7 @@ public class ApplicationMetaDataAdaptorEJB3
       return umd;
    }
 
-   private static void buildWebservicesMetaData(UnifiedApplicationMetaData umd, EjbJarDD jarDD)
+   private void buildWebservicesMetaData(UnifiedApplicationMetaData umd, EjbJarDD jarDD)
    {
       // nothing to do
       if (jarDD == null)
@@ -105,7 +105,7 @@ public class ApplicationMetaDataAdaptorEJB3
       }
    }
 
-   private static void buildUnifiedBeanMetaData(UnifiedApplicationMetaData umd, Ejb3Deployment ejb3Deployment)
+   private void buildUnifiedBeanMetaData(UnifiedApplicationMetaData umd, Ejb3Deployment ejb3Deployment)
    {
       List<UnifiedBeanMetaData> ubmdList = new ArrayList<UnifiedBeanMetaData>();
       Iterator<Container> it = ejb3Deployment.getEjbContainers().values().iterator();
@@ -149,7 +149,7 @@ public class ApplicationMetaDataAdaptorEJB3
       umd.setEnterpriseBeans(ubmdList);
    }
 
-   private static PublishLocationAdapter getPublishLocationAdpater(final Webservices webservices)
+   private PublishLocationAdapter getPublishLocationAdpater(final Webservices webservices)
    {
       return new PublishLocationAdapter()
       {
