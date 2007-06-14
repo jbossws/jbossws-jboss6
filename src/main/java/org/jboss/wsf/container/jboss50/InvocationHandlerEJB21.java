@@ -125,6 +125,29 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
    {
       log.debug("Invoke: " + inv.getJavaMethod().getName());
 
+      // invoke on the container
+      try
+      {
+         // setup the invocation
+         org.jboss.invocation.Invocation jbInv = getMBeanInvocation(inv);
+
+         String[] sig = { org.jboss.invocation.Invocation.class.getName() };
+         Object retObj = server.invoke(objectName, "invoke", new Object[] { jbInv }, sig);
+         inv.setReturnValue(retObj);
+      }
+      catch (Exception e)
+      {
+         handleInvocationException(e);
+      }
+   }
+
+   private org.jboss.invocation.Invocation getMBeanInvocation(Invocation inv)
+   {
+      // EJB2.1 endpoints will only get an JAXRPC context 
+      MessageContext msgContext = inv.getInvocationContext().getAttachment(MessageContext.class);
+      if (msgContext == null)
+         throw new IllegalStateException("Cannot obtain MessageContext");
+
       SecurityAdaptor securityAdaptor = SecurityAdaptorFactory.getSecurityAdaptor();
       SecurityContext sc = SecurityContextAssociation.getSecurityContext();
       Principal principal = securityAdaptor.getPrincipal();
@@ -135,37 +158,21 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
       if (credential == null && sc != null)
          credential = sc.getUtil().getCredential();
-
-      // invoke on the container
-      try
-      {
-         // setup the invocation
-         Method method = inv.getJavaMethod();
-         Object[] args = inv.getArgs();
-         org.jboss.invocation.Invocation jbInv = new org.jboss.invocation.Invocation(null, method, args, null, principal, credential);
-
-         // EJB2.1 endpoints will only get an JAXRPC context 
-         MessageContext msgContext = inv.getInvocationContext().getAttachment(MessageContext.class);
-         if (msgContext == null)
-            throw new IllegalStateException("Cannot obtain MessageContext");
-
-         HandlerCallback callback = inv.getInvocationContext().getAttachment(HandlerCallback.class);
-         if (callback == null)
-            throw new IllegalStateException("Cannot obtain HandlerCallback");
-
-         jbInv.setValue(InvocationKey.SOAP_MESSAGE_CONTEXT, msgContext);
-         jbInv.setValue(InvocationKey.SOAP_MESSAGE, ((SOAPMessageContext)msgContext).getMessage());
-         jbInv.setType(InvocationType.SERVICE_ENDPOINT);
-         jbInv.setValue(HandlerCallback.class.getName(), callback, PayloadKey.TRANSIENT);
-         jbInv.setValue(Invocation.class.getName(), inv, PayloadKey.TRANSIENT);
-
-         String[] sig = { org.jboss.invocation.Invocation.class.getName() };
-         Object retObj = server.invoke(objectName, "invoke", new Object[] { jbInv }, sig);
-         inv.setReturnValue(retObj);
-      }
-      catch (Exception e)
-      {
-         handleInvocationException(e);
-      }
+      
+      Method method = inv.getJavaMethod();
+      Object[] args = inv.getArgs();
+      org.jboss.invocation.Invocation jbInv = new org.jboss.invocation.Invocation(null, method, args, null, principal, credential);
+      
+      HandlerCallback callback = inv.getInvocationContext().getAttachment(HandlerCallback.class);
+      if (callback == null)
+         throw new IllegalStateException("Cannot obtain HandlerCallback");
+      
+      jbInv.setValue(InvocationKey.SOAP_MESSAGE_CONTEXT, msgContext);
+      jbInv.setValue(InvocationKey.SOAP_MESSAGE, ((SOAPMessageContext)msgContext).getMessage());
+      jbInv.setType(InvocationType.SERVICE_ENDPOINT);
+      jbInv.setValue(HandlerCallback.class.getName(), callback, PayloadKey.TRANSIENT);
+      jbInv.setValue(Invocation.class.getName(), inv, PayloadKey.TRANSIENT);
+      
+      return jbInv;
    }
 }
