@@ -24,9 +24,10 @@ package org.jboss.wsf.container.jboss50;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jboss.deployers.plugins.deployer.AbstractSimpleDeployer;
 import org.jboss.deployers.spi.DeploymentException;
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.spi.deployer.helpers.AbstractComponentDeployer;
+import org.jboss.deployers.spi.deployer.helpers.AbstractSimpleRealDeployer;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
 
 //$Id$
@@ -37,13 +38,13 @@ import org.jboss.logging.Logger;
  * @author Thomas.Diesler@jboss.org
  * @since 24-Apr-2007
  */
-public abstract class AbstractWebServiceDeployer extends AbstractSimpleDeployer
+public abstract class AbstractWebServiceDeployer<T> extends AbstractComponentDeployer
 {
    // provide logging
    private static final Logger log = Logger.getLogger(AbstractWebServiceDeployer.class);
 
    private List<DeployerHook> deployerHooks = new LinkedList<DeployerHook>();
-
+   
    public void addDeployerHook(DeployerHook deployer)
    {
       log.debug("Add deployer hook: " + deployer);

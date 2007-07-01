@@ -23,7 +23,7 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.wsf.spi.deployment.AbstractDeployer;
 import org.jboss.wsf.spi.deployment.Deployment;

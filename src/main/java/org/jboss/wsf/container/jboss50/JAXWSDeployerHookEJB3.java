@@ -28,7 +28,8 @@ import java.util.Iterator;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceProvider;
 
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.ejb3.stateless.StatelessContainer;
@@ -56,7 +57,7 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
    public Deployment createDeployment(DeploymentUnit unit)
    {
       Deployment dep = createDeployment();
-      dep.setRootFile(new VirtualFileAdaptor(unit.getDeploymentContext().getRoot()));
+      dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setClassLoader(unit.getClassLoader());
       dep.setType(getDeploymentType());
 
@@ -82,7 +83,7 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
             Endpoint ep = createEndpoint();
             ep.setShortName(ejbName);
             ep.setService(service);
-            ep.setTargetBean(epBean);
+            ep.setTargetBeanName(epBean);
 
             service.addEndpoint(ep);
          }

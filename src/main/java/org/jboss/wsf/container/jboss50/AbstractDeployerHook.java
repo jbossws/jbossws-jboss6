@@ -21,15 +21,16 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-//$Id$
-
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
 import org.jboss.wsf.spi.deployment.DeployerManager;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
 import org.jboss.wsf.spi.deployment.WSDeploymentException;
+
+//$Id$
+
 
 /**
  * An abstract web service deployer.

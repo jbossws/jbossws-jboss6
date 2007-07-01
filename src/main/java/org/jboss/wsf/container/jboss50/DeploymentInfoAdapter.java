@@ -24,7 +24,8 @@ package org.jboss.wsf.container.jboss50;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.ApplicationMetaData;
@@ -70,13 +71,13 @@ public class DeploymentInfoAdapter
 
       try
       {
-         if (unit.getDeploymentContext().getParent() != null)
+         if (unit.getParent() != null)
          {
             udi.parent = new UnifiedDeploymentInfo(null);
-            buildDeploymentInfo(dep, udi.parent, unit.getDeploymentContext().getParent().getDeploymentUnit());
+            buildDeploymentInfo(dep, udi.parent, unit.getParent());
          }
 
-         udi.vfRoot = new VirtualFileAdaptor(unit.getDeploymentContext().getRoot());
+         udi.vfRoot = new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot());
 
          udi.name = unit.getName();
          udi.simpleName = unit.getSimpleName();

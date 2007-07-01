@@ -27,18 +27,16 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.deployers.plugins.structure.AbstractDeploymentContext;
-import org.jboss.deployers.spi.deployment.MainDeployer;
-import org.jboss.deployers.spi.structure.DeploymentContext;
-import org.jboss.deployers.spi.structure.DeploymentState;
+import org.jboss.deployers.client.spi.DeployerClient;
+import org.jboss.deployers.vfs.spi.client.VFSDeploymentFactory;
 import org.jboss.logging.Logger;
 import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
 import org.jboss.wsf.spi.deployment.AbstractDeployer;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.deployment.WSDeploymentException;
+import org.jboss.wsf.spi.deployment.WebXMLRewriter;
 
 /**
  * Publish the HTTP service endpoint to Tomcat 
@@ -51,11 +49,11 @@ public class WebAppDeployerDeployer extends AbstractDeployer
    // provide logging
    private static Logger log = Logger.getLogger(WebAppDeployerDeployer.class);
 
-   private MainDeployer mainDeployer;
+   private DeployerClient mainDeployer;
    private WebXMLRewriter webXMLRewriter;
-   private Map<String, DeploymentContext> contextMap = new HashMap<String, DeploymentContext>();
+   private Map<String, org.jboss.deployers.client.spi.Deployment> deploymentMap = new HashMap<String, org.jboss.deployers.client.spi.Deployment>();
 
-   public void setMainDeployer(MainDeployer mainDeployer)
+   public void setMainDeployer(DeployerClient mainDeployer)
    {
       this.mainDeployer = mainDeployer;
    }
@@ -77,12 +75,11 @@ public class WebAppDeployerDeployer extends AbstractDeployer
       try
       {
          webXMLRewriter.rewriteWebXml(dep);
-         DeploymentContext context = createDeploymentContext(warURL);
+         org.jboss.deployers.client.spi.Deployment deployment = createDeploymentContext(warURL);
 
-         mainDeployer.addDeploymentContext(context);
-         mainDeployer.process();
+         mainDeployer.deploy(deployment);
 
-         contextMap.put(warURL.toExternalForm(), context);
+         deploymentMap.put(warURL.toExternalForm(), deployment);
       }
       catch (Exception ex)
       {
@@ -106,14 +103,11 @@ public class WebAppDeployerDeployer extends AbstractDeployer
       log.debug("destroyServiceEndpoint: " + warURL);
       try
       {
-         DeploymentContext context = contextMap.get(warURL.toExternalForm());
-         if (context != null)
+         org.jboss.deployers.client.spi.Deployment deployment = deploymentMap.get(warURL.toExternalForm());
+         if (deployment != null)
          {
-            context.setState(DeploymentState.UNDEPLOYING);
-            mainDeployer.process();
-            mainDeployer.removeDeploymentContext(context.getName());
-
-            contextMap.remove(warURL.toExternalForm());
+            mainDeployer.undeploy(deployment);
+            deploymentMap.remove(warURL.toExternalForm());
          }
       }
       catch (Exception ex)
@@ -122,9 +116,9 @@ public class WebAppDeployerDeployer extends AbstractDeployer
       }
    }
 
-   private DeploymentContext createDeploymentContext(URL warURL) throws Exception
+   private org.jboss.deployers.client.spi.Deployment createDeploymentContext(URL warURL) throws Exception
    {
       VirtualFile file = VFS.getRoot(warURL);
-      return new AbstractDeploymentContext(file);
+      return VFSDeploymentFactory.getInstance().createVFSDeployment(file);
    }
 }

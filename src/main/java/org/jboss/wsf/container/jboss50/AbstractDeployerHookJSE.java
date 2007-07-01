@@ -21,7 +21,7 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.WebMetaData;
 
 //$Id$

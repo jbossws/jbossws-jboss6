@@ -23,7 +23,8 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.BeanMetaData;
 import org.jboss.wsf.spi.deployment.Deployment;
@@ -53,7 +54,7 @@ public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
    public Deployment createDeployment(DeploymentUnit unit)
    {
       Deployment dep = createDeployment();
-      dep.setRootFile(new VirtualFileAdaptor(unit.getDeploymentContext().getRoot()));
+      dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setClassLoader(unit.getClassLoader());
       dep.setType(getDeploymentType());
 
@@ -89,7 +90,7 @@ public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
             Endpoint ep = createEndpoint();
             ep.setShortName(ejbLink);
             ep.setService(service);
-            ep.setTargetBean(ejbClass);
+            ep.setTargetBeanName(ejbClass);
 
             service.addEndpoint(ep);
          }

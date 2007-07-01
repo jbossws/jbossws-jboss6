@@ -76,7 +76,7 @@ public class InvocationHandlerEJB3 extends AbstractInvocationHandler
          throw new WebServiceException("Cannot find service endpoint target: " + objectName);
    }
 
-   public void invoke(Endpoint ep, Object beanInstance, Invocation wsInv) throws Exception
+   public void invoke(Endpoint ep, Invocation wsInv) throws Exception
    {
       try
       {

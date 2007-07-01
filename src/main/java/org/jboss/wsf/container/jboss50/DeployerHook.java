@@ -24,7 +24,7 @@ package org.jboss.wsf.container.jboss50;
 //$Id$
 
 import org.jboss.deployers.spi.DeploymentException;
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
 
 /**
  * An interface for all web service deployer hooks 

@@ -29,7 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.deployment.J2eeApplicationMetaData;
+import org.jboss.deployment.J2eeModuleMetaData;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.WebSecurityMetaData;
 import org.jboss.metadata.WebSecurityMetaData.WebResourceCollection;
@@ -52,11 +54,27 @@ public class WebMetaDataAdapter
 {
    public UnifiedWebMetaData buildUnifiedWebMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
    {
+      String contextRoot = null;
+      
       WebMetaData wmd = unit.getAttachment(WebMetaData.class);
       dep.getContext().addAttachment(WebMetaData.class, wmd);
 
+      if (unit.getParent() != null)
+      {
+         J2eeApplicationMetaData appmd = unit.getParent().getAttachment(J2eeApplicationMetaData.class);
+         if (appmd != null)
+         {
+            J2eeModuleMetaData module = appmd.getModule(udi.simpleName);
+            if (module != null)
+               contextRoot = module.getWebContext();
+         }
+      }
+      
+      if (contextRoot == null)
+         contextRoot = wmd.getContextRoot();
+      
       UnifiedWebMetaData umd = new UnifiedWebMetaData();
-      umd.setContextRoot(wmd.getContextRoot());
+      umd.setContextRoot(contextRoot);
       umd.setServletMappings(getServletMappings(wmd));
       umd.setServletClassNames(getServletClassMap(wmd));
       umd.setConfigName(wmd.getConfigName());

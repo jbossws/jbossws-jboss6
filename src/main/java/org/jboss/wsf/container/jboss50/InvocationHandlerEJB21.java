@@ -121,7 +121,7 @@ public class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
    }
 
-   public void invoke(Endpoint ep, Object beanInstance, Invocation inv) throws Exception
+   public void invoke(Endpoint ep, Invocation inv) throws Exception
    {
       log.debug("Invoke: " + inv.getJavaMethod().getName());
 

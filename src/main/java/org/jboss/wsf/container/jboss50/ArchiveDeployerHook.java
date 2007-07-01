@@ -26,7 +26,8 @@ package org.jboss.wsf.container.jboss50;
 import java.net.URL;
 
 import org.jboss.deployers.spi.DeploymentException;
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.virtual.VirtualFile;
 import org.jboss.ws.integration.UnifiedVirtualFile;
 import org.jboss.wsf.spi.deployment.Deployment;
@@ -143,7 +144,7 @@ public abstract class ArchiveDeployerHook extends AbstractDeployerHook
 
    private UnifiedVirtualFile getWebservicesFile(DeploymentUnit unit)
    {
-      VirtualFile vf = unit.getMetaDataFile("webservices.xml");
+      VirtualFile vf = ((VFSDeploymentUnit)unit).getMetaDataFile("webservices.xml");
       return (vf != null ? new VirtualFileAdaptor(vf) : null);
    }
 }

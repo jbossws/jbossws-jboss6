@@ -23,7 +23,8 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import org.jboss.deployers.spi.deployer.DeploymentUnit;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.Servlet;
 import org.jboss.wsf.spi.deployment.Deployment;
@@ -56,7 +57,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
    public Deployment createDeployment(DeploymentUnit unit)
    {
       Deployment dep = createDeployment();
-      dep.setRootFile(new VirtualFileAdaptor(unit.getDeploymentContext().getRoot()));
+      dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setClassLoader(unit.getClassLoader());
       dep.setType(getDeploymentType());
 
@@ -89,7 +90,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
             Endpoint ep = createEndpoint();
             ep.setShortName(servletLink);
             ep.setService(service);
-            ep.setTargetBean(servletClass);
+            ep.setTargetBeanName(servletClass);
 
             service.addEndpoint(ep);
          }
