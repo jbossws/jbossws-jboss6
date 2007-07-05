@@ -109,13 +109,13 @@ public class DeploymentInfoAdapter
          udi.metaData = webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit);
          udi.webappURL = udi.vfRoot.toURL();
       }
-      else if (unit.getAttachment(ApplicationMetaData.class) != null)
-      {
-         udi.metaData = applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, udi, unit);
-      }
       else if (unit.getAttachment(Ejb3Deployment.class) != null)
       {
          udi.metaData = applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, udi, unit);
+      }
+      else if (unit.getAttachment(ApplicationMetaData.class) != null)
+      {
+         udi.metaData = applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, udi, unit);
       }
    }
 }
