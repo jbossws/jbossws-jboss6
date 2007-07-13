@@ -107,6 +107,16 @@
       <metainf dir="${jbws50.resources.dir}/jbossws-jboss50.jar/META-INF"/>
     </jar>
     
+    <!-- Build jbossws-native50.deployer -->
+    <zip zipfile="${jbws50.output.lib.dir}/jbossws-jboss50-deployer.zip">
+      <fileset dir="${jbws50.output.lib.dir}">
+        <include name="jbossws-jboss50.jar"/>
+      </fileset>
+      <fileset dir="${jbws50.resources.dir}/jbossws-jboss50.deployer">
+        <include name="META-INF/jbossws-deployer-beans.xml"/>
+      </fileset>
+    </zip>
+    
     <!-- Build jbossws50-src.zip -->
     <zip zipfile="${jbws50.output.lib.dir}/jbossws-jboss50-src.zip" >
       <fileset dir="${jbws50.java.dir}"/>

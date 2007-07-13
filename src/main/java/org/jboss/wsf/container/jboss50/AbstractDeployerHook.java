@@ -23,7 +23,10 @@ package org.jboss.wsf.container.jboss50;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
-import org.jboss.wsf.spi.deployment.DeployerManager;
+import org.jboss.wsf.spi.deployment.BasicDeployment;
+import org.jboss.wsf.spi.deployment.BasicEndpoint;
+import org.jboss.wsf.spi.deployment.BasicService;
+import org.jboss.wsf.spi.deployment.DeploymentAspectManager;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
@@ -43,14 +46,14 @@ public abstract class AbstractDeployerHook implements DeployerHook
    // provide logging
    protected final Logger log = Logger.getLogger(getClass());
 
-   protected DeployerManager deployerManager;
-   protected String deploymentClass;
-   protected String serviceClass;
-   protected String endpointClass;
+   protected DeploymentAspectManager deploymentAspectManager;
+   protected String deploymentClass = BasicDeployment.class.getName();
+   protected String serviceClass = BasicService.class.getName();
+   protected String endpointClass = BasicEndpoint.class.getName();
 
-   public void setDeployerManager(DeployerManager deploymentManager)
+   public void setDeploymentAspectManager(DeploymentAspectManager deploymentManager)
    {
-      this.deployerManager = deploymentManager;
+      this.deploymentAspectManager = deploymentManager;
    }
 
    public void setDeploymentClass(String deploymentClass)

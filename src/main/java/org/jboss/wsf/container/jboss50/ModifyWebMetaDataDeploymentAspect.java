@@ -21,14 +21,14 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-//$Id$
+//$Id: ModifyWebMetaDataDeployer.java 3150 2007-05-20 00:29:48Z thomas.diesler@jboss.com $
 
 import java.util.Iterator;
 
 import org.jboss.metadata.NameValuePair;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.Servlet;
-import org.jboss.wsf.spi.deployment.AbstractDeployer;
+import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 
@@ -38,18 +38,16 @@ import org.jboss.wsf.spi.deployment.Endpoint;
  * @author Thomas.Diesler@jboss.org
  * @since 25-Apr-2007
  */
-public class ModifyWebMetaDataDeployer extends AbstractDeployer
+public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
 {
-   private String servletClass;
-
-   public void setServletClass(String servletClass)
-   {
-      this.servletClass = servletClass;
-   }
-
    @Override
    public void create(Deployment dep)
    {
+      String propKey = "SERVICE_ENDPOINT_SERVLET";
+      String servletClass = (String)dep.getContext().getProperty(propKey);
+      if (servletClass == null)
+         throw new IllegalStateException("Cannot obtain context property: " + propKey);
+      
       WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
       if (webMetaData != null)
       {

@@ -44,7 +44,7 @@ import org.jboss.security.SecurityContext;
 import org.jboss.security.plugins.SecurityContextAssociation;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-import org.jboss.wsf.spi.invocation.AbstractInvocationHandler;
+import org.jboss.wsf.spi.invocation.BasicInvocationHandler;
 import org.jboss.wsf.spi.invocation.HandlerCallback;
 import org.jboss.wsf.spi.invocation.Invocation;
 import org.jboss.wsf.spi.invocation.SecurityAdaptor;
@@ -59,7 +59,7 @@ import org.jboss.wsf.spi.utils.ObjectNameFactory;
  * @author Thomas.Diesler@jboss.org
  * @since 25-Apr-2007
  */
-public class InvocationHandlerEJB21 extends AbstractInvocationHandler
+public class InvocationHandlerEJB21 extends BasicInvocationHandler
 {
    // provide logging
    private static final Logger log = Logger.getLogger(InvocationHandlerEJB21.class);

@@ -21,7 +21,7 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-// $Id$
+// $Id: WebAppDeployerDeployer.java 3772 2007-07-01 19:29:13Z thomas.diesler@jboss.com $
 
 import java.net.URL;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import org.jboss.deployers.vfs.spi.client.VFSDeploymentFactory;
 import org.jboss.logging.Logger;
 import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
-import org.jboss.wsf.spi.deployment.AbstractDeployer;
+import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.deployment.WSDeploymentException;
@@ -44,10 +44,10 @@ import org.jboss.wsf.spi.deployment.WebXMLRewriter;
  * @author Thomas.Diesler@jboss.org
  * @since 12-May-2006
  */
-public class WebAppDeployerDeployer extends AbstractDeployer
+public class WebAppDeploymentAspect extends DeploymentAspect
 {
    // provide logging
-   private static Logger log = Logger.getLogger(WebAppDeployerDeployer.class);
+   private static Logger log = Logger.getLogger(WebAppDeploymentAspect.class);
 
    private DeployerClient mainDeployer;
    private WebXMLRewriter webXMLRewriter;
@@ -65,25 +65,28 @@ public class WebAppDeployerDeployer extends AbstractDeployer
 
    public void create(Deployment dep)
    {
-      UnifiedDeploymentInfo udi = dep.getContext().getAttachment(UnifiedDeploymentInfo.class);
-      if (udi == null)
-         throw new IllegalStateException("Cannot obtain unified deployement info");
-
-      URL warURL = udi.webappURL;
-
-      log.debug("publishServiceEndpoint: " + warURL);
-      try
+      if (dep.getType().toString().endsWith("EJB21") || dep.getType().toString().endsWith("EJB3"))
       {
-         webXMLRewriter.rewriteWebXml(dep);
-         org.jboss.deployers.client.spi.Deployment deployment = createDeploymentContext(warURL);
+         UnifiedDeploymentInfo udi = dep.getContext().getAttachment(UnifiedDeploymentInfo.class);
+         if (udi == null)
+            throw new IllegalStateException("Cannot obtain unified deployement info");
 
-         mainDeployer.deploy(deployment);
+         URL warURL = udi.webappURL;
 
-         deploymentMap.put(warURL.toExternalForm(), deployment);
-      }
-      catch (Exception ex)
-      {
-         WSDeploymentException.rethrow(ex);
+         log.debug("publishServiceEndpoint: " + warURL);
+         try
+         {
+            webXMLRewriter.rewriteWebXml(dep);
+            org.jboss.deployers.client.spi.Deployment deployment = createDeploymentContext(warURL);
+
+            mainDeployer.deploy(deployment);
+
+            deploymentMap.put(warURL.toExternalForm(), deployment);
+         }
+         catch (Exception ex)
+         {
+            WSDeploymentException.rethrow(ex);
+         }
       }
    }
 
