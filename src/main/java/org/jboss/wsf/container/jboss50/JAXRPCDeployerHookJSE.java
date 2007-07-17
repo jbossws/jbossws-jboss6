@@ -58,7 +58,8 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
    {
       Deployment dep = createDeployment();
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
-      dep.setClassLoader(unit.getClassLoader());
+      dep.setInitialClassLoader(unit.getClassLoader());
+      dep.setRuntimeClassLoader(null);
       dep.setType(getDeploymentType());
 
       Service service = dep.getService();

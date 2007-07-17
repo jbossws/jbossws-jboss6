@@ -24,13 +24,18 @@ package org.jboss.wsf.container.jboss50;
 //$Id: ModifyWebMetaDataDeployer.java 3150 2007-05-20 00:29:48Z thomas.diesler@jboss.com $
 
 import java.util.Iterator;
+import java.util.Map;
 
+import org.jboss.metadata.Listener;
 import org.jboss.metadata.NameValuePair;
 import org.jboss.metadata.WebMetaData;
+import org.jboss.metadata.web.ParamValue;
 import org.jboss.metadata.web.Servlet;
-import org.jboss.wsf.spi.deployment.DeploymentAspect;
+import org.jboss.metadata.web.ParamValue.ParamType;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.Endpoint;
+import org.jboss.wsf.spi.deployment.WebAppDesciptorModifier;
 
 /**
  * A deployer that modifies the web.xml meta data 
@@ -43,11 +48,27 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
    @Override
    public void create(Deployment dep)
    {
-      String propKey = "SERVICE_ENDPOINT_SERVLET";
+      String propKey = WebAppDesciptorModifier.SERVLET_CLASS;
       String servletClass = (String)dep.getContext().getProperty(propKey);
       if (servletClass == null)
          throw new IllegalStateException("Cannot obtain context property: " + propKey);
+
+      modifyServletClass(dep, servletClass);
+
+      propKey = WebAppDesciptorModifier.SERVLET_CONTEXT_LISTENER;
+      String listenerClass = (String)dep.getContext().getProperty(propKey);
+      if (listenerClass != null)
+         modifyListener(dep, listenerClass);
       
+      propKey = WebAppDesciptorModifier.CONTEXT_PARAMETER_MAP;
+      Map<String, String> contextParams = (Map<String, String>)dep.getContext().getProperty(propKey);
+      if (contextParams != null)
+         modifyContextParams(dep, contextParams);
+   }
+
+   private void modifyServletClass(Deployment dep, String servletClass)
+   {
+
       WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
       if (webMetaData != null)
       {
@@ -63,12 +84,39 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
             }
 
             // Nothing to do if we have an <init-param>
-            if (!isAlreadyModified(servlet) && !isJavaxServlet(orgServletClass, dep.getClassLoader()))
+            if (!isAlreadyModified(servlet) && !isJavaxServlet(orgServletClass, dep.getInitialClassLoader()))
             {
                servlet.setServletClass(servletClass);
                NameValuePair initParam = new NameValuePair(Endpoint.SEPID_DOMAIN_ENDPOINT, orgServletClass);
                servlet.addInitParam(initParam);
             }
+         }
+      }
+   }
+
+   private void modifyListener(Deployment dep, String listenerClass)
+   {
+      WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
+      if (webMetaData != null)
+      {
+         Listener listener = new Listener();
+         listener.setListenerClass(listenerClass);
+         webMetaData.addListener(listener);
+      }
+   }
+
+   private void modifyContextParams(Deployment dep, Map<String, String> contextParams)
+   {
+      WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
+      if (webMetaData != null)
+      {
+         for (Map.Entry<String, String> entry : contextParams.entrySet())
+         {
+            ParamValue ctxParam = new ParamValue();
+            ctxParam.setType(ParamType.CONTEXT_PARAM);
+            ctxParam.setName(entry.getKey());
+            ctxParam.setValue(entry.getValue());
+            webMetaData.addContextParam(ctxParam);
          }
       }
    }

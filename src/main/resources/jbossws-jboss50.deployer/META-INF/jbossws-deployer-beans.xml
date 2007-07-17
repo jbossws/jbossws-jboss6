@@ -6,12 +6,11 @@
     ********************************************************************************************************************* 
     Web Service deployment                                                                                                
     
-    There are three deployers registered with the JBoss Main Deployer. 
+    There are two deployers registered with the JBoss Main Deployer. 
     The order of which is important
     
     1) EJBDeployer < WebServiceDeployerEJB
     2) WebServiceDeployerJSE < WarDeployer 
-    3) WebServiceMainDeployer
     
     Each WebServiceDeployer has a number of DeployerHooks registered with it
     
@@ -22,9 +21,6 @@
     - WebServiceDeployerJSE
       - WSDeployerHook_JAXRPC_JSE
       - WSDeployerHook_JAXWS_JSE
-    
-    -  WebServiceMainDeployer
-      - WSMainDeployerHook    
     
     Conceptually, each of these hooks implements the following pattern:
     
@@ -67,17 +63,6 @@
   <bean name="WebServiceDeployerJSE" class="org.jboss.wsf.container.jboss50.WebServiceDeployerJSE">
     <property name="relOrderWar"><inject bean="WarDeployer" property="relativeOrder"/></property>
     <depends>WebAppParsingDeployer</depends>
-  </bean>
-  
-  <!--
-    A web service deployer that hooks in after the web service WAR/EJB deployers
-  -->
-  <bean name="WebServiceMainDeployer" class="org.jboss.wsf.container.jboss50.WebServiceMainDeployer">
-    <property name="relOrderJSE"><inject bean="WebServiceDeployerJSE" property="relativeOrder"/></property>
-    <property name="relOrderEJB"><inject bean="WebServiceDeployerEJB" property="relativeOrder"/></property>
-    <depends>WarDeployer</depends>
-    <depends>WebServiceDeployerEJB</depends>
-    <depends>WebServiceDeployerJSE</depends>
   </bean>
   
   <!-- 
@@ -139,20 +124,6 @@
     </uninstall>
     <depends>WebServiceDeployerEJB</depends>
   </bean>
-  <bean name="WSMainDeployerHook" class="org.jboss.wsf.container.jboss50.MainDeployerHook">
-    <property name="deploymentAspectManager"><inject bean="WSMainDeploymentAspectManager"/></property>
-    <install bean="WebServiceMainDeployer" method="addDeployerHook">
-      <parameter>
-        <this/>
-      </parameter>
-    </install>
-    <uninstall bean="WebServiceMainDeployer" method="removeDeployerHook">
-      <parameter>
-        <this/>
-      </parameter>
-    </uninstall>
-    <depends>WebServiceMainDeployer</depends>
-  </bean>
   
   <!-- 
     Each DeploymentAspectManger maintains a list of DeploymentAspects
@@ -162,9 +133,6 @@
   </bean>
   <bean name="WSDeploymentAspectManagerEJB" class="org.jboss.wsf.spi.deployment.BasicDeploymentAspectManager">
     <property name="name">WSDeploymentAspectManagerEJB</property>
-  </bean>
-  <bean name="WSMainDeploymentAspectManager" class="org.jboss.wsf.spi.deployment.BasicDeploymentAspectManager">
-    <property name="name">WSMainDeploymentAspectManager</property>
   </bean>
   
   <!-- 
@@ -190,7 +158,7 @@
       </map>
     </property>
   </bean>
-  
+
   <bean name="WSEndpointLifecycleDeploymentAspect" class="org.jboss.wsf.spi.deployment.EndpointLifecycleDeploymentAspect">
     <property name="requires">LAST_DEPLOYMENT_ASPECT</property>
   </bean>
@@ -205,12 +173,12 @@
   </bean>
   
   <bean name="WSEndpointRegistryDeploymentAspect" class="org.jboss.wsf.spi.deployment.EndpointRegistryDeploymentAspect">
-    <property name="requires">EndpointName,StackEndpointHandler,InitializedMetaDataModel</property>
+    <property name="requires">EndpointName,StackEndpointHandler</property>
     <property name="provides">RegisteredEndpoint</property>
   </bean>
   
   <bean name="WSModifyWebMetaDataDeploymentAspect" class="org.jboss.wsf.container.jboss50.ModifyWebMetaDataDeploymentAspect">
-    <property name="requires">ContextProperties</property>
+    <property name="requires">ContextProperties, StackGeneratedDescriptor</property>
   </bean>
   
   <bean name="WSUnifiedDeploymentInfoDeploymentAspect" class="org.jboss.wsf.container.jboss50.UnifiedDeploymentInfoDeploymentAspect">
@@ -249,15 +217,22 @@
     <property name="manager"><inject bean="WSDeploymentAspectManagerJSE"/></property>
     <property name="aspects">
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
+        <inject bean="WSContextRootDeploymentAspect"/>
+        <inject bean="WSEndpointHandlerDeploymentAspect"/>
+        <inject bean="WSEndpointLifecycleDeploymentAspect"/>
+        <inject bean="WSEndpointMetricsDeploymentAspect"/>
+        <inject bean="WSEndpointNameDeploymentAspect"/>
+        <inject bean="WSEndpointRegistryDeploymentAspect"/>
         <inject bean="WSModifyWebMetaDataDeploymentAspect"/>
+        <inject bean="WSUnifiedDeploymentInfoDeploymentAspect"/>
+        <inject bean="WSURLPatternDeploymentAspect"/>
       </set>
     </property>
   </bean>
-  <bean name="WSMainDeploymentAspectInstaller" class="org.jboss.wsf.spi.deployment.DeploymentAspectInstaller">
-    <property name="manager"><inject bean="WSMainDeploymentAspectManager"/></property>
+  <bean name="WSDeploymentAspectInstallerEJB" class="org.jboss.wsf.spi.deployment.DeploymentAspectInstaller">
+    <property name="manager"><inject bean="WSDeploymentAspectManagerEJB"/></property>
     <property name="aspects">
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
-        <inject bean="WSClassLoaderInjectionDeploymentAspect"/>
         <inject bean="WSContextRootDeploymentAspect"/>
         <inject bean="WSEndpointHandlerDeploymentAspect"/>
         <inject bean="WSEndpointLifecycleDeploymentAspect"/>
