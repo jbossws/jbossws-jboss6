@@ -138,11 +138,6 @@
   <!-- 
     The container deployment aspects
   --> 
-  <bean name="WSClassLoaderInjectionDeploymentAspect" class="org.jboss.wsf.container.jboss50.ClassLoaderInjectionDeploymentAspect">
-    <property name="requires">AllowClassLoaderInjection</property>
-    <property name="provides">ContainerClassLoader</property>
-  </bean>
-  
   <bean name="WSContextRootDeploymentAspect" class="org.jboss.wsf.spi.deployment.BackwardCompatibleContextRootDeploymentAspect">
     <property name="requires">ContainerMetaData</property>
     <property name="provides">ContextRoot</property>
@@ -178,7 +173,7 @@
   </bean>
   
   <bean name="WSModifyWebMetaDataDeploymentAspect" class="org.jboss.wsf.container.jboss50.ModifyWebMetaDataDeploymentAspect">
-    <property name="requires">ContextProperties, StackGeneratedDescriptor</property>
+    <property name="requires">ContextProperties, StackDescriptor</property>
   </bean>
   
   <bean name="WSUnifiedDeploymentInfoDeploymentAspect" class="org.jboss.wsf.container.jboss50.UnifiedDeploymentInfoDeploymentAspect">
