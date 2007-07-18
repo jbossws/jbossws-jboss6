@@ -6,6 +6,7 @@
     licenseType="lgpl">
     
     <artifact id="jbossws-jboss50.jar"/>
+    <artifact id="jbossws-jboss50-deployer.zip"/>
     <artifact id="jbossws-jboss50-src.zip"/>
     
     <import componentref="jboss/jbossws-spi">
