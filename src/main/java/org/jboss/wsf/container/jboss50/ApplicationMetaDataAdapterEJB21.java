@@ -23,27 +23,19 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id$
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
-import org.jboss.metadata.ApplicationMetaData;
-import org.jboss.metadata.BeanMetaData;
-import org.jboss.metadata.EjbPortComponentMetaData;
-import org.jboss.metadata.MessageDrivenMetaData;
-import org.jboss.metadata.SessionMetaData;
+import org.jboss.metadata.*;
 import org.jboss.metadata.ApplicationMetaData.WebserviceDescription;
 import org.jboss.metadata.ApplicationMetaData.Webservices;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedEjbPortComponentMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedMessageDrivenMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedSessionMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.*;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocationAdapter;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Build container independent application meta data 

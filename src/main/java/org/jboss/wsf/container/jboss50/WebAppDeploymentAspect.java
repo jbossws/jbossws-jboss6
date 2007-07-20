@@ -23,20 +23,20 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id: WebAppDeployerDeployer.java 3772 2007-07-01 19:29:13Z thomas.diesler@jboss.com $
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jboss.deployers.client.spi.DeployerClient;
 import org.jboss.deployers.vfs.spi.client.VFSDeploymentFactory;
 import org.jboss.logging.Logger;
 import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
-import org.jboss.wsf.spi.deployment.DeploymentAspect;
-import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-import org.jboss.wsf.spi.deployment.WSDeploymentException;
 import org.jboss.wsf.spi.deployment.WebXMLRewriter;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.DeploymentAspect;
+import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
+import org.jboss.wsf.spi.deployment.WSFDeploymentException;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Publish the HTTP service endpoint to Tomcat 
@@ -85,7 +85,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
          }
          catch (Exception ex)
          {
-            WSDeploymentException.rethrow(ex);
+            WSFDeploymentException.rethrow(ex);
          }
       }
    }
@@ -115,7 +115,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
       }
       catch (Exception ex)
       {
-         WSDeploymentException.rethrow(ex);
+         WSFDeploymentException.rethrow(ex);
       }
    }
 

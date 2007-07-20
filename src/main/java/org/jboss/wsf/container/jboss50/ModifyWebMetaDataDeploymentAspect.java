@@ -23,19 +23,19 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id: ModifyWebMetaDataDeployer.java 3150 2007-05-20 00:29:48Z thomas.diesler@jboss.com $
 
-import java.util.Iterator;
-import java.util.Map;
-
 import org.jboss.metadata.Listener;
 import org.jboss.metadata.NameValuePair;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.ParamValue;
-import org.jboss.metadata.web.Servlet;
 import org.jboss.metadata.web.ParamValue.ParamType;
+import org.jboss.metadata.web.Servlet;
+import org.jboss.wsf.spi.deployment.WebAppDesciptorModifier;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.WebAppDesciptorModifier;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A deployer that modifies the web.xml meta data 

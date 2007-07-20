@@ -21,9 +21,6 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.ejb3.Ejb3Deployment;
@@ -32,6 +29,9 @@ import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
+
+import java.net.URL;
+import java.net.URLClassLoader;
 
 // $Id$
 

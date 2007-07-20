@@ -23,15 +23,15 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import java.util.Iterator;
-import java.util.Map;
-
 import org.dom4j.Element;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.AssemblyDescriptorMetaData;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.SecurityHandler;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Generate a service endpoint deployment for EJB endpoints 

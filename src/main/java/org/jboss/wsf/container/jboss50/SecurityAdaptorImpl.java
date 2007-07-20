@@ -23,10 +23,10 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id$
 
-import java.security.Principal;
-
 import org.jboss.security.SecurityAssociation;
 import org.jboss.wsf.spi.invocation.SecurityAdaptor;
+
+import java.security.Principal;
 
 /**
  * A JBoss specific SecurityAssociationAdaptor 

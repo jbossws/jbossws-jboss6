@@ -58,15 +58,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/apache-tomcat.zip!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/getopt.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -86,15 +77,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/jboss-remoting-src.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/hudson.war!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -283,15 +265,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/jboss-deployers.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/xercesImpl.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -355,15 +328,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/jboss-deployers-src.zip!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/javassist.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -401,15 +365,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/jboss-vfs-sources.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/jbossws-wsconsume-impl.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -527,6 +482,37 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../jbossws-core/thirdparty/jboss-j2ee.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="as-server" />
+    <orderEntry type="module" module-name="as-system" />
+    <orderEntry type="module" module-name="as-tomcat" />
+    <orderEntry type="module" module-name="as-ejb3" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../../trunk/jbossws-core/thirdparty/jboss-deployers.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../../trunk/jbossws-core/thirdparty/jboss-microcontainer.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../spi/thirdparty/jaxws-api.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

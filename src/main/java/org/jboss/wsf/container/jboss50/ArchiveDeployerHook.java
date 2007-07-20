@@ -23,23 +23,23 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import java.net.URL;
-
 import org.jboss.deployers.spi.DeploymentException;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.virtual.VirtualFile;
 import org.jboss.ws.integration.UnifiedVirtualFile;
+import org.jboss.wsf.common.DOMUtils;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.WSDeploymentException;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
+import org.jboss.wsf.spi.deployment.WSFDeploymentException;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesFactory;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
-import org.jboss.wsf.spi.utils.DOMUtils;
 import org.jboss.xb.binding.ObjectModelFactory;
 import org.jboss.xb.binding.Unmarshaller;
 import org.jboss.xb.binding.UnmarshallerFactory;
 import org.w3c.dom.Element;
+
+import java.net.URL;
 
 /**
  * An abstract web service deployer.
@@ -136,7 +136,7 @@ public abstract class ArchiveDeployerHook extends AbstractDeployerHook
          }
          catch (Exception ex)
          {
-            throw new WSDeploymentException(ex);
+            throw new WSFDeploymentException(ex);
          }
       }
       return wsMetaData;

@@ -24,11 +24,7 @@ package org.jboss.wsf.container.jboss50;
 //$Id: UnifiedDeploymentInfoDeployer.java 3772 2007-07-01 19:29:13Z thomas.diesler@jboss.com $
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.wsf.spi.deployment.DeploymentAspect;
-import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.JAXRPCDeployment;
-import org.jboss.wsf.spi.deployment.JAXWSDeployment;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
+import org.jboss.wsf.spi.deployment.*;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 

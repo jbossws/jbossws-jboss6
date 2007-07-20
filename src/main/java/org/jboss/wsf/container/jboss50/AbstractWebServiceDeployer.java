@@ -21,14 +21,14 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.jboss.deployers.spi.DeploymentException;
 import org.jboss.deployers.spi.deployer.helpers.AbstractComponentDeployer;
 import org.jboss.deployers.spi.deployer.helpers.AbstractSimpleRealDeployer;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
+
+import java.util.LinkedList;
+import java.util.List;
 
 //$Id$
 

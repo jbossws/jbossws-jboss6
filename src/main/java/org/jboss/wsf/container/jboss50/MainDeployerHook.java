@@ -25,7 +25,6 @@ package org.jboss.wsf.container.jboss50;
 
 import org.jboss.deployers.spi.DeploymentException;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.wsf.container.jboss50.AbstractDeployerHook;
 import org.jboss.wsf.spi.deployment.Deployment;
 
 /**

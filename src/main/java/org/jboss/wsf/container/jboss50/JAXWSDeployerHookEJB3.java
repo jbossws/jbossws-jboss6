@@ -23,20 +23,19 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import java.util.Iterator;
-
-import javax.jws.WebService;
-import javax.xml.ws.WebServiceProvider;
-
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.ejb3.stateless.StatelessContainer;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
-import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
+
+import javax.jws.WebService;
+import javax.xml.ws.WebServiceProvider;
+import java.util.Iterator;
 
 /**
  * A deployer JAXWS EJB3 Endpoints

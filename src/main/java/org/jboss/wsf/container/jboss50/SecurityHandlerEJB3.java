@@ -23,16 +23,15 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import java.util.Iterator;
-
-import javax.annotation.security.RolesAllowed;
-
 import org.dom4j.Element;
 import org.jboss.annotation.security.SecurityDomain;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.SecurityHandler;
+
+import javax.annotation.security.RolesAllowed;
+import java.util.Iterator;
 
 /**
  * Generate a service endpoint deployment for EJB endpoints 

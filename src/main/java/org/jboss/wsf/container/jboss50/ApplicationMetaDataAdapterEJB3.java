@@ -23,30 +23,22 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id$
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.ejb3.Container;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.ejb3.session.SessionContainer;
 import org.jboss.ejb3.mdb.MessagingContainer;
-import org.jboss.ejb3.metamodel.Ejb3PortComponent;
-import org.jboss.ejb3.metamodel.EjbJarDD;
-import org.jboss.ejb3.metamodel.EnterpriseBean;
-import org.jboss.ejb3.metamodel.WebserviceDescription;
-import org.jboss.ejb3.metamodel.Webservices;
+import org.jboss.ejb3.metamodel.*;
 import org.jboss.logging.Logger;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedEjbPortComponentMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedMessageDrivenMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedSessionMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.*;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocationAdapter;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Build container independent application meta data 

@@ -21,11 +21,11 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-import java.io.IOException;
-import java.net.URL;
-
 import org.jboss.virtual.VirtualFile;
 import org.jboss.ws.integration.UnifiedVirtualFile;
+
+import java.io.IOException;
+import java.net.URL;
 
 // $Id$
 

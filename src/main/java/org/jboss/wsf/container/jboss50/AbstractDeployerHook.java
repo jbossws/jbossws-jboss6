@@ -23,14 +23,9 @@ package org.jboss.wsf.container.jboss50;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
-import org.jboss.wsf.spi.deployment.BasicDeployment;
-import org.jboss.wsf.spi.deployment.BasicEndpoint;
-import org.jboss.wsf.spi.deployment.BasicService;
-import org.jboss.wsf.spi.deployment.DeploymentAspectManager;
-import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.Service;
-import org.jboss.wsf.spi.deployment.WSDeploymentException;
+import org.jboss.wsf.spi.SPIProvider;
+import org.jboss.wsf.spi.SPIProviderResolver;
+import org.jboss.wsf.spi.deployment.*;
 
 //$Id$
 
@@ -47,55 +42,44 @@ public abstract class AbstractDeployerHook implements DeployerHook
    protected final Logger log = Logger.getLogger(getClass());
 
    protected DeploymentAspectManager deploymentAspectManager;
-   protected String deploymentClass = BasicDeployment.class.getName();
-   protected String serviceClass = BasicService.class.getName();
-   protected String endpointClass = BasicEndpoint.class.getName();
+
+   private DeploymentModelFactory deploymentModelFactory;
+
+   public AbstractDeployerHook()
+   {
+      SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
+      deploymentModelFactory = spiProvider.getSPI(DeploymentModelFactory.class);
+
+      if(null == deploymentModelFactory)
+         throw new IllegalStateException("Unable to create spi.deployment.DeploymentModelFactory");
+   }
 
    public void setDeploymentAspectManager(DeploymentAspectManager deploymentManager)
    {
       this.deploymentAspectManager = deploymentManager;
    }
 
-   public void setDeploymentClass(String deploymentClass)
-   {
-      this.deploymentClass = deploymentClass;
-   }
-
-   public void setEndpointClass(String endpointClass)
-   {
-      this.endpointClass = endpointClass;
-   }
-
-   public void setServiceClass(String serviceClass)
-   {
-      this.serviceClass = serviceClass;
-   }
-
    public Deployment createDeployment()
    {
       try
       {
-         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-         Class<?> clazz = loader.loadClass(deploymentClass);
-         return (Deployment)clazz.newInstance();
+         return deploymentModelFactory.createDeployment();
       }
       catch (Exception ex)
       {
-         throw new WSDeploymentException("Cannot load Deployment class: " + deploymentClass);
+         throw new WSFDeploymentException("Cannot load spi.deployment.Deployment class", ex);
       }
    }
 
    public Service createService()
    {
-      try
+       try
       {
-         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-         Class<?> clazz = loader.loadClass(serviceClass);
-         return (Service)clazz.newInstance();
+         return deploymentModelFactory.createService();
       }
       catch (Exception ex)
       {
-         throw new WSDeploymentException("Cannot load Service class: " + serviceClass);
+         throw new WSFDeploymentException("Cannot load spi.deployment.Service class", ex);
       }
    }
 
@@ -103,13 +87,11 @@ public abstract class AbstractDeployerHook implements DeployerHook
    {
       try
       {
-         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-         Class<?> clazz = loader.loadClass(endpointClass);
-         return (Endpoint)clazz.newInstance();
+         return deploymentModelFactory.createEndpoint();
       }
       catch (Exception ex)
       {
-         throw new WSDeploymentException("Cannot load Endpoint class: " + endpointClass);
+         throw new WSFDeploymentException("Cannot load spi.deployment.Endpoint class", ex);
       }
    }
 

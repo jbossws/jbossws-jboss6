@@ -23,14 +23,14 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id$
 
-import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
 import org.jboss.ejb.plugins.AbstractInterceptor;
 import org.jboss.invocation.InvocationKey;
 import org.jboss.logging.Logger;
 import org.jboss.wsf.spi.invocation.HandlerCallback;
 import org.jboss.wsf.spi.invocation.Invocation;
 import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedHandlerMetaData.HandlerType;
+
+import javax.xml.rpc.handler.soap.SOAPMessageContext;
 
 /**
  * This Interceptor does the ws4ee handler processing.
