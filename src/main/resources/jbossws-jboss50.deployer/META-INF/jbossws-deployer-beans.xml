@@ -69,7 +69,6 @@
     Register DeployerHooks with JBoss deployers 
   -->
   <bean name="WSDeployerHook_JAXRPC_JSE" class="org.jboss.wsf.container.jboss50.JAXRPCDeployerHookJSE">
-    <property name="deploymentAspectManager"><inject bean="WSDeploymentAspectManagerJSE"/></property>
     <install bean="WebServiceDeployerJSE" method="addDeployerHook">
       <parameter>
         <this/>
@@ -83,7 +82,6 @@
     <depends>WebServiceDeployerJSE</depends>
   </bean>
   <bean name="WSDeployerHook_JAXRPC_EJB21" class="org.jboss.wsf.container.jboss50.JAXRPCDeployerHookEJB21">
-    <property name="deploymentAspectManager"><inject bean="WSDeploymentAspectManagerEJB"/></property>
     <install bean="WebServiceDeployerEJB" method="addDeployerHook">
       <parameter>
         <this/>
@@ -97,7 +95,6 @@
     <depends>WebServiceDeployerEJB</depends>
   </bean>
   <bean name="WSDeployerHook_JAXWS_JSE" class="org.jboss.wsf.container.jboss50.JAXWSDeployerHookJSE">
-    <property name="deploymentAspectManager"><inject bean="WSDeploymentAspectManagerJSE"/></property>
     <install bean="WebServiceDeployerJSE" method="addDeployerHook">
       <parameter>
         <this/>
@@ -111,7 +108,6 @@
     <depends>WebServiceDeployerJSE</depends>
   </bean>
   <bean name="WSDeployerHook_JAXWS_EJB3" class="org.jboss.wsf.container.jboss50.JAXWSDeployerHookEJB3">
-    <property name="deploymentAspectManager"><inject bean="WSDeploymentAspectManagerEJB"/></property>
     <install bean="WebServiceDeployerEJB" method="addDeployerHook">
       <parameter>
         <this/>

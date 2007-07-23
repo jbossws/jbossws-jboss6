@@ -34,6 +34,8 @@ import org.jboss.wsf.spi.deployment.*;
  * An abstract web service deployer.
  * 
  * @author Thomas.Diesler@jboss.org
+ * @author Heiko.Braun@jboss.com
+ * 
  * @since 25-Apr-2007
  */
 public abstract class AbstractDeployerHook implements DeployerHook
@@ -42,21 +44,19 @@ public abstract class AbstractDeployerHook implements DeployerHook
    protected final Logger log = Logger.getLogger(getClass());
 
    protected DeploymentAspectManager deploymentAspectManager;
-
    private DeploymentModelFactory deploymentModelFactory;
 
-   public AbstractDeployerHook()
+   public void create() throws Exception
    {
       SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
       deploymentModelFactory = spiProvider.getSPI(DeploymentModelFactory.class);
+      deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).createDeploymentAspectManager(getDeploymentType());
 
       if(null == deploymentModelFactory)
          throw new IllegalStateException("Unable to create spi.deployment.DeploymentModelFactory");
-   }
 
-   public void setDeploymentAspectManager(DeploymentAspectManager deploymentManager)
-   {
-      this.deploymentAspectManager = deploymentManager;
+      if(null == deploymentAspectManager)
+         throw new IllegalStateException("Unable to create spi.deployment.DeploymentAspectManager");
    }
 
    public Deployment createDeployment()
@@ -102,4 +102,8 @@ public abstract class AbstractDeployerHook implements DeployerHook
       String name = unit.getName();
       return (name.startsWith("jboss:id=") && name.indexOf("service=jacc") > 0);
    }
+
+   /** Get the deployment type this deployer can handle
+    */
+   public abstract Deployment.DeploymentType getDeploymentType();
 }

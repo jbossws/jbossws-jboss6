@@ -58,9 +58,6 @@ import java.net.URL;
  */
 public abstract class ArchiveDeployerHook extends AbstractDeployerHook
 {
-   /** Get the deployemnt type this deployer can handle 
-    */
-   public abstract DeploymentType getDeploymentType();
 
    /** Depending on the type of deployment, this method should return true
     *  if the deployment contains web service endpoints.
