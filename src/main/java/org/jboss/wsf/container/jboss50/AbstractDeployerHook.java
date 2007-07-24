@@ -43,27 +43,36 @@ public abstract class AbstractDeployerHook implements DeployerHook
    // provide logging
    protected final Logger log = Logger.getLogger(getClass());
 
-   protected DeploymentAspectManager deploymentAspectManager;
+   private DeploymentAspectManager deploymentAspectManager;
    private DeploymentModelFactory deploymentModelFactory;
 
-   public void create() throws Exception
+   public DeploymentAspectManager getDeploymentAspectManager()
    {
-      SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
-      deploymentModelFactory = spiProvider.getSPI(DeploymentModelFactory.class);
-      deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).createDeploymentAspectManager(getDeploymentType());
-
-      if(null == deploymentModelFactory)
-         throw new IllegalStateException("Unable to create spi.deployment.DeploymentModelFactory");
-
       if(null == deploymentAspectManager)
-         throw new IllegalStateException("Unable to create spi.deployment.DeploymentAspectManager");
+      {
+         SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
+         deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).createDeploymentAspectManager(getDeploymentType());
+      }
+
+      return deploymentAspectManager;
+   }
+
+   public DeploymentModelFactory getDeploymentModelFactory()
+   {
+      if(null == deploymentModelFactory)
+      {
+         SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
+         deploymentModelFactory = spiProvider.getSPI(DeploymentModelFactory.class);
+      }
+
+      return deploymentModelFactory;
    }
 
    public Deployment createDeployment()
    {
       try
       {
-         return deploymentModelFactory.createDeployment();
+         return getDeploymentModelFactory().createDeployment();
       }
       catch (Exception ex)
       {
@@ -75,7 +84,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
    {
        try
       {
-         return deploymentModelFactory.createService();
+         return getDeploymentModelFactory().createService();
       }
       catch (Exception ex)
       {
@@ -87,7 +96,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
    {
       try
       {
-         return deploymentModelFactory.createEndpoint();
+         return getDeploymentModelFactory().createEndpoint();
       }
       catch (Exception ex)
       {
