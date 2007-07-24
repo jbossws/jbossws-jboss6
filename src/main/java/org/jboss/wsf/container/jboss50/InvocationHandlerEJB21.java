@@ -39,6 +39,8 @@ import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.invocation.*;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
+import org.jboss.wsf.spi.SPIProvider;
+import org.jboss.wsf.spi.SPIProviderResolver;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -150,7 +152,8 @@ public class InvocationHandlerEJB21 extends InvocationHandler
       if (msgContext == null)
          throw new IllegalStateException("Cannot obtain MessageContext");
 
-      SecurityAdaptor securityAdaptor = SecurityAdaptorFactory.getSecurityAdaptor();
+      SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
+      SecurityAdaptor securityAdaptor = spiProvider.getSPI(SecurityAdaptorFactory.class).createSecurityAdapter();
       SecurityContext sc = SecurityContextAssociation.getSecurityContext();
       Principal principal = securityAdaptor.getPrincipal();
       Object credential = securityAdaptor.getCredential();
