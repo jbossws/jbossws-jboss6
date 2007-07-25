@@ -22,47 +22,15 @@
 package org.jboss.wsf.container.jboss50;
 
 import org.jboss.wsf.spi.invocation.*;
-import org.jboss.wsf.spi.invocation.WebServiceContextEJB;
 
-import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 /**
- * The default invocation model factory fro AS 5.0.
- *
  * @author Heiko.Braun@jboss.com
- *         Created: Jul 19, 2007
+ *         Created: Jul 25, 2007
  */
-public class InvocationModelFactoryImpl extends InvocationModelFactory
+public class WebServiceContextFactoryImpl extends WebServiceContextFactory
 {
-   public InvocationHandler createInvocationHandler(InvocationType type)
-   {
-      InvocationHandler handler = null;
-
-      switch(type)
-      {
-         case JAXRPC_JSE:
-            handler = new DefaultInvocationHandlerJAXRPC();
-            break;
-         case JAXRPC_EJB21:
-            handler = new InvocationHandlerEJB21();
-            break;
-         case JAXWS_JSE:
-            handler = new DefaultInvocationHandlerJAXWS();
-            break;
-         case JAXWS_EJB21:
-            handler = new InvocationHandlerEJB21();
-            break;
-         case JAXWS_EJB3:
-            handler = new InvocationHandlerEJB3();
-      }
-
-      if(null == handler)
-         throw new IllegalArgumentException("Unable to resolve spi.invocation.InvocationHandler for type " +type);
-
-      return handler;
-   }
-
    public ExtendableWebServiceContext createWebServiceContext(InvocationType type, MessageContext messageContext)
    {
       ExtendableWebServiceContext context = null;
