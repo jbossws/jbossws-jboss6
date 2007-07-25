@@ -71,7 +71,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
          if (udi == null)
             throw new IllegalStateException("Cannot obtain unified deployement info");
 
-         URL warURL = udi.getWebappURL();
+         URL warURL = (URL)dep.getContext().getProperty(WebXMLRewriter.WEBAPP_URL);
 
          log.debug("publishServiceEndpoint: " + warURL);
          try
@@ -96,7 +96,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
       if (udi == null)
          throw new IllegalStateException("Cannot obtain unified deployement info");
 
-      URL warURL = udi.getWebappURL();
+      URL warURL = (URL)dep.getContext().getProperty(WebXMLRewriter.WEBAPP_URL);
       if (warURL == null)
       {
          log.error("Cannot obtain warURL for: " + udi);

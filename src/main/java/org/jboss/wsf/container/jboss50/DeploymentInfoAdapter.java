@@ -27,11 +27,9 @@ import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.WebMetaData;
+import org.jboss.wsf.framework.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-
-import java.net.URL;
-import java.net.URLClassLoader;
 
 // $Id$
 
@@ -106,7 +104,7 @@ public class DeploymentInfoAdapter
       if (unit.getAttachment(WebMetaData.class) != null)
       {
          webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit);
-         udi.setWebappURL(udi.getVfRoot().toURL());
+         dep.getContext().setProperty(WebXMLRewriter.WEBAPP_URL, udi.getVfRoot().toURL());
       }
       else if (unit.getAttachment(Ejb3Deployment.class) != null)
       {
