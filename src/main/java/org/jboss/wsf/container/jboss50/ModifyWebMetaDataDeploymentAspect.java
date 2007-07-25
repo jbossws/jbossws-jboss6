@@ -29,7 +29,7 @@ import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.ParamValue;
 import org.jboss.metadata.web.ParamValue.ParamType;
 import org.jboss.metadata.web.Servlet;
-import org.jboss.wsf.spi.deployment.WebAppDesciptorModifier;
+import org.jboss.wsf.framework.deployment.WebAppDesciptorModifier;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.Endpoint;

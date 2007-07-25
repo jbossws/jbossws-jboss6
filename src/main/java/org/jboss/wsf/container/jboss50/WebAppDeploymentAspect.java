@@ -28,7 +28,7 @@ import org.jboss.deployers.vfs.spi.client.VFSDeploymentFactory;
 import org.jboss.logging.Logger;
 import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
-import org.jboss.wsf.spi.deployment.WebXMLRewriter;
+import org.jboss.wsf.framework.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
