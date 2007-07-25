@@ -73,7 +73,7 @@ public class DeploymentInfoAdapter
       {
          if (unit.getParent() != null)
          {
-            udi.setParent(new UnifiedDeploymentInfo(null));
+            udi.setParent(new UnifiedDeploymentInfo());
             buildDeploymentInfo(dep, udi.getParent(), unit.getParent());
          }
 
@@ -87,7 +87,7 @@ public class DeploymentInfoAdapter
          // Since we create temporary classes, we need to create a delegate loader
          // This prevents CCE problems where the parent loader is available at deploy time,
          // and a child loader is available at start time.
-         udi.setClassLoader(new URLClassLoader(new URL[] {}, unit.getClassLoader()));
+         // udi.setClassLoader(new URLClassLoader(new URL[] {}, unit.getClassLoader()));
 
          log.debug("UnifiedDeploymentInfo:\n" + udi);
       }
@@ -105,16 +105,16 @@ public class DeploymentInfoAdapter
    {
       if (unit.getAttachment(WebMetaData.class) != null)
       {
-         udi.setMetaData(webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit));
+         webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit);
          udi.setWebappURL(udi.getVfRoot().toURL());
       }
       else if (unit.getAttachment(Ejb3Deployment.class) != null)
       {
-         udi.setMetaData(applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, udi, unit));
+         applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, udi, unit);
       }
       else if (unit.getAttachment(ApplicationMetaData.class) != null)
       {
-         udi.setMetaData(applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, udi, unit));
+         applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, udi, unit);
       }
    }
 }

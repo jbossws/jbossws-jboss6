@@ -23,6 +23,15 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id$
 
+import java.lang.reflect.Method;
+import java.security.Principal;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import javax.xml.rpc.handler.MessageContext;
+import javax.xml.rpc.handler.soap.SOAPMessageContext;
+import javax.xml.ws.WebServiceException;
+
 import org.jboss.ejb.EjbModule;
 import org.jboss.ejb.Interceptor;
 import org.jboss.ejb.StatelessSessionContainer;
@@ -34,21 +43,17 @@ import org.jboss.mx.util.MBeanServerLocator;
 import org.jboss.security.SecurityContext;
 import org.jboss.security.plugins.SecurityContextAssociation;
 import org.jboss.wsf.common.ObjectNameFactory;
-import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
-import org.jboss.wsf.spi.invocation.*;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import javax.xml.rpc.handler.MessageContext;
-import javax.xml.rpc.handler.soap.SOAPMessageContext;
-import javax.xml.ws.WebServiceException;
-import java.lang.reflect.Method;
-import java.security.Principal;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.Endpoint;
+import org.jboss.wsf.spi.invocation.HandlerCallback;
+import org.jboss.wsf.spi.invocation.Invocation;
+import org.jboss.wsf.spi.invocation.InvocationHandler;
+import org.jboss.wsf.spi.invocation.SecurityAdaptor;
+import org.jboss.wsf.spi.invocation.SecurityAdaptorFactory;
+import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.UnifiedBeanMetaData;
 
 /**
  * Handles invocations on EJB21 endpoints.
@@ -77,9 +82,9 @@ public class InvocationHandlerEJB21 extends InvocationHandler
    public void init(Endpoint ep)
    {
       String ejbName = ep.getShortName();
-      UnifiedDeploymentInfo udi = ep.getService().getDeployment().getContext().getAttachment(UnifiedDeploymentInfo.class);
-      UnifiedApplicationMetaData applMetaData = (UnifiedApplicationMetaData)udi.getMetaData();
-      UnifiedBeanMetaData beanMetaData = (UnifiedBeanMetaData)applMetaData.getBeanByEjbName(ejbName);
+      Deployment dep = ep.getService().getDeployment();
+      UnifiedApplicationMetaData apMetaData = dep.getContext().getAttachment(UnifiedApplicationMetaData.class);
+      UnifiedBeanMetaData beanMetaData = (UnifiedBeanMetaData)apMetaData.getBeanByEjbName(ejbName);
       if (beanMetaData == null)
          throw new WebServiceException("Cannot obtain ejb meta data for: " + ejbName);
 
