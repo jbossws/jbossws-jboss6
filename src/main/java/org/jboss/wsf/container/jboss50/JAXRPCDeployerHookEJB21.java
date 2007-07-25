@@ -57,7 +57,7 @@ public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setInitialClassLoader(unit.getClassLoader());
       dep.setRuntimeClassLoader(unit.getClassLoader());
-      dep.setType(getDeploymentType());
+      dep.setDeploymentType(getDeploymentType());
 
       Service service = dep.getService();
 

@@ -60,7 +60,7 @@ public class WebMetaDataAdapter
          J2eeApplicationMetaData appmd = unit.getParent().getAttachment(J2eeApplicationMetaData.class);
          if (appmd != null)
          {
-            J2eeModuleMetaData module = appmd.getModule(udi.simpleName);
+            J2eeModuleMetaData module = appmd.getModule(udi.getSimpleName());
             if (module != null)
                contextRoot = module.getWebContext();
          }

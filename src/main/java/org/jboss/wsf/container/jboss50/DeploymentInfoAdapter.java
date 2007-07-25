@@ -73,22 +73,21 @@ public class DeploymentInfoAdapter
       {
          if (unit.getParent() != null)
          {
-            udi.parent = new UnifiedDeploymentInfo(null);
-            buildDeploymentInfo(dep, udi.parent, unit.getParent());
+            udi.setParent(new UnifiedDeploymentInfo(null));
+            buildDeploymentInfo(dep, udi.getParent(), unit.getParent());
          }
 
-         udi.vfRoot = new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot());
+         udi.setVfRoot(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
 
-         udi.name = unit.getName();
-         udi.simpleName = unit.getSimpleName();
-         udi.url = udi.vfRoot.toURL();
+         udi.setSimpleName(unit.getSimpleName());
+         udi.setUrl(udi.getVfRoot().toURL());
 
          buildMetaData(dep, udi, unit);
 
          // Since we create temporary classes, we need to create a delegate loader
          // This prevents CCE problems where the parent loader is available at deploy time,
          // and a child loader is available at start time.
-         udi.classLoader = new URLClassLoader(new URL[] {}, unit.getClassLoader());
+         udi.setClassLoader(new URLClassLoader(new URL[] {}, unit.getClassLoader()));
 
          log.debug("UnifiedDeploymentInfo:\n" + udi);
       }
@@ -106,16 +105,16 @@ public class DeploymentInfoAdapter
    {
       if (unit.getAttachment(WebMetaData.class) != null)
       {
-         udi.metaData = webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit);
-         udi.webappURL = udi.vfRoot.toURL();
+         udi.setMetaData(webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit));
+         udi.setWebappURL(udi.getVfRoot().toURL());
       }
       else if (unit.getAttachment(Ejb3Deployment.class) != null)
       {
-         udi.metaData = applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, udi, unit);
+         udi.setMetaData(applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, udi, unit));
       }
       else if (unit.getAttachment(ApplicationMetaData.class) != null)
       {
-         udi.metaData = applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, udi, unit);
+         udi.setMetaData(applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, udi, unit));
       }
    }
 }

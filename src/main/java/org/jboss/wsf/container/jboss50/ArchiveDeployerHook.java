@@ -73,7 +73,7 @@ public abstract class ArchiveDeployerHook extends AbstractDeployerHook
    public Deployment getDeployment(DeploymentUnit unit)
    {
       Deployment dep = unit.getAttachment(Deployment.class);
-      return (dep != null && dep.getType() == getDeploymentType() ? dep : null);
+      return (dep != null && dep.getDeploymentType() == getDeploymentType() ? dep : null);
    }
 
    public void deploy(DeploymentUnit unit) throws DeploymentException
