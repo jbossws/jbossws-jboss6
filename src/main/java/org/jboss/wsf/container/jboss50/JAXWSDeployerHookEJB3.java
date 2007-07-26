@@ -55,9 +55,8 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      Deployment dep = createDeployment();
+      Deployment dep = createDeployment(unit.getClassLoader());
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
-      dep.setInitialClassLoader(unit.getClassLoader());
       dep.setRuntimeClassLoader(unit.getClassLoader());
       dep.setType(getDeploymentType());
 
