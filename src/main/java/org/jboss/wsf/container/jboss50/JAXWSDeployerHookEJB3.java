@@ -56,7 +56,7 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      ArchiveDeployment dep = createDeployment(unit.getClassLoader());
+      ArchiveDeployment dep = newDeployment(unit);
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setRuntimeClassLoader(unit.getClassLoader());
       dep.setType(getDeploymentType());
@@ -80,7 +80,7 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
             String epBean = container.getBeanClassName();
 
             // Create the endpoint
-            Endpoint ep = createEndpoint();
+            Endpoint ep = newEndpoint();
             ep.setShortName(ejbName);
             ep.setService(service);
             ep.setTargetBeanName(epBean);

@@ -57,7 +57,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      ArchiveDeployment dep = createDeployment(unit.getClassLoader());
+      ArchiveDeployment dep = newDeployment(unit);
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setRuntimeClassLoader(null);
       dep.setType(getDeploymentType());
@@ -88,7 +88,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
             String servletClass = servlet.getServletClass();
 
             // Create the endpoint
-            Endpoint ep = createEndpoint();
+            Endpoint ep = newEndpoint();
             ep.setShortName(servletLink);
             ep.setService(service);
             ep.setTargetBeanName(servletClass);

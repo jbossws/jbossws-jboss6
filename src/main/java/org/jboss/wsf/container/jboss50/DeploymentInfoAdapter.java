@@ -77,9 +77,9 @@ public class DeploymentInfoAdapter
          }
 
          VirtualFile vfsRoot = ((VFSDeploymentUnit)unit).getRoot();
-         udi.setVfRoot(new VirtualFileAdaptor(vfsRoot));
+         //udi.setVfRoot(new VirtualFileAdaptor(vfsRoot));
 
-         udi.setSimpleName(unit.getSimpleName());
+         //udi.setSimpleName(unit.getSimpleName());
          udi.setUrl(vfsRoot.toURL());
 
          buildMetaData(dep, udi, unit);

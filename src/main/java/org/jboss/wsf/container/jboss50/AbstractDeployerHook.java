@@ -68,12 +68,19 @@ public abstract class AbstractDeployerHook implements DeployerHook
       return deploymentModelFactory;
    }
 
-   public ArchiveDeployment createDeployment(ClassLoader initialLoader)
+   public ArchiveDeployment newDeployment(DeploymentUnit unit)
    {
       try
       {
          DeploymentModelFactory factory = getDeploymentModelFactory();
-         return (ArchiveDeployment)factory.createDeployment(initialLoader);
+         ArchiveDeployment dep = (ArchiveDeployment)factory.createDeployment(unit.getSimpleName(), unit.getClassLoader());
+         if (unit.getParent() != null)
+         {
+            DeploymentUnit parentUnit = unit.getParent();
+            ArchiveDeployment parentDep = (ArchiveDeployment)factory.createDeployment(parentUnit.getSimpleName(), parentUnit.getClassLoader());
+            dep.setParent(parentDep);
+         }
+         return dep;
       }
       catch (Exception ex)
       {
@@ -81,19 +88,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
       }
    }
 
-   public Service createService()
-   {
-       try
-      {
-         return getDeploymentModelFactory().createService();
-      }
-      catch (Exception ex)
-      {
-         throw new WSFDeploymentException("Cannot load spi.deployment.Service class", ex);
-      }
-   }
-
-   public Endpoint createEndpoint()
+   public Endpoint newEndpoint()
    {
       try
       {
