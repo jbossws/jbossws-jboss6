@@ -29,6 +29,7 @@ import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.Servlet;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
+import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
 import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
@@ -56,7 +57,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      Deployment dep = createDeployment(unit.getClassLoader());
+      ArchiveDeployment dep = createDeployment(unit.getClassLoader());
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setRuntimeClassLoader(null);
       dep.setType(getDeploymentType());

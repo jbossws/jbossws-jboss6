@@ -27,6 +27,7 @@ import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.WebMetaData;
+import org.jboss.virtual.VirtualFile;
 import org.jboss.wsf.framework.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
@@ -75,10 +76,11 @@ public class DeploymentInfoAdapter
             buildDeploymentInfo(dep, udi.getParent(), unit.getParent());
          }
 
-         udi.setVfRoot(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
+         VirtualFile vfsRoot = ((VFSDeploymentUnit)unit).getRoot();
+         udi.setVfRoot(new VirtualFileAdaptor(vfsRoot));
 
          udi.setSimpleName(unit.getSimpleName());
-         udi.setUrl(udi.getVfRoot().toURL());
+         udi.setUrl(vfsRoot.toURL());
 
          buildMetaData(dep, udi, unit);
 
@@ -104,7 +106,7 @@ public class DeploymentInfoAdapter
       if (unit.getAttachment(WebMetaData.class) != null)
       {
          webMetaDataAdapter.buildUnifiedWebMetaData(dep, udi, unit);
-         dep.getContext().setProperty(WebXMLRewriter.WEBAPP_URL, udi.getVfRoot().toURL());
+         dep.getContext().setProperty(WebXMLRewriter.WEBAPP_URL, udi.getUrl());
       }
       else if (unit.getAttachment(Ejb3Deployment.class) != null)
       {

@@ -30,6 +30,7 @@ import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.ejb3.stateless.StatelessContainer;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
+import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
 
@@ -55,7 +56,7 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
    @Override
    public Deployment createDeployment(DeploymentUnit unit)
    {
-      Deployment dep = createDeployment(unit.getClassLoader());
+      ArchiveDeployment dep = createDeployment(unit.getClassLoader());
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
       dep.setRuntimeClassLoader(unit.getClassLoader());
       dep.setType(getDeploymentType());
