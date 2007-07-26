@@ -32,7 +32,6 @@ import org.jboss.ejb3.mdb.MessagingContainer;
 import org.jboss.ejb3.metamodel.*;
 import org.jboss.logging.Logger;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.metadata.j2ee.*;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocationAdapter;
 
@@ -51,7 +50,7 @@ public class ApplicationMetaDataAdapterEJB3
    // logging support
    private static Logger log = Logger.getLogger(ApplicationMetaDataAdapterEJB3.class);
 
-   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
    {
       Ejb3Deployment ejb3Deployment = unit.getAttachment(Ejb3Deployment.class);
       dep.getContext().addAttachment(Ejb3Deployment.class, ejb3Deployment);
@@ -61,7 +60,6 @@ public class ApplicationMetaDataAdapterEJB3
       buildUnifiedBeanMetaData(umd, ejb3Deployment);
       buildWebservicesMetaData(umd, jarDD);
       
-      dep.getContext().addAttachment(UnifiedApplicationMetaData.class, umd);
       return umd;
    }
 

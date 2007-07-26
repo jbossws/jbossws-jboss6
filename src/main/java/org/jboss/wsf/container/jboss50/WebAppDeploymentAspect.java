@@ -23,6 +23,10 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id: WebAppDeployerDeployer.java 3772 2007-07-01 19:29:13Z thomas.diesler@jboss.com $
 
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.deployers.client.spi.DeployerClient;
 import org.jboss.deployers.vfs.spi.client.VFSDeploymentFactory;
 import org.jboss.logging.Logger;
@@ -31,12 +35,7 @@ import org.jboss.virtual.VirtualFile;
 import org.jboss.wsf.framework.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.deployment.WSFDeploymentException;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Publish the HTTP service endpoint to Tomcat 
@@ -67,10 +66,6 @@ public class WebAppDeploymentAspect extends DeploymentAspect
    {
       if (dep.getType().toString().endsWith("EJB21") || dep.getType().toString().endsWith("EJB3"))
       {
-         UnifiedDeploymentInfo udi = dep.getContext().getAttachment(UnifiedDeploymentInfo.class);
-         if (udi == null)
-            throw new IllegalStateException("Cannot obtain unified deployement info");
-
          URL warURL = (URL)dep.getContext().getProperty(WebXMLRewriter.WEBAPP_URL);
 
          log.debug("publishServiceEndpoint: " + warURL);
@@ -92,14 +87,10 @@ public class WebAppDeploymentAspect extends DeploymentAspect
 
    public void destroy(Deployment dep)
    {
-      UnifiedDeploymentInfo udi = dep.getContext().getAttachment(UnifiedDeploymentInfo.class);
-      if (udi == null)
-         throw new IllegalStateException("Cannot obtain unified deployement info");
-
       URL warURL = (URL)dep.getContext().getProperty(WebXMLRewriter.WEBAPP_URL);
       if (warURL == null)
       {
-         log.error("Cannot obtain warURL for: " + udi);
+         log.error("Cannot obtain warURL");
          return;
       }
 

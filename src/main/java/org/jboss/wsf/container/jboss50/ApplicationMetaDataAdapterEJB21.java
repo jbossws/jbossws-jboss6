@@ -29,7 +29,6 @@ import org.jboss.metadata.*;
 import org.jboss.metadata.ApplicationMetaData.WebserviceDescription;
 import org.jboss.metadata.ApplicationMetaData.Webservices;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.UnifiedDeploymentInfo;
 import org.jboss.wsf.spi.metadata.j2ee.*;
 import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocationAdapter;
 
@@ -48,7 +47,7 @@ public class ApplicationMetaDataAdapterEJB21
    // logging support
    private static Logger log = Logger.getLogger(ApplicationMetaDataAdapterEJB21.class);
 
-   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, UnifiedDeploymentInfo udi, DeploymentUnit unit)
+   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
    {
       ApplicationMetaData appMetaData = unit.getAttachment(ApplicationMetaData.class);
       dep.getContext().addAttachment(ApplicationMetaData.class, appMetaData);
@@ -58,7 +57,6 @@ public class ApplicationMetaDataAdapterEJB21
       buildWebservicesMetaData(umd, appMetaData);
       umd.setSecurityDomain(appMetaData.getSecurityDomain());
       
-      dep.getContext().addAttachment(UnifiedApplicationMetaData.class, umd);
       return umd;
    }
 

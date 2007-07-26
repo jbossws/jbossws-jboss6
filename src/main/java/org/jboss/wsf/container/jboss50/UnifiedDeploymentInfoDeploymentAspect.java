@@ -24,9 +24,8 @@ package org.jboss.wsf.container.jboss50;
 //$Id: UnifiedDeploymentInfoDeployer.java 3772 2007-07-01 19:29:13Z thomas.diesler@jboss.com $
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.wsf.spi.deployment.*;
-import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
-import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.DeploymentAspect;
 
 /**
  * A deployer that builds the UnifiedDeploymentInfo 
@@ -37,36 +36,19 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 public class UnifiedDeploymentInfoDeploymentAspect extends DeploymentAspect
 {
    private DeploymentInfoAdapter deploymentInfoAdapter = new DeploymentInfoAdapter();
-   
+
    public void setDeploymentInfoAdapter(DeploymentInfoAdapter adapter)
    {
       this.deploymentInfoAdapter = adapter;
    }
-   
+
    @Override
    public void create(Deployment dep)
    {
-      UnifiedDeploymentInfo udi = dep.getContext().getAttachment(UnifiedDeploymentInfo.class);
-      if (udi == null)
-      {
-         DeploymentUnit unit = dep.getContext().getAttachment(DeploymentUnit.class);
-         if (unit == null)
-            throw new IllegalStateException("Cannot obtain deployment unit");
+      DeploymentUnit unit = dep.getContext().getAttachment(DeploymentUnit.class);
+      if (unit == null)
+         throw new IllegalStateException("Cannot obtain deployment unit");
 
-         DeploymentType type = dep.getType();
-         if (type.toString().startsWith("JAXWS"))
-         {
-            udi = new JAXWSDeployment(type);
-            deploymentInfoAdapter.buildDeploymentInfo(dep, udi, unit);
-         }
-         else
-         {
-            WebservicesMetaData wsMetaData = dep.getContext().getAttachment(WebservicesMetaData.class);
-            udi = new JAXRPCDeployment(type, wsMetaData);
-            deploymentInfoAdapter.buildDeploymentInfo(dep, udi, unit);
-         }
-
-         dep.getContext().addAttachment(UnifiedDeploymentInfo.class, udi);
-      }
+      deploymentInfoAdapter.buildDeploymentInfo(dep, unit);
    }
 }
