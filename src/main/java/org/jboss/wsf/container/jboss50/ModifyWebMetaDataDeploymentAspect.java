@@ -29,7 +29,6 @@ import org.jboss.metadata.WebMetaData;
 import org.jboss.metadata.web.ParamValue;
 import org.jboss.metadata.web.ParamValue.ParamType;
 import org.jboss.metadata.web.Servlet;
-import org.jboss.wsf.framework.deployment.WebAppDesciptorModifier;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.Endpoint;
@@ -48,19 +47,19 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
    @Override
    public void create(Deployment dep)
    {
-      String propKey = WebAppDesciptorModifier.SERVLET_CLASS;
+      String propKey = "org.jboss.ws.webapp.ServletClass";
       String servletClass = (String)dep.getProperty(propKey);
       if (servletClass == null)
          throw new IllegalStateException("Cannot obtain context property: " + propKey);
 
       modifyServletClass(dep, servletClass);
 
-      propKey = WebAppDesciptorModifier.SERVLET_CONTEXT_LISTENER;
+      propKey = "org.jboss.ws.webapp.ServletContextListener";
       String listenerClass = (String)dep.getProperty(propKey);
       if (listenerClass != null)
          modifyListener(dep, listenerClass);
       
-      propKey = WebAppDesciptorModifier.CONTEXT_PARAMETER_MAP;
+      propKey = "org.jboss.ws.webapp.ContextParameterMap";
       Map<String, String> contextParams = (Map<String, String>)dep.getProperty(propKey);
       if (contextParams != null)
          modifyContextParams(dep, contextParams);

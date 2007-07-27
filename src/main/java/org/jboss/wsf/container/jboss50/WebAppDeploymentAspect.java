@@ -23,19 +23,18 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id: WebAppDeployerDeployer.java 3772 2007-07-01 19:29:13Z thomas.diesler@jboss.com $
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jboss.deployers.client.spi.DeployerClient;
 import org.jboss.deployers.vfs.spi.client.VFSDeploymentFactory;
 import org.jboss.logging.Logger;
 import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
-import org.jboss.wsf.framework.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.WSFDeploymentException;
+
+import java.net.URL;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Publish the HTTP service endpoint to Tomcat 
@@ -49,7 +48,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
    private static Logger log = Logger.getLogger(WebAppDeploymentAspect.class);
 
    private DeployerClient mainDeployer;
-   private WebXMLRewriter webXMLRewriter;
+   private WebXMLRewriterImpl webXMLRewriter;
    private Map<String, org.jboss.deployers.client.spi.Deployment> deploymentMap = new HashMap<String, org.jboss.deployers.client.spi.Deployment>();
 
    public void setMainDeployer(DeployerClient mainDeployer)
@@ -57,7 +56,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
       this.mainDeployer = mainDeployer;
    }
 
-   public void setWebXMLRewriter(WebXMLRewriter serviceEndpointPublisher)
+   public void setWebXMLRewriter(WebXMLRewriterImpl serviceEndpointPublisher)
    {
       this.webXMLRewriter = serviceEndpointPublisher;
    }
@@ -66,7 +65,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
    {
       if (dep.getType().toString().endsWith("EJB21") || dep.getType().toString().endsWith("EJB3"))
       {
-         URL warURL = (URL)dep.getProperty(WebXMLRewriter.WEBAPP_URL);
+         URL warURL = (URL)dep.getProperty("org.jboss.ws.webapp.url");
 
          log.debug("publishServiceEndpoint: " + warURL);
          try
@@ -87,7 +86,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
 
    public void destroy(Deployment dep)
    {
-      URL warURL = (URL)dep.getProperty(WebXMLRewriter.WEBAPP_URL);
+      URL warURL = (URL)dep.getProperty("org.jboss.ws.webapp.url");
       if (warURL == null)
       {
          log.error("Cannot obtain warURL");

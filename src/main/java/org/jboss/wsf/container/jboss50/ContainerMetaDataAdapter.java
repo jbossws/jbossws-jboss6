@@ -23,18 +23,17 @@ package org.jboss.wsf.container.jboss50;
 
 //$Id$
 
-import java.net.URL;
-
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.WebMetaData;
-import org.jboss.wsf.framework.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.JSEArchiveMetaData;
+
+import java.net.URL;
 
 /**
  * Build container independent deployment info.
@@ -82,7 +81,7 @@ public class ContainerMetaDataAdapter
             if (dep instanceof ArchiveDeployment)
             {
                URL webURL = ((ArchiveDeployment)dep).getRootFile().toURL();
-               dep.setProperty(WebXMLRewriter.WEBAPP_URL, webURL);
+               dep.setProperty("org.jboss.ws.webapp.url", webURL);
             }
          }
          
