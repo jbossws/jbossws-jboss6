@@ -50,7 +50,7 @@ public class ApplicationMetaDataAdapterEJB21
    public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
    {
       ApplicationMetaData appMetaData = unit.getAttachment(ApplicationMetaData.class);
-      dep.getContext().addAttachment(ApplicationMetaData.class, appMetaData);
+      dep.addAttachment(ApplicationMetaData.class, appMetaData);
       
       UnifiedApplicationMetaData umd = new UnifiedApplicationMetaData();
       buildUnifiedBeanMetaData(umd, appMetaData);

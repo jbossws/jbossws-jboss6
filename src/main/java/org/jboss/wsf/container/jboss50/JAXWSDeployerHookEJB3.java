@@ -68,7 +68,7 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
          throw new IllegalStateException("Deployment unit does not contain ejb3 deployment");
 
       // Copy the attachments
-      dep.getContext().addAttachment(Ejb3Deployment.class, ejb3Deployment);
+      dep.addAttachment(Ejb3Deployment.class, ejb3Deployment);
 
       Iterator it = ejb3Deployment.getEjbContainers().values().iterator();
       while (it.hasNext())

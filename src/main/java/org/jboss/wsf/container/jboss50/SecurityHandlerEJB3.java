@@ -45,7 +45,7 @@ public class SecurityHandlerEJB3 implements SecurityHandler
    {
       String securityDomain = null;
       
-      Ejb3Deployment ejb3Deployment = dep.getContext().getAttachment(Ejb3Deployment.class);
+      Ejb3Deployment ejb3Deployment = dep.getAttachment(Ejb3Deployment.class);
       if (ejb3Deployment != null)
       {
          Iterator it = ejb3Deployment.getEjbContainers().values().iterator();
@@ -74,7 +74,7 @@ public class SecurityHandlerEJB3 implements SecurityHandler
 
    public void addSecurityRoles(Element webApp, Deployment dep)
    {
-      Ejb3Deployment ejb3Deployment = dep.getContext().getAttachment(Ejb3Deployment.class);
+      Ejb3Deployment ejb3Deployment = dep.getAttachment(Ejb3Deployment.class);
       if (ejb3Deployment != null)
       {
          Iterator it = ejb3Deployment.getEjbContainers().values().iterator();

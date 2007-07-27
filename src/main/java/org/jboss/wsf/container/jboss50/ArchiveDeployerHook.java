@@ -88,7 +88,7 @@ public abstract class ArchiveDeployerHook extends AbstractDeployerHook
          if (dep == null)
          {
             dep = createDeployment(unit);
-            dep.getContext().addAttachment(DeploymentUnit.class, unit);
+            dep.addAttachment(DeploymentUnit.class, unit);
          }
 
          getDeploymentAspectManager().deploy(dep);

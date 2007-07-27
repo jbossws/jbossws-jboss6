@@ -68,7 +68,7 @@ public class DeploymentInfoAdapter
 
    public void buildDeploymentInfo(Deployment dep, DeploymentUnit unit)
    {
-      dep.getContext().addAttachment(DeploymentUnit.class, unit);
+      dep.addAttachment(DeploymentUnit.class, unit);
 
       try
       {
@@ -77,12 +77,12 @@ public class DeploymentInfoAdapter
          {
             UnifiedWebMetaData webMetaData = webMetaDataAdapter.buildUnifiedWebMetaData(dep, unit);
             if (webMetaData != null)
-               dep.getContext().addAttachment(UnifiedWebMetaData.class, webMetaData);
+               dep.addAttachment(UnifiedWebMetaData.class, webMetaData);
 
             if (dep instanceof ArchiveDeployment)
             {
                URL webURL = ((ArchiveDeployment)dep).getRootFile().toURL();
-               dep.getContext().setProperty(WebXMLRewriter.WEBAPP_URL, webURL);
+               dep.setProperty(WebXMLRewriter.WEBAPP_URL, webURL);
             }
          }
          
@@ -91,7 +91,7 @@ public class DeploymentInfoAdapter
          {
             UnifiedApplicationMetaData appMetaData = applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, unit);
             if (appMetaData != null)
-               dep.getContext().addAttachment(UnifiedApplicationMetaData.class, appMetaData);
+               dep.addAttachment(UnifiedApplicationMetaData.class, appMetaData);
          }
          
          // EJB21 endpoints
@@ -99,7 +99,7 @@ public class DeploymentInfoAdapter
          {
             UnifiedApplicationMetaData appMetaData = applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, unit);
             if (appMetaData != null)
-               dep.getContext().addAttachment(UnifiedApplicationMetaData.class, appMetaData);
+               dep.addAttachment(UnifiedApplicationMetaData.class, appMetaData);
          }
       }
       catch (RuntimeException rte)

@@ -52,7 +52,7 @@ public class WebMetaDataAdapter
       String contextRoot = null;
       
       WebMetaData wmd = unit.getAttachment(WebMetaData.class);
-      dep.getContext().addAttachment(WebMetaData.class, wmd);
+      dep.addAttachment(WebMetaData.class, wmd);
 
       if (unit.getParent() != null)
       {

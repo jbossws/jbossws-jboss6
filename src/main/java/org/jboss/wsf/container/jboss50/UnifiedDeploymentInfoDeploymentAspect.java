@@ -45,7 +45,7 @@ public class UnifiedDeploymentInfoDeploymentAspect extends DeploymentAspect
    @Override
    public void create(Deployment dep)
    {
-      DeploymentUnit unit = dep.getContext().getAttachment(DeploymentUnit.class);
+      DeploymentUnit unit = dep.getAttachment(DeploymentUnit.class);
       if (unit == null)
          throw new IllegalStateException("Cannot obtain deployment unit");
 

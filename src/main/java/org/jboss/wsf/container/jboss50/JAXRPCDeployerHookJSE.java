@@ -73,8 +73,8 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
          throw new IllegalStateException("Deployment unit does not contain webservices meta data");
 
       // Copy the attachments
-      dep.getContext().addAttachment(WebservicesMetaData.class, wsMetaData);
-      dep.getContext().addAttachment(WebMetaData.class, webMetaData);
+      dep.addAttachment(WebservicesMetaData.class, wsMetaData);
+      dep.addAttachment(WebMetaData.class, webMetaData);
 
       for (WebserviceDescriptionMetaData wsd : wsMetaData.getWebserviceDescriptions())
       {

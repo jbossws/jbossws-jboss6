@@ -53,7 +53,7 @@ public class ApplicationMetaDataAdapterEJB3
    public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
    {
       Ejb3Deployment ejb3Deployment = unit.getAttachment(Ejb3Deployment.class);
-      dep.getContext().addAttachment(Ejb3Deployment.class, ejb3Deployment);
+      dep.addAttachment(Ejb3Deployment.class, ejb3Deployment);
       
       EjbJarDD jarDD = unit.getAttachment(EjbJarDD.class);
       UnifiedApplicationMetaData umd = new UnifiedApplicationMetaData();

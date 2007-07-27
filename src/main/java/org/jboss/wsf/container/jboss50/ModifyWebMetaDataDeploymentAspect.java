@@ -49,19 +49,19 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
    public void create(Deployment dep)
    {
       String propKey = WebAppDesciptorModifier.SERVLET_CLASS;
-      String servletClass = (String)dep.getContext().getProperty(propKey);
+      String servletClass = (String)dep.getProperty(propKey);
       if (servletClass == null)
          throw new IllegalStateException("Cannot obtain context property: " + propKey);
 
       modifyServletClass(dep, servletClass);
 
       propKey = WebAppDesciptorModifier.SERVLET_CONTEXT_LISTENER;
-      String listenerClass = (String)dep.getContext().getProperty(propKey);
+      String listenerClass = (String)dep.getProperty(propKey);
       if (listenerClass != null)
          modifyListener(dep, listenerClass);
       
       propKey = WebAppDesciptorModifier.CONTEXT_PARAMETER_MAP;
-      Map<String, String> contextParams = (Map<String, String>)dep.getContext().getProperty(propKey);
+      Map<String, String> contextParams = (Map<String, String>)dep.getProperty(propKey);
       if (contextParams != null)
          modifyContextParams(dep, contextParams);
    }
@@ -69,7 +69,7 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
    private void modifyServletClass(Deployment dep, String servletClass)
    {
 
-      WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
+      WebMetaData webMetaData = dep.getAttachment(WebMetaData.class);
       if (webMetaData != null)
       {
          for (Servlet servlet : webMetaData.getServlets())
@@ -96,7 +96,7 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
 
    private void modifyListener(Deployment dep, String listenerClass)
    {
-      WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
+      WebMetaData webMetaData = dep.getAttachment(WebMetaData.class);
       if (webMetaData != null)
       {
          Listener listener = new Listener();
@@ -107,7 +107,7 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
 
    private void modifyContextParams(Deployment dep, Map<String, String> contextParams)
    {
-      WebMetaData webMetaData = dep.getContext().getAttachment(WebMetaData.class);
+      WebMetaData webMetaData = dep.getAttachment(WebMetaData.class);
       if (webMetaData != null)
       {
          for (Map.Entry<String, String> entry : contextParams.entrySet())
