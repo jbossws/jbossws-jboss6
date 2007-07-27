@@ -30,7 +30,7 @@ import org.jboss.metadata.ApplicationMetaData.WebserviceDescription;
 import org.jboss.metadata.ApplicationMetaData.Webservices;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.*;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocationAdapter;
+import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData.PublishLocationAdapter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -42,17 +42,17 @@ import java.util.List;
  * @author Thomas.Diesler@jboss.org
  * @since 05-May-2006
  */
-public class ApplicationMetaDataAdapterEJB21
+public class EJBArchiveMetaDataAdapterEJB21
 {
    // logging support
-   private static Logger log = Logger.getLogger(ApplicationMetaDataAdapterEJB21.class);
+   private static Logger log = Logger.getLogger(EJBArchiveMetaDataAdapterEJB21.class);
 
-   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
+   public EJBArchiveMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
    {
       ApplicationMetaData appMetaData = unit.getAttachment(ApplicationMetaData.class);
       dep.addAttachment(ApplicationMetaData.class, appMetaData);
       
-      UnifiedApplicationMetaData umd = new UnifiedApplicationMetaData();
+      EJBArchiveMetaData umd = new EJBArchiveMetaData();
       buildUnifiedBeanMetaData(umd, appMetaData);
       buildWebservicesMetaData(umd, appMetaData);
       umd.setSecurityDomain(appMetaData.getSecurityDomain());
@@ -60,7 +60,7 @@ public class ApplicationMetaDataAdapterEJB21
       return umd;
    }
 
-   private void buildWebservicesMetaData(UnifiedApplicationMetaData umd, ApplicationMetaData apmd)
+   private void buildWebservicesMetaData(EJBArchiveMetaData umd, ApplicationMetaData apmd)
    {
       Webservices webservices = apmd.getWebservices();
       if (webservices != null)
@@ -102,9 +102,9 @@ public class ApplicationMetaDataAdapterEJB21
       };
    }
 
-   private void buildUnifiedBeanMetaData(UnifiedApplicationMetaData umd, ApplicationMetaData appMetaData)
+   private void buildUnifiedBeanMetaData(EJBArchiveMetaData umd, ApplicationMetaData appMetaData)
    {
-      List<UnifiedBeanMetaData> beans = new ArrayList<UnifiedBeanMetaData>();
+      List<EJBMetaData> beans = new ArrayList<EJBMetaData>();
       Iterator it = appMetaData.getEnterpriseBeans();
       while (it.hasNext())
       {
@@ -114,17 +114,17 @@ public class ApplicationMetaDataAdapterEJB21
       umd.setEnterpriseBeans(beans);
    }
 
-   private UnifiedBeanMetaData buildUnifiedBeanMetaData(List<UnifiedBeanMetaData> beans, BeanMetaData bmd)
+   private EJBMetaData buildUnifiedBeanMetaData(List<EJBMetaData> beans, BeanMetaData bmd)
    {
-      UnifiedBeanMetaData ubmd = null;
+      EJBMetaData ubmd = null;
       if (bmd instanceof SessionMetaData)
       {
-         ubmd = new UnifiedSessionMetaData();
+         ubmd = new SLSBMetaData();
       }
       else if (bmd instanceof MessageDrivenMetaData)
       {
-         ubmd = new UnifiedMessageDrivenMetaData();
-         ((UnifiedMessageDrivenMetaData)ubmd).setDestinationJndiName(((MessageDrivenMetaData)bmd).getDestinationJndiName());
+         ubmd = new MDBMetaData();
+         ((MDBMetaData)ubmd).setDestinationJndiName(((MessageDrivenMetaData)bmd).getDestinationJndiName());
       }
 
       if (ubmd != null)
@@ -140,13 +140,13 @@ public class ApplicationMetaDataAdapterEJB21
          EjbPortComponentMetaData pcmd = bmd.getPortComponent();
          if (pcmd != null)
          {
-            UnifiedEjbPortComponentMetaData upcmd = new UnifiedEjbPortComponentMetaData();
-            upcmd.setPortComponentName(pcmd.getPortComponentName());
-            upcmd.setPortComponentURI(pcmd.getPortComponentURI());
-            upcmd.setAuthMethod(pcmd.getAuthMethod());
-            upcmd.setTransportGuarantee(pcmd.getTransportGuarantee());
-            upcmd.setSecureWSDLAccess(pcmd.getSecureWSDLAccess());
-            ubmd.setPortComponent(upcmd);
+            ubmd.setPortComponentName(pcmd.getPortComponentName());
+            ubmd.setPortComponentURI(pcmd.getPortComponentURI());
+            EJBSecurityMetaData smd = new EJBSecurityMetaData();
+            smd.setAuthMethod(pcmd.getAuthMethod());
+            smd.setTransportGuarantee(pcmd.getTransportGuarantee());
+            smd.setSecureWSDLAccess(pcmd.getSecureWSDLAccess());
+            ubmd.setSecurityMetaData(smd);
          }
 
          beans.add(ubmd);

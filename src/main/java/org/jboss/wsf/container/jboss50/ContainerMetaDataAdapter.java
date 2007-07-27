@@ -33,8 +33,8 @@ import org.jboss.metadata.WebMetaData;
 import org.jboss.wsf.framework.deployment.WebXMLRewriter;
 import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedWebMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.JSEArchiveMetaData;
 
 /**
  * Build container independent deployment info.
@@ -42,31 +42,31 @@ import org.jboss.wsf.spi.metadata.j2ee.UnifiedWebMetaData;
  * @author Thomas.Diesler@jboss.org
  * @since 05-May-2006
  */
-public class DeploymentInfoAdapter
+public class ContainerMetaDataAdapter
 {
    // logging support
-   private static Logger log = Logger.getLogger(DeploymentInfoAdapter.class);
+   private static Logger log = Logger.getLogger(ContainerMetaDataAdapter.class);
 
-   private ApplicationMetaDataAdapterEJB3 applicationMetaDataAdapterEJB3 = new ApplicationMetaDataAdapterEJB3();
-   private ApplicationMetaDataAdapterEJB21 applicationMetaDataAdapterEJB21 = new ApplicationMetaDataAdapterEJB21();
-   private WebMetaDataAdapter webMetaDataAdapter = new WebMetaDataAdapter();
+   private EJBArchiveMetaDataAdapterEJB3 applicationMetaDataAdapterEJB3 = new EJBArchiveMetaDataAdapterEJB3();
+   private EJBArchiveMetaDataAdapterEJB21 applicationMetaDataAdapterEJB21 = new EJBArchiveMetaDataAdapterEJB21();
+   private JSEArchiveMetaDataAdapter webMetaDataAdapter = new JSEArchiveMetaDataAdapter();
 
-   public void setApplicationMetaDataAdapterEJB21(ApplicationMetaDataAdapterEJB21 adapter)
+   public void setApplicationMetaDataAdapterEJB21(EJBArchiveMetaDataAdapterEJB21 adapter)
    {
       this.applicationMetaDataAdapterEJB21 = adapter;
    }
 
-   public void setApplicationMetaDataAdapterEJB3(ApplicationMetaDataAdapterEJB3 adapter)
+   public void setApplicationMetaDataAdapterEJB3(EJBArchiveMetaDataAdapterEJB3 adapter)
    {
       this.applicationMetaDataAdapterEJB3 = adapter;
    }
 
-   public void setWebMetaDataAdapter(WebMetaDataAdapter adapter)
+   public void setWebMetaDataAdapter(JSEArchiveMetaDataAdapter adapter)
    {
       this.webMetaDataAdapter = adapter;
    }
 
-   public void buildDeploymentInfo(Deployment dep, DeploymentUnit unit)
+   public void buildContainerMetaData(Deployment dep, DeploymentUnit unit)
    {
       dep.addAttachment(DeploymentUnit.class, unit);
 
@@ -75,9 +75,9 @@ public class DeploymentInfoAdapter
          // JSE endpoints
          if (unit.getAttachment(WebMetaData.class) != null)
          {
-            UnifiedWebMetaData webMetaData = webMetaDataAdapter.buildUnifiedWebMetaData(dep, unit);
+            JSEArchiveMetaData webMetaData = webMetaDataAdapter.buildUnifiedWebMetaData(dep, unit);
             if (webMetaData != null)
-               dep.addAttachment(UnifiedWebMetaData.class, webMetaData);
+               dep.addAttachment(JSEArchiveMetaData.class, webMetaData);
 
             if (dep instanceof ArchiveDeployment)
             {
@@ -89,17 +89,17 @@ public class DeploymentInfoAdapter
          // EJB3 endpoints
          else if (unit.getAttachment(Ejb3Deployment.class) != null)
          {
-            UnifiedApplicationMetaData appMetaData = applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, unit);
+            EJBArchiveMetaData appMetaData = applicationMetaDataAdapterEJB3.buildUnifiedApplicationMetaData(dep, unit);
             if (appMetaData != null)
-               dep.addAttachment(UnifiedApplicationMetaData.class, appMetaData);
+               dep.addAttachment(EJBArchiveMetaData.class, appMetaData);
          }
          
          // EJB21 endpoints
          else if (unit.getAttachment(ApplicationMetaData.class) != null)
          {
-            UnifiedApplicationMetaData appMetaData = applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, unit);
+            EJBArchiveMetaData appMetaData = applicationMetaDataAdapterEJB21.buildUnifiedApplicationMetaData(dep, unit);
             if (appMetaData != null)
-               dep.addAttachment(UnifiedApplicationMetaData.class, appMetaData);
+               dep.addAttachment(EJBArchiveMetaData.class, appMetaData);
          }
       }
       catch (RuntimeException rte)

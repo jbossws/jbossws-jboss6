@@ -23,21 +23,29 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id$
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.ejb3.Container;
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.ejb3.Ejb3Deployment;
-import org.jboss.ejb3.session.SessionContainer;
 import org.jboss.ejb3.mdb.MessagingContainer;
-import org.jboss.ejb3.metamodel.*;
+import org.jboss.ejb3.metamodel.Ejb3PortComponent;
+import org.jboss.ejb3.metamodel.EjbJarDD;
+import org.jboss.ejb3.metamodel.EnterpriseBean;
+import org.jboss.ejb3.metamodel.WebserviceDescription;
+import org.jboss.ejb3.metamodel.Webservices;
+import org.jboss.ejb3.session.SessionContainer;
 import org.jboss.logging.Logger;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.metadata.j2ee.*;
-import org.jboss.wsf.spi.metadata.j2ee.UnifiedApplicationMetaData.PublishLocationAdapter;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.MDBMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
+import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData.PublishLocationAdapter;
 
 /**
  * Build container independent application meta data 
@@ -45,30 +53,30 @@ import java.util.List;
  * @author Thomas.Diesler@jboss.org
  * @since 14-Apr-2007
  */
-public class ApplicationMetaDataAdapterEJB3
+public class EJBArchiveMetaDataAdapterEJB3
 {
    // logging support
-   private static Logger log = Logger.getLogger(ApplicationMetaDataAdapterEJB3.class);
+   private static Logger log = Logger.getLogger(EJBArchiveMetaDataAdapterEJB3.class);
 
-   public UnifiedApplicationMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
+   public EJBArchiveMetaData buildUnifiedApplicationMetaData(Deployment dep, DeploymentUnit unit)
    {
       Ejb3Deployment ejb3Deployment = unit.getAttachment(Ejb3Deployment.class);
       dep.addAttachment(Ejb3Deployment.class, ejb3Deployment);
-      
+
       EjbJarDD jarDD = unit.getAttachment(EjbJarDD.class);
-      UnifiedApplicationMetaData umd = new UnifiedApplicationMetaData();
+      EJBArchiveMetaData umd = new EJBArchiveMetaData();
       buildUnifiedBeanMetaData(umd, ejb3Deployment);
       buildWebservicesMetaData(umd, jarDD);
-      
+
       return umd;
    }
 
-   private void buildWebservicesMetaData(UnifiedApplicationMetaData umd, EjbJarDD jarDD)
+   private void buildWebservicesMetaData(EJBArchiveMetaData umd, EjbJarDD jarDD)
    {
       // nothing to do
       if (jarDD == null)
          return;
-      
+
       Webservices webservices = jarDD.getWebservices();
       if (webservices != null)
       {
@@ -84,32 +92,32 @@ public class ApplicationMetaDataAdapterEJB3
             WebserviceDescription wsd = wsDescriptions.get(0);
             umd.setConfigName(wsd.getConfigName());
             umd.setConfigFile(wsd.getConfigFile());
-            
+
             // com/sun/ts/tests/webservices12/ejb/annotations/WSEjbWebServiceRefTest1
             // WSEjbWebServiceRefTest1VerifyTargetEndpointAddress
             if (contextRoot == null)
                contextRoot = "/" + wsd.getDescriptionName();
          }
-         
+
          umd.setWebServiceContextRoot(contextRoot);
       }
    }
 
-   private void buildUnifiedBeanMetaData(UnifiedApplicationMetaData umd, Ejb3Deployment ejb3Deployment)
+   private void buildUnifiedBeanMetaData(EJBArchiveMetaData umd, Ejb3Deployment ejb3Deployment)
    {
-      List<UnifiedBeanMetaData> ubmdList = new ArrayList<UnifiedBeanMetaData>();
+      List<EJBMetaData> ubmdList = new ArrayList<EJBMetaData>();
       Iterator<Container> it = ejb3Deployment.getEjbContainers().values().iterator();
       while (it.hasNext())
       {
          EJBContainer container = (EJBContainer)it.next();
-         UnifiedBeanMetaData ubmd = null;
+         EJBMetaData ubmd = null;
          if (container instanceof SessionContainer)
          {
-            ubmd = new UnifiedSessionMetaData();
+            ubmd = new SLSBMetaData();
          }
          else if (container instanceof MessagingContainer)
          {
-            ubmd = new UnifiedMessageDrivenMetaData();
+            ubmd = new MDBMetaData();
             log.warn("No implemented: initialize MDB destination");
             //((UnifiedMessageDrivenMetaData)ubmd).setDestinationJndiName(((MessagingContainer)container).getDestination());
          }
@@ -120,17 +128,16 @@ public class ApplicationMetaDataAdapterEJB3
             ubmd.setEjbClass(container.getBeanClassName());
 
             EnterpriseBean bean = container.getXml();
-            Ejb3PortComponent pcMetaData = (bean != null ? bean.getPortComponent() : null);
-            if (pcMetaData != null)
+            Ejb3PortComponent pcmd = (bean != null ? bean.getPortComponent() : null);
+            if (pcmd != null)
             {
-               UnifiedEjbPortComponentMetaData ejbPortComp = new UnifiedEjbPortComponentMetaData();
-               ejbPortComp.setPortComponentName(pcMetaData.getPortComponentName());
-               ejbPortComp.setPortComponentURI(pcMetaData.getPortComponentURI());
-               ejbPortComp.setAuthMethod(pcMetaData.getAuthMethod());
-               ejbPortComp.setTransportGuarantee(pcMetaData.getTransportGuarantee());
-               ejbPortComp.setSecureWSDLAccess(pcMetaData.getSecureWSDLAccess());
-
-               ubmd.setPortComponent(ejbPortComp);
+               ubmd.setPortComponentName(pcmd.getPortComponentName());
+               ubmd.setPortComponentURI(pcmd.getPortComponentURI());
+               EJBSecurityMetaData smd = new EJBSecurityMetaData();
+               smd.setAuthMethod(pcmd.getAuthMethod());
+               smd.setTransportGuarantee(pcmd.getTransportGuarantee());
+               smd.setSecureWSDLAccess(pcmd.getSecureWSDLAccess());
+               ubmd.setSecurityMetaData(smd);
             }
 
             ubmdList.add(ubmd);
@@ -141,8 +148,7 @@ public class ApplicationMetaDataAdapterEJB3
 
    private PublishLocationAdapter getPublishLocationAdpater(final Webservices webservices)
    {
-      return new PublishLocationAdapter()
-      {
+      return new PublishLocationAdapter() {
          public String getWsdlPublishLocationByName(String name)
          {
             String wsdlPublishLocation = null;
