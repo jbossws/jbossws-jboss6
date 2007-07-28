@@ -158,7 +158,7 @@ public class InvocationHandlerEJB21 extends InvocationHandler
          throw new IllegalStateException("Cannot obtain MessageContext");
 
       SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
-      SecurityAdaptor securityAdaptor = spiProvider.getSPI(SecurityAdaptorFactory.class).createSecurityAdapter();
+      SecurityAdaptor securityAdaptor = spiProvider.getSPI(SecurityAdaptorFactory.class).newSecurityAdapter();
       SecurityContext sc = SecurityContextAssociation.getSecurityContext();
       Principal principal = securityAdaptor.getPrincipal();
       Object credential = securityAdaptor.getCredential();

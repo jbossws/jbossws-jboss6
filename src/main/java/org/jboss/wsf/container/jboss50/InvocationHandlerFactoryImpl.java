@@ -31,7 +31,7 @@ import org.jboss.wsf.spi.invocation.*;
  */
 public class InvocationHandlerFactoryImpl extends InvocationHandlerFactory
 {
-   public InvocationHandler createInvocationHandler(InvocationType type)
+   public InvocationHandler newInvocationHandler(InvocationType type)
    {
       InvocationHandler handler = null;
 

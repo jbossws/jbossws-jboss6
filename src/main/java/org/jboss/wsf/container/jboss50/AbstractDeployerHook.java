@@ -51,7 +51,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
       if(null == deploymentAspectManager)
       {
          SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
-         deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).createDeploymentAspectManager(getDeploymentType());
+         deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).getDeploymentAspectManager(getDeploymentType());
       }
 
       return deploymentAspectManager;
@@ -73,11 +73,11 @@ public abstract class AbstractDeployerHook implements DeployerHook
       try
       {
          DeploymentModelFactory factory = getDeploymentModelFactory();
-         ArchiveDeployment dep = (ArchiveDeployment)factory.createDeployment(unit.getSimpleName(), unit.getClassLoader());
+         ArchiveDeployment dep = (ArchiveDeployment)factory.newDeployment(unit.getSimpleName(), unit.getClassLoader());
          if (unit.getParent() != null)
          {
             DeploymentUnit parentUnit = unit.getParent();
-            ArchiveDeployment parentDep = (ArchiveDeployment)factory.createDeployment(parentUnit.getSimpleName(), parentUnit.getClassLoader());
+            ArchiveDeployment parentDep = (ArchiveDeployment)factory.newDeployment(parentUnit.getSimpleName(), parentUnit.getClassLoader());
             dep.setParent(parentDep);
          }
          return dep;
@@ -92,7 +92,7 @@ public abstract class AbstractDeployerHook implements DeployerHook
    {
       try
       {
-         return getDeploymentModelFactory().createEndpoint();
+         return getDeploymentModelFactory().newEndpoint();
       }
       catch (Exception ex)
       {
