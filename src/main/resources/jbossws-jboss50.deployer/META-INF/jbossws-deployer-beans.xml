@@ -2,6 +2,21 @@
 
 <deployment xmlns="urn:jboss:bean-deployer:2.0">
   
+  <!-- Locate the single instance of the kernel -->  
+  <bean name="WSKernelLocator" class="org.jboss.ws.integration.KernelLocator">
+    <property name="kernel"><inject bean="jboss.kernel:service=Kernel"/></property>
+  </bean>
+  
+  <!-- Locate the single instance of the MBeanServer -->  
+  <bean name="WSMBeanServerLocator" class="org.jboss.wsf.framework.management.MBeanServerLocator">
+    <property name="mbeanServer"><inject bean="JMXKernel" property="mbeanServer"/></property>
+  </bean>
+  
+  <!-- The HTTPServer used by the JAXWS Endpoint API -->  
+  <bean name="WSHTTPServer" class="org.jboss.wsf.container.jboss50.WebAppDeployingHttpServer">
+    <property name="mainDeployer"><inject bean="MainDeployer"/></property>
+  </bean>
+  
   <!-- 
     ********************************************************************************************************************* 
     Web Service deployment                                                                                                
@@ -41,11 +56,6 @@
     
     ********************************************************************************************************************* 
   -->
-  
-  <!-- Locate the single instance of the kernel -->  
-  <bean name="WSKernelLocator" class="org.jboss.ws.integration.KernelLocator">
-    <property name="kernel"><inject bean="jboss.kernel:service=Kernel"/></property>
-  </bean>
   
   <!--
     A web service deployer that hooks in after the EJB deployers
