@@ -77,7 +77,8 @@ public class JAXWSDeployerHookJSE extends AbstractDeployerHookJSE
          String servletClass = servlet.getServletClass();
 
          // Create the endpoint
-         Endpoint ep = newEndpoint(servletName, servletClass);
+         Endpoint ep = newEndpoint(servletClass);
+         ep.setShortName(servletName);
          service.addEndpoint(ep);
       }
 
