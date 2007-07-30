@@ -23,6 +23,10 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id: WebAppDeployerDeployer.java 3772 2007-07-01 19:29:13Z thomas.diesler@jboss.com $
 
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.deployers.client.spi.DeployerClient;
 import org.jboss.deployers.vfs.spi.client.VFSDeploymentFactory;
 import org.jboss.logging.Logger;
@@ -31,10 +35,6 @@ import org.jboss.virtual.VirtualFile;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.WSFDeploymentException;
-
-import java.net.URL;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Publish the HTTP service endpoint to Tomcat 
@@ -63,24 +63,23 @@ public class WebAppDeploymentAspect extends DeploymentAspect
 
    public void create(Deployment dep)
    {
-      if (dep.getType().toString().endsWith("EJB21") || dep.getType().toString().endsWith("EJB3"))
+      URL warURL = (URL)dep.getProperty("org.jboss.ws.webapp.url");
+      if (warURL == null)
+         throw new IllegalStateException("Cannot obtain generated webapp URL");
+
+      log.debug("publishServiceEndpoint: " + warURL);
+      try
       {
-         URL warURL = (URL)dep.getProperty("org.jboss.ws.webapp.url");
+         webXMLRewriter.rewriteWebXml(dep);
+         org.jboss.deployers.client.spi.Deployment deployment = createDeploymentContext(warURL);
 
-         log.debug("publishServiceEndpoint: " + warURL);
-         try
-         {
-            webXMLRewriter.rewriteWebXml(dep);
-            org.jboss.deployers.client.spi.Deployment deployment = createDeploymentContext(warURL);
+         mainDeployer.deploy(deployment);
 
-            mainDeployer.deploy(deployment);
-
-            deploymentMap.put(warURL.toExternalForm(), deployment);
-         }
-         catch (Exception ex)
-         {
-            WSFDeploymentException.rethrow(ex);
-         }
+         deploymentMap.put(warURL.toExternalForm(), deployment);
+      }
+      catch (Exception ex)
+      {
+         WSFDeploymentException.rethrow(ex);
       }
    }
 
@@ -89,7 +88,7 @@ public class WebAppDeploymentAspect extends DeploymentAspect
       URL warURL = (URL)dep.getProperty("org.jboss.ws.webapp.url");
       if (warURL == null)
       {
-         log.error("Cannot obtain warURL");
+         log.error("Cannot obtain generated webapp URL");
          return;
       }
 
