@@ -22,7 +22,7 @@
 package org.jboss.wsf.container.jboss50;
 
 import org.jboss.virtual.VirtualFile;
-import org.jboss.ws.integration.UnifiedVirtualFile;
+import org.jboss.wsf.spi.deployment.UnifiedVirtualFile;
 
 import java.io.IOException;
 import java.net.URL;

@@ -3,7 +3,7 @@
 <deployment xmlns="urn:jboss:bean-deployer:2.0">
   
   <!-- Locate the single instance of the kernel -->  
-  <bean name="WSKernelLocator" class="org.jboss.ws.integration.KernelLocator">
+  <bean name="WSKernelLocator" class="org.jboss.wsf.common.KernelLocator">
     <property name="kernel"><inject bean="jboss.kernel:service=Kernel"/></property>
   </bean>
   
@@ -145,7 +145,7 @@
     The container deployment aspects
   --> 
   <bean name="WSContainerMetaDataDeploymentAspect" class="org.jboss.wsf.container.jboss50.ContainerMetaDataDeploymentAspect">
-    <property name="provides">ContainerMetaData</property>
+    <property name="provides">ContainerMetaData, VFSRoot</property>
   </bean>
   
   <bean name="WSContextRootDeploymentAspect" class="org.jboss.wsf.framework.deployment.BackwardCompatibleContextRootDeploymentAspect">
