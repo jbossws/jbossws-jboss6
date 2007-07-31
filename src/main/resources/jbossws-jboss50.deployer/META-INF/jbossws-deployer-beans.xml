@@ -140,6 +140,9 @@
   <bean name="WSDeploymentAspectManagerEJB" class="org.jboss.wsf.framework.deployment.DeploymentAspectManagerImpl">
     <property name="name">WSDeploymentAspectManagerEJB</property>
   </bean>
+  <bean name="WSDeploymentAspectManagerEndpointAPI" class="org.jboss.wsf.framework.deployment.DeploymentAspectManagerImpl">
+    <property name="name">WSDeploymentAspectManagerEndpointAPI</property>
+  </bean>
   
   <!-- 
     The container deployment aspects
@@ -156,6 +159,10 @@
   <bean name="WSEndpointAddressDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointAddressDeploymentAspect">
     <property name="requires">URLPattern</property>
     <property name="provides">EndpointAddress</property>
+  </bean>
+  
+  <bean name="WSEndpointAPIDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointAPIDeploymentAspect">
+    <property name="provides">ContainerMetaData, URLPattern, VFSRoot</property>
   </bean>
   
   <bean name="WSEndpointHandlerDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointHandlerDeploymentAspect">
@@ -245,6 +252,23 @@
         <inject bean="WSEndpointNameDeploymentAspect"/>
         <inject bean="WSEndpointRegistryDeploymentAspect"/>
         <inject bean="WSURLPatternDeploymentAspect"/>
+        <inject bean="WSWebAppDeploymentAspect"/>
+        <inject bean="WSWebAppGeneratorDeploymentAspect"/>
+      </set>
+    </property>
+  </bean>
+  <bean name="WSDeploymentAspectInstallerEndpointAPI" class="org.jboss.wsf.framework.deployment.DeploymentAspectInstaller">
+    <property name="manager"><inject bean="WSDeploymentAspectManagerEndpointAPI"/></property>
+    <property name="sortAspectsOnCreate">false</property>
+    <property name="aspects">
+      <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
+        <inject bean="WSEndpointAPIDeploymentAspect"/>
+        <inject bean="WSEndpointAddressDeploymentAspect"/>
+        <inject bean="WSEndpointHandlerDeploymentAspect"/>
+        <inject bean="WSEndpointLifecycleDeploymentAspect"/>
+        <inject bean="WSEndpointMetricsDeploymentAspect"/>
+        <inject bean="WSEndpointNameDeploymentAspect"/>
+        <inject bean="WSEndpointRegistryDeploymentAspect"/>
         <inject bean="WSWebAppDeploymentAspect"/>
         <inject bean="WSWebAppGeneratorDeploymentAspect"/>
       </set>
