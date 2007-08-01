@@ -27,7 +27,7 @@ import org.jboss.deployers.spi.DeploymentException;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.virtual.VirtualFile;
-import org.jboss.wsf.spi.deployment.UnifiedVirtualFile;
+import org.jboss.ws.integration.UnifiedVirtualFile;
 import org.jboss.wsf.common.DOMUtils;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
