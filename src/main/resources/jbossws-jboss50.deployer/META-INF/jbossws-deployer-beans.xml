@@ -17,10 +17,6 @@
     <property name="mainDeployer"><inject bean="MainDeployer"/></property>
   </bean>
   
-  <!-- Bind Service objects in client environment context  -->
-  <bean name="WSServiceRefHandler" class="org.jboss.wsf.container.jboss50.serviceref.ServiceRefHandlerImpl">
-  </bean>
-  
   <!-- 
     ********************************************************************************************************************* 
     Web Service deployment                                                                                                
