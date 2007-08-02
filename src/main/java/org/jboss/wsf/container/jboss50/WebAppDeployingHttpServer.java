@@ -40,7 +40,7 @@ import org.jboss.virtual.VFS;
 import org.jboss.virtual.VirtualFile;
 import org.jboss.wsf.common.DOMUtils;
 import org.jboss.wsf.common.DOMWriter;
-import org.jboss.wsf.framework.DefaultExtensible;
+import org.jboss.wsf.spi.AbstractExtensible;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
 import org.jboss.wsf.spi.http.HttpContext;
@@ -56,7 +56,7 @@ import org.w3c.dom.Element;
  * @author Thomas.Diesler@jboss.org
  * @since 07-Jul-2006
  */
-public class WebAppDeployingHttpServer extends DefaultExtensible implements HttpServer
+public class WebAppDeployingHttpServer extends AbstractExtensible implements HttpServer
 {
    private DeployerClient mainDeployer;
    private Map<String, Deployment> deploymentMap = new HashMap<String, Deployment>();
