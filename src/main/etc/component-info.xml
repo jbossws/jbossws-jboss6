@@ -9,8 +9,14 @@
     <artifact id="jbossws-jboss50-deployer.zip"/>
     <artifact id="jbossws-jboss50-src.zip"/>
     
+    <import componentref="jboss/jbossws-common">
+      <compatible version="@jbossws-common@"/>
+    </import>
+    <import componentref="jboss/jbossws-framework">
+      <compatible version="@jbossws-framework@"/>
+    </import>
     <import componentref="jboss/jbossws-spi">
-      <compatible version="@repository.id@"/>
+      <compatible version="@jbossws-spi@"/>
     </import>
     
     <export>

@@ -109,6 +109,10 @@
       <fileset dir="${jbws50.output.lib.dir}">
         <include name="jbossws-jboss50.jar"/>
       </fileset>
+      <fileset dir="${thirdparty.dir}">
+        <include name="jbossws-common.jar"/>
+        <include name="jbossws-framework.jar"/>
+      </fileset>
       <fileset dir="${jbws50.resources.dir}/jbossws-jboss50.deployer">
         <include name="META-INF/jbossws-deployer-beans.xml"/>
       </fileset>
