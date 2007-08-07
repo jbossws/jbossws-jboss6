@@ -46,7 +46,7 @@ import java.util.Iterator;
  */
 public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
 {
-   /** Get the deployemnt type this deployer can handle 
+   /** Get the deployemnt type this deployer can handle
     */
    public DeploymentType getDeploymentType()
    {

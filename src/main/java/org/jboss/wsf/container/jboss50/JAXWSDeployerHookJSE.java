@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class JAXWSDeployerHookJSE extends AbstractDeployerHookJSE
 {
-   /** Get the deployemnt type this deployer can handle 
+   /** Get the deployment type this deployer can handle
     */
    public DeploymentType getDeploymentType()
    {
@@ -57,8 +57,7 @@ public class JAXWSDeployerHookJSE extends AbstractDeployerHookJSE
    public Deployment createDeployment(DeploymentUnit unit)
    {
       ArchiveDeployment dep = newDeployment(unit);
-      dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
-      dep.setRuntimeClassLoader(null);
+      dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));     
       dep.setType(getDeploymentType());
 
       Service service = dep.getService();

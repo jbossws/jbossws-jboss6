@@ -44,7 +44,7 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  */
 public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
 {
-   /** Get the deployemnt type this deployer can handle 
+   /** Get the deployemnt type this deployer can handle
     */
    public DeploymentType getDeploymentType()
    {

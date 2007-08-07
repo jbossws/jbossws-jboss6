@@ -44,7 +44,7 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  */
 public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
 {
-   /** Get the deployemnt type this deployer can handle 
+   /** Get the deployemnt type this deployer can handle
     */
    public DeploymentType getDeploymentType()
    {
@@ -59,7 +59,7 @@ public class JAXRPCDeployerHookJSE extends AbstractDeployerHookJSE
    {
       ArchiveDeployment dep = newDeployment(unit);
       dep.setRootFile(new VirtualFileAdaptor(((VFSDeploymentUnit)unit).getRoot()));
-      dep.setRuntimeClassLoader(null);
+      dep.setRuntimeClassLoader(null); // TODO: Create RuntimeLoader aspect
       dep.setType(getDeploymentType());
 
       Service service = dep.getService();

@@ -46,12 +46,20 @@ public abstract class AbstractDeployerHook implements DeployerHook
    private DeploymentAspectManager deploymentAspectManager;
    private DeploymentModelFactory deploymentModelFactory;
 
+   protected String deploymentManagerName;
+
+   /** MC provided property **/
+   public void setDeploymentManagerName(String deploymentManagerName)
+   {
+      this.deploymentManagerName = deploymentManagerName;
+   }
+
    public DeploymentAspectManager getDeploymentAspectManager()
    {
       if(null == deploymentAspectManager)
       {
          SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
-         deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).getDeploymentAspectManager(getDeploymentType());
+         deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).getDeploymentAspectManager( deploymentManagerName );
       }
 
       return deploymentAspectManager;

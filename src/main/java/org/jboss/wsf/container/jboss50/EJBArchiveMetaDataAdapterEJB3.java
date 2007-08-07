@@ -64,7 +64,7 @@ public class EJBArchiveMetaDataAdapterEJB3
       dep.addAttachment(Ejb3Deployment.class, ejb3Deployment);
 
       EjbJarDD jarDD = unit.getAttachment(EjbJarDD.class);
-      EJBArchiveMetaData umd = new EJBArchiveMetaData();
+      EJBArchiveMetaData umd = new EJBArchiveMetaData();      
       buildUnifiedBeanMetaData(umd, ejb3Deployment);
       buildWebservicesMetaData(umd, jarDD);
 
