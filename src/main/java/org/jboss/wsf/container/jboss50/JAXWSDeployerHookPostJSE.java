@@ -21,32 +21,34 @@
  */
 package org.jboss.wsf.container.jboss50;
 
+// $Id$
+
 import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.metadata.WebMetaData;
-import org.jboss.metadata.web.Servlet;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 
 /**
- * A deployer JAXRPC JSE Endpoints
- *
- * @author Thomas.Diesler@jboss.org
- * @since 25-Apr-2007
+ * @author Heiko.Braun@jboss.com
+ * @version $Revision$
  */
-public class JAXRPCDeployerHookJSE2 extends Phase2DeployerHookJSE
+public class JAXWSDeployerHookPostJSE extends DeployerHookPostJSE
 {
    /** Get the deployment type this deployer can handle
     */
    public Deployment.DeploymentType getDeploymentType()
    {
-      return Deployment.DeploymentType.JAXRPC_JSE;
+      return Deployment.DeploymentType.JAXWS_JSE;
    }
 
-
-   @Override
+   /**
+    * Reject JAX-RPC deployments.
+    *
+    * @param unit
+    * @return
+    */
    public boolean isWebServiceDeployment(DeploymentUnit unit)
    {
-      WebservicesMetaData wsMetaData = getWebservicesMetaData(unit);
-      return (wsMetaData!=null && super.isWebServiceDeployment(unit));    
+      WebservicesMetaData wsMetaData = getWebservicesMetaData(unit);// JAX-RPC artefact
+      return (wsMetaData == null && super.isWebServiceDeployment(unit));
    }
 }

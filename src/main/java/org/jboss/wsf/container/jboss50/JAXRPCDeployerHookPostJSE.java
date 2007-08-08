@@ -21,23 +21,32 @@
  */
 package org.jboss.wsf.container.jboss50;
 
+// $Id$
+
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
+
 /**
- * @author Heiko.Braun@jboss.com
- * @version $Revision$
+ * A deployer JAXRPC JSE Endpoints
+ *
+ * @author Thomas.Diesler@jboss.org
+ * @since 25-Apr-2007
  */
-public class WebServiceDeployerJSE2 extends AbstractWebServiceDeployer
+public class JAXRPCDeployerHookPostJSE extends DeployerHookPostJSE
 {
-   private int relOrderPhase1;
-
-
-   public void setRelOrderPhase1(int relOrderPhase1)
+   /** Get the deployment type this deployer can handle
+    */
+   public Deployment.DeploymentType getDeploymentType()
    {
-      this.relOrderPhase1 = relOrderPhase1;
+      return Deployment.DeploymentType.JAXRPC_JSE;
    }
 
+
    @Override
-   public int getRelativeOrder()
+   public boolean isWebServiceDeployment(DeploymentUnit unit)
    {
-      return relOrderPhase1 + 1;
+      WebservicesMetaData wsMetaData = getWebservicesMetaData(unit);
+      return (wsMetaData!=null && super.isWebServiceDeployment(unit));    
    }
 }

@@ -21,6 +21,8 @@
  */
 package org.jboss.wsf.container.jboss50;
 
+// $Id$
+
 import org.jboss.metadata.ApplicationMetaData;
 import org.jboss.metadata.WebMetaData;
 import org.jboss.wsf.spi.deployment.Deployment;
@@ -32,7 +34,6 @@ import org.jboss.ejb3.Ejb3Deployment;
  * and makes it available through the {@link Deployment}.
  *
  * @author Heiko.Braun@jboss.com
- * @version $Revision$
  */
 public class RuntimeLoaderDeploymentAspect extends DeploymentAspect
 {

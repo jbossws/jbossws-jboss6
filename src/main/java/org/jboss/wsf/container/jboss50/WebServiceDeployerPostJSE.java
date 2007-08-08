@@ -21,39 +21,24 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
-import org.jboss.metadata.WebMetaData;
-import org.jboss.metadata.NameValuePair;
-import org.jboss.metadata.web.Servlet;
-
-import java.util.Iterator;
+// $Id: $
 
 /**
  * @author Heiko.Braun@jboss.com
- * @version $Revision$
  */
-public class JAXWSDeployerHookJSE2 extends Phase2DeployerHookJSE
+public class WebServiceDeployerPostJSE extends AbstractWebServiceDeployer
 {
-   /** Get the deployment type this deployer can handle
-    */
-   public Deployment.DeploymentType getDeploymentType()
+   private int relOrderWar;
+
+
+   public void setRelOrderWar(int relOrder)
    {
-      return Deployment.DeploymentType.JAXWS_JSE;
+      this.relOrderWar = relOrder;
    }
 
-
-   /**
-    * Reject JAX-RPC deployments.
-    *
-    * @param unit
-    * @return
-    */
-   public boolean isWebServiceDeployment(DeploymentUnit unit)
+   @Override
+   public int getRelativeOrder()
    {
-      WebservicesMetaData wsMetaData = getWebservicesMetaData(unit);// JAX-RPC artefact
-      return (wsMetaData==null && super.isWebServiceDeployment(unit));                    
+      return relOrderWar + 1;
    }
 }

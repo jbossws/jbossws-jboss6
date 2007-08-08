@@ -21,20 +21,22 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.metadata.WebMetaData;
-import org.jboss.metadata.NameValuePair;
-import org.jboss.metadata.web.Servlet;
+// $Id$
 
 import java.util.Iterator;
+
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.metadata.NameValuePair;
+import org.jboss.metadata.WebMetaData;
+import org.jboss.metadata.web.Servlet;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.Endpoint;
 
 /**
  * @author Heiko.Braun@jboss.com
  * @version $Revision$
  */
-public abstract class Phase2DeployerHookJSE extends AbstractDeployerHookJSE
+public abstract class DeployerHookPostJSE extends AbstractDeployerHookJSE
 {
    /**
     * The deployment should be created in phase 1.
@@ -42,7 +44,7 @@ public abstract class Phase2DeployerHookJSE extends AbstractDeployerHookJSE
    public Deployment createDeployment(DeploymentUnit unit)
    {
       Deployment dep = unit.getAttachment(Deployment.class);
-      if(null == dep)
+      if (null == dep)
          throw new IllegalStateException("spi.Deployment missing. It should be created in Phase 1");
 
       return dep;
@@ -58,12 +60,12 @@ public abstract class Phase2DeployerHookJSE extends AbstractDeployerHookJSE
    @Override
    public boolean isWebServiceDeployment(DeploymentUnit unit)
    {
-      if(super.isWebServiceDeployment(unit) == false)
+      if (super.isWebServiceDeployment(unit) == false)
          return false;
 
       Deployment deployment = unit.getAttachment(Deployment.class);
-      boolean isModified =false;
-      if(deployment!=null)
+      boolean isModified = false;
+      if (deployment != null)
          isModified = isModifiedServletClass(deployment);
       return isModified;
    }

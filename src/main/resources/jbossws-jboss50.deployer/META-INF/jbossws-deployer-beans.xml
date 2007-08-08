@@ -25,7 +25,8 @@
     The order of which is important
     
     1) EJBDeployer < WebServiceDeployerEJB
-    2) WebServiceDeployerJSE < WarDeployer 
+    2) WebServiceDeployerPreJSE < WarDeployer 
+    3) WarDeployer < WebServiceDeployerPostJSE
     
     Each WebServiceDeployer has a number of DeployerHooks registered with it
     
@@ -33,7 +34,7 @@
       - WSDeployerHook_JAXRPC_EJB21
       - WSDeployerHook_JAXWS_EJB3
     
-    - WebServiceDeployerJSE
+    - WebServiceDeployerPreJSE
       - WSDeployerHook_JAXRPC_JSE
       - WSDeployerHook_JAXWS_JSE
     
@@ -70,18 +71,18 @@
   <!--
     A web service deployer that hooks in before the WAR deployer
   -->
-  <bean name="WebServiceDeployerJSE" class="org.jboss.wsf.container.jboss50.WebServiceDeployerJSE">
+  <bean name="WebServiceDeployerPreJSE" class="org.jboss.wsf.container.jboss50.WebServiceDeployerPreJSE">
     <property name="relOrderWar"><inject bean="WarDeployer" property="relativeOrder"/></property>
     <depends>WebAppParsingDeployer</depends>
   </bean>
 
   <!--
-     Phase 2 of JSE web service deployments.
-     This deployer depends on the RuntimeClassloader being available.
+    A web service deployer that hooks in after the WAR deployer
+    This deployer depends on the RuntimeClassloader being available.
   -->
-  <bean name="WebServiceDeployerJSE2" class="org.jboss.wsf.container.jboss50.WebServiceDeployerJSE2">
-    <property name="relOrderPhase1"><inject bean="WebServiceDeployerJSE" property="relativeOrder"/></property>
-    <depends>WebServiceDeployerJSE</depends>
+  <bean name="WebServiceDeployerPostJSE" class="org.jboss.wsf.container.jboss50.WebServiceDeployerPostJSE">
+    <property name="relOrderWar"><inject bean="WarDeployer" property="relativeOrder"/></property>
+    <depends>WebAppParsingDeployer</depends>
   </bean>
   
   <!--
@@ -89,34 +90,34 @@
   -->
 
   <!-- Phase 1 of JSE JAX-RPC -->
-  <bean name="WSDeployerHook_JAXRPC_JSE" class="org.jboss.wsf.container.jboss50.JAXRPCDeployerHookJSE">
-    <property name="deploymentManagerName">WSDeploymentAspectManagerJSE</property>
-    <install bean="WebServiceDeployerJSE" method="addDeployerHook">
+  <bean name="WSDeployerHook_JAXRPC_PRE_JSE" class="org.jboss.wsf.container.jboss50.JAXRPCDeployerHookPreJSE">
+    <property name="deploymentManagerName">WSDeploymentAspectManagerPreJSE</property>
+    <install bean="WebServiceDeployerPreJSE" method="addDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </install>
-    <uninstall bean="WebServiceDeployerJSE" method="removeDeployerHook">
+    <uninstall bean="WebServiceDeployerPreJSE" method="removeDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </uninstall>
-    <depends>WebServiceDeployerJSE</depends>
+    <depends>WebServiceDeployerPreJSE</depends>
   </bean>
   <!-- Phase 2 of JSE JAX-RPC -->
-  <bean name="WSDeployerHook_JAXRPC_JSE2" class="org.jboss.wsf.container.jboss50.JAXRPCDeployerHookJSE2">
-    <property name="deploymentManagerName">WSDeploymentAspectManagerJSE2</property>
-    <install bean="WebServiceDeployerJSE2" method="addDeployerHook">
+  <bean name="WSDeployerHook_JAXRPC_POST_JSE" class="org.jboss.wsf.container.jboss50.JAXRPCDeployerHookPostJSE">
+    <property name="deploymentManagerName">WSDeploymentAspectManagerPostJSE</property>
+    <install bean="WebServiceDeployerPostJSE" method="addDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </install>
-    <uninstall bean="WebServiceDeployerJSE2" method="removeDeployerHook">
+    <uninstall bean="WebServiceDeployerPostJSE" method="removeDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </uninstall>
-    <depends>WebServiceDeployerJSE2</depends>
+    <depends>WebServiceDeployerPostJSE</depends>
   </bean>
 
   <bean name="WSDeployerHook_JAXRPC_EJB21" class="org.jboss.wsf.container.jboss50.JAXRPCDeployerHookEJB21">
@@ -135,34 +136,34 @@
   </bean>
 
   <!-- Phase 1 of JSE JAX-WS-->
-  <bean name="WSDeployerHook_JAXWS_JSE" class="org.jboss.wsf.container.jboss50.JAXWSDeployerHookJSE">
-    <property name="deploymentManagerName">WSDeploymentAspectManagerJSE</property>
-    <install bean="WebServiceDeployerJSE" method="addDeployerHook">
+  <bean name="WSDeployerHook_JAXWS_PRE_JSE" class="org.jboss.wsf.container.jboss50.JAXWSDeployerHookJSE">
+    <property name="deploymentManagerName">WSDeploymentAspectManagerPreJSE</property>
+    <install bean="WebServiceDeployerPreJSE" method="addDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </install>
-    <uninstall bean="WebServiceDeployerJSE" method="removeDeployerHook">
+    <uninstall bean="WebServiceDeployerPreJSE" method="removeDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </uninstall>
-    <depends>WebServiceDeployerJSE</depends>
+    <depends>WebServiceDeployerPreJSE</depends>
   </bean>
   <!-- Phase 2 of JSE JAX-WS -->
-  <bean name="WSDeployerHook_JAXWS_JSE2" class="org.jboss.wsf.container.jboss50.JAXWSDeployerHookJSE2">
-    <property name="deploymentManagerName">WSDeploymentAspectManagerJSE2</property>
-    <install bean="WebServiceDeployerJSE2" method="addDeployerHook">
+  <bean name="WSDeployerHook_JAXWS_POST_JSE" class="org.jboss.wsf.container.jboss50.JAXWSDeployerHookPostJSE">
+    <property name="deploymentManagerName">WSDeploymentAspectManagerPostJSE</property>
+    <install bean="WebServiceDeployerPostJSE" method="addDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </install>
-    <uninstall bean="WebServiceDeployerJSE2" method="removeDeployerHook">
+    <uninstall bean="WebServiceDeployerPostJSE" method="removeDeployerHook">
       <parameter>
         <this/>
       </parameter>
     </uninstall>
-    <depends>WebServiceDeployerJSE2</depends>
+    <depends>WebServiceDeployerPostJSE</depends>
   </bean>
 
   <bean name="WSDeployerHook_JAXWS_EJB3" class="org.jboss.wsf.container.jboss50.JAXWSDeployerHookEJB3">
@@ -183,11 +184,12 @@
   <!-- 
     Each DeploymentAspectManger maintains a list of DeploymentAspects
   -->
-  <bean name="WSDeploymentAspectManagerJSE" class="org.jboss.wsf.framework.deployment.DeploymentAspectManagerImpl">
-    <property name="name">WSDeploymentAspectManagerJSE</property>
+  <bean name="WSDeploymentAspectManagerPreJSE" class="org.jboss.wsf.framework.deployment.DeploymentAspectManagerImpl">
+    <property name="name">WSDeploymentAspectManagerPreJSE</property>
   </bean>
-  <bean name="WSDeploymentAspectManagerJSE2" class="org.jboss.wsf.framework.deployment.DeploymentAspectManagerImpl">
-    <property name="name">WSDeploymentAspectManagerJSE2</property>
+  <bean name="WSDeploymentAspectManagerPostJSE" class="org.jboss.wsf.framework.deployment.DeploymentAspectManagerImpl">
+    <property name="parent"><inject bean="WSDeploymentAspectManagerPreJSE"/></property>
+    <property name="name">WSDeploymentAspectManagerPostJSE</property>
   </bean>
   <bean name="WSDeploymentAspectManagerEJB" class="org.jboss.wsf.framework.deployment.DeploymentAspectManagerImpl">
     <property name="name">WSDeploymentAspectManagerEJB</property>
@@ -241,8 +243,12 @@
   </bean>
   
   <bean name="WSModifyWebMetaDataDeploymentAspect" class="org.jboss.wsf.container.jboss50.ModifyWebMetaDataDeploymentAspect">
-    <property name="requires">ContextProperties</property>
-    <!--property name="requires">ContextProperties, StackDescriptor</property-->
+    <property name="requires">ContextProperties, StackDescriptor</property>
+  </bean>
+  
+  <bean name="WSRuntimeLoaderDeploymentAspect" class="org.jboss.wsf.container.jboss50.RuntimeLoaderDeploymentAspect">
+    <property name="requires">ContainerMetaData</property>
+    <property name="provides">RuntimeLoader</property>
   </bean>
   
   <bean name="WSURLPatternDeploymentAspect" class="org.jboss.wsf.framework.deployment.BackwardCompatibleURLPatternDeploymentAspect">
@@ -263,11 +269,6 @@
     <property name="securityHandlerEJB3"><inject bean="WSSecurityHandlerEJB3"/></property>
   </bean>
 
-  <bean name="WSRuntimeLoaderDeploymentAspect" class="org.jboss.wsf.container.jboss50.RuntimeLoaderDeploymentAspect">
-    <!--property name="requires">ContextProperties</property TODO: link both DAM's-->     
-    <property name="provides">RuntimeLoader</property>
-  </bean>
-  
   <!-- Deployment aspect helper beans -->
   <bean name="WSEndpointMetrics" class="org.jboss.wsf.framework.management.EndpointMetricsImpl"/>
   <bean name="WSSecurityHandlerEJB21" class="org.jboss.wsf.container.jboss50.SecurityHandlerEJB21"/>
@@ -280,8 +281,8 @@
   <!-- Deployment aspect installers -->
 
   <!-- Phase 1 -->
-  <bean name="WSDeploymentAspectInstallerJSE" class="org.jboss.wsf.framework.deployment.DeploymentAspectInstaller">
-    <property name="manager"><inject bean="WSDeploymentAspectManagerJSE"/></property>
+  <bean name="WSDeploymentAspectInstallerPreJSE" class="org.jboss.wsf.framework.deployment.DeploymentAspectInstaller">
+    <property name="manager"><inject bean="WSDeploymentAspectManagerPreJSE"/></property>
     <property name="sortAspectsOnCreate">false</property>
     <property name="aspects">
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
@@ -291,12 +292,11 @@
   </bean>
 
   <!-- Phase 2 -->
-  <bean name="WSDeploymentAspectInstallerJSE2" class="org.jboss.wsf.framework.deployment.DeploymentAspectInstaller">
-    <property name="manager"><inject bean="WSDeploymentAspectManagerJSE2"/></property>
+  <bean name="WSDeploymentAspectInstallerPostJSE" class="org.jboss.wsf.framework.deployment.DeploymentAspectInstaller">
+    <property name="manager"><inject bean="WSDeploymentAspectManagerPostJSE"/></property>
     <property name="sortAspectsOnCreate">false</property>
     <property name="aspects">
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
-        <inject bean="WSRuntimeLoaderDeploymentAspect"/>
         <inject bean="WSContainerMetaDataDeploymentAspect"/>
         <inject bean="WSContextRootDeploymentAspect"/>
         <inject bean="WSEndpointAddressDeploymentAspect"/>
@@ -305,6 +305,7 @@
         <inject bean="WSEndpointMetricsDeploymentAspect"/>
         <inject bean="WSEndpointNameDeploymentAspect"/>
         <inject bean="WSEndpointRegistryDeploymentAspect"/>
+        <inject bean="WSRuntimeLoaderDeploymentAspect"/>
         <inject bean="WSURLPatternDeploymentAspect"/>
       </set>
     </property>
@@ -315,7 +316,6 @@
     <property name="sortAspectsOnCreate">false</property>
     <property name="aspects">
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
-        <inject bean="WSRuntimeLoaderDeploymentAspect"/>
         <inject bean="WSContainerMetaDataDeploymentAspect"/>
         <inject bean="WSContextRootDeploymentAspect"/>
         <inject bean="WSEndpointAddressDeploymentAspect"/>
@@ -325,6 +325,7 @@
         <inject bean="WSEndpointNameDeploymentAspect"/>
         <inject bean="WSEndpointRegistryDeploymentAspect"/>
         <inject bean="WSURLPatternDeploymentAspect"/>
+        <inject bean="WSRuntimeLoaderDeploymentAspect"/>
         <inject bean="WSWebAppDeploymentAspect"/>
         <inject bean="WSWebAppGeneratorDeploymentAspect"/>
       </set>
@@ -335,7 +336,6 @@
     <property name="sortAspectsOnCreate">false</property>
     <property name="aspects">
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
-        <inject bean="WSRuntimeLoaderDeploymentAspect"/>
         <inject bean="WSEndpointAPIDeploymentAspect"/>
         <inject bean="WSEndpointAddressDeploymentAspect"/>
         <inject bean="WSEndpointHandlerDeploymentAspect"/>
@@ -343,6 +343,7 @@
         <inject bean="WSEndpointMetricsDeploymentAspect"/>
         <inject bean="WSEndpointNameDeploymentAspect"/>
         <inject bean="WSEndpointRegistryDeploymentAspect"/>
+        <inject bean="WSRuntimeLoaderDeploymentAspect"/>
         <inject bean="WSWebAppDeploymentAspect"/>
         <inject bean="WSWebAppGeneratorDeploymentAspect"/>
       </set>
