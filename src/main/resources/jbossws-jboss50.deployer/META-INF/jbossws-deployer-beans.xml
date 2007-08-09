@@ -13,9 +13,7 @@
   </bean>
   
   <!-- The HTTPServer used by the JAXWS Endpoint API -->  
-  <bean name="WSHTTPServer" class="org.jboss.wsf.container.jboss50.WebAppDeployingHttpServer">
-    <property name="mainDeployer"><inject bean="MainDeployer"/></property>
-  </bean>
+  <bean name="WSHTTPServer" class="org.jboss.wsf.container.jboss50.DeploymentAspectHttpServer"/>
   
   <!-- 
     ********************************************************************************************************************* 
@@ -216,7 +214,7 @@
   </bean>
   
   <bean name="WSEndpointAPIDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointAPIDeploymentAspect">
-    <property name="provides">ContainerMetaData, URLPattern, VFSRoot</property>
+    <property name="provides">ContainerMetaData, RuntimeLoader, URLPattern, VFSRoot</property>
   </bean>
   
   <bean name="WSEndpointHandlerDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointHandlerDeploymentAspect">
@@ -330,6 +328,7 @@
       </set>
     </property>
   </bean>
+  
   <bean name="WSDeploymentAspectInstallerEndpointAPI" class="org.jboss.wsf.framework.deployment.DeploymentAspectInstaller">
     <property name="manager"><inject bean="WSDeploymentAspectManagerEndpointAPI"/></property>
     <property name="sortAspectsOnCreate">false</property>
@@ -342,7 +341,6 @@
         <inject bean="WSEndpointMetricsDeploymentAspect"/>
         <inject bean="WSEndpointNameDeploymentAspect"/>
         <inject bean="WSEndpointRegistryDeploymentAspect"/>
-        <inject bean="WSRuntimeLoaderDeploymentAspect"/>
         <inject bean="WSWebAppDeploymentAspect"/>
         <inject bean="WSWebAppGeneratorDeploymentAspect"/>
       </set>
