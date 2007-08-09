@@ -23,18 +23,12 @@ package org.jboss.wsf.container.jboss50;
 
 // $Id$
 
-import java.util.Iterator;
-
 import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.metadata.NameValuePair;
-import org.jboss.metadata.WebMetaData;
-import org.jboss.metadata.web.Servlet;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.Endpoint;
 
 /**
  * @author Heiko.Braun@jboss.com
- * @version $Revision$
+ * @author Thomas.Diesler@jboss.com
  */
 public abstract class DeployerHookPostJSE extends AbstractDeployerHookJSE
 {
@@ -53,9 +47,7 @@ public abstract class DeployerHookPostJSE extends AbstractDeployerHookJSE
    /**
     * A phase 2 deployer hook needs to reject first-place
     * JSE deployments and wait for those that are re-written.
-    * We do it by inspecting the Servlet init parameter.
-    * @param unit
-    * @return
+    * We rely on the fact that spi.Deployment is created in phase 1.    
     */
    @Override
    public boolean isWebServiceDeployment(DeploymentUnit unit)
@@ -64,46 +56,6 @@ public abstract class DeployerHookPostJSE extends AbstractDeployerHookJSE
          return false;
 
       Deployment deployment = unit.getAttachment(Deployment.class);
-      boolean isModified = false;
-      if (deployment != null)
-         isModified = isModifiedServletClass(deployment);
-      return isModified;
-   }
-
-   private boolean isModifiedServletClass(Deployment dep)
-   {
-      boolean modified = false;
-
-      WebMetaData webMetaData = dep.getAttachment(WebMetaData.class);
-      if (webMetaData != null)
-      {
-         for (Servlet servlet : webMetaData.getServlets())
-         {
-            String orgServletClass = servlet.getServletClass();
-
-            // JSP
-            if (orgServletClass == null || orgServletClass.length() == 0)
-            {
-               log.debug("Innore servlet class: " + orgServletClass);
-               continue;
-            }
-
-            modified = isAlreadyModified(servlet);
-         }
-      }
-
-      return modified;
-   }
-
-   private boolean isAlreadyModified(Servlet servlet)
-   {
-      Iterator itParams = servlet.getInitParams().iterator();
-      while (itParams.hasNext())
-      {
-         NameValuePair pair = (NameValuePair)itParams.next();
-         if (Endpoint.SEPID_DOMAIN_ENDPOINT.equals(pair.getName()))
-            return true;
-      }
-      return false;
+      return deployment != null;
    }
 }

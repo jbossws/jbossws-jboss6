@@ -21,16 +21,15 @@
  */
 package org.jboss.wsf.container.jboss50;
 
-import org.jboss.deployers.spi.DeploymentException;
-import org.jboss.deployers.spi.deployer.helpers.AbstractComponentDeployer;
-import org.jboss.deployers.spi.deployer.helpers.AbstractSimpleRealDeployer;
-import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.logging.Logger;
+// $Id$
 
 import java.util.LinkedList;
 import java.util.List;
 
-//$Id$
+import org.jboss.deployers.spi.DeploymentException;
+import org.jboss.deployers.spi.deployer.helpers.AbstractComponentDeployer;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.logging.Logger;
 
 /**
  * This deployer that calls the registered DeployerHooks
@@ -44,7 +43,7 @@ public abstract class AbstractWebServiceDeployer<T> extends AbstractComponentDep
    private static final Logger log = Logger.getLogger(AbstractWebServiceDeployer.class);
 
    private List<DeployerHook> deployerHooks = new LinkedList<DeployerHook>();
-   
+
    public void addDeployerHook(DeployerHook deployer)
    {
       log.debug("Add deployer hook: " + deployer);
