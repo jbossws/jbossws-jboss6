@@ -236,7 +236,7 @@
   </bean>
   
   <bean name="WSEndpointRegistryDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointRegistryDeploymentAspect">
-    <property name="requires">EndpointName,StackEndpointHandler</property>
+    <property name="requires">EndpointName</property>
     <property name="provides">RegisteredEndpoint</property>
   </bean>
   
@@ -289,6 +289,7 @@
         <inject bean="WSEndpointHandlerDeploymentAspect"/>
         <inject bean="WSEndpointMetricsDeploymentAspect"/>
         <inject bean="WSEndpointNameDeploymentAspect"/>
+        <inject bean="WSEndpointRegistryDeploymentAspect"/>
         <inject bean="WSModifyWebMetaDataDeploymentAspect"/>  
         <inject bean="WSURLPatternDeploymentAspect"/>
       </set>
@@ -302,7 +303,6 @@
     <property name="aspects">
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
         <inject bean="WSEndpointLifecycleDeploymentAspect"/>
-        <inject bean="WSEndpointRegistryDeploymentAspect"/>
         <inject bean="WSRuntimeLoaderDeploymentAspect"/>
       </set>
     </property>
