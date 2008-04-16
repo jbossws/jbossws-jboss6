@@ -25,6 +25,8 @@
         <include name="jbossws-jboss50.jar"/>
         <include name="jbossws-jboss50-src.zip"/>
         <include name="jbossws-jboss50-resources.zip"/>
+        <include name="jbossws-jboss50-container.jar"/>
+        <include name="jbossws-jboss50-deployer-resources.zip"/>
       </fileset>
     </copy>
     <copy tofile="${jboss.repository.dir}/jbossws-jboss50/${repository.id}/component-info.xml" file="${jbws50.etc.dir}/component-info.xml" filtering="true" overwrite="true">
