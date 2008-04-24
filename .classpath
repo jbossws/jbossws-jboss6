@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="thirdparty/jbossws-spi.jar"/>
 	<classpathentry kind="lib" path="thirdparty/servlet-api.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="output" path="output/eclipse-classes"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="output" path="target/eclipse-classes"/>
 </classpath>
