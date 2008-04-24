@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <name>JBoss Web Services - Container JBoss-5.0.1</name>
+  <groupId>org.jboss.ws</groupId>
+  <artifactId>jbossws-jboss501</artifactId>
+  
+  <version>3.0.0-SNAPSHOT</version>
+  
+  <!-- Parent -->
+  <parent>
+    <groupId>org.jboss.jbossas</groupId>
+    <artifactId>jboss-as-component-matrix</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
+  </parent>
+  
+  <!-- Properties -->
+  <properties>
+    <jboss.version>5.0.0-SNAPSHOT</jboss.version>
+    <jbossws.common.version>3.0.0-SNAPSHOT</jbossws.common.version>
+    <jbossws.spi.version>3.0.0-SNAPSHOT</jbossws.spi.version>
+  </properties>
+  
+  <!-- Dependencies -->
+  <dependencies>
+    
+    <!-- jbossws dependencies -->
+    <dependency>
+      <groupId>org.jboss.ws</groupId>
+      <artifactId>jbossws-common</artifactId>
+      <version>${jbossws.common.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ws</groupId>
+      <artifactId>jbossws-spi</artifactId>
+      <version>${jbossws.spi.version}</version>
+    </dependency>
+    
+    <!-- provided apis -->
+    
+    <!-- jboss thirdparty dependencies -->
+    <dependency>
+      <groupId>org.jboss</groupId>
+      <artifactId>jbossxb</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.deployers</groupId>
+      <artifactId>jboss-deployers-structure-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.metadata</groupId>
+      <artifactId>jboss-metadata</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ejb3</groupId>
+      <artifactId>jboss-ejb3-core</artifactId>
+    </dependency>
+  </dependencies>
+  
+  <!-- Plugins -->
+  <build>
+    <resources>
+      <resource>
+        <targetPath>../etc</targetPath>
+        <directory>src/main/etc</directory>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>src/main/resources/jbossws-jboss50.jar</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>install</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <property name="artifact.id" value="${project.artifactId}"/>
+                <property name="version.id" value="${project.version}"/>
+                <property name="jboss.local.repository" value="${jboss.local.repository}"/>
+                <ant antfile="src/main/scripts/antrun-install.xml" target="install"/>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/scripts/assembly-resources.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
