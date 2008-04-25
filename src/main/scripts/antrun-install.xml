@@ -53,6 +53,7 @@
     <property name="jboss.repository.dir" value="${jboss.local.repository}/jboss/${artifact.id}/${repository.id}"/>
     <mkdir dir="${jboss.repository.dir}/lib"/>
     <copy file="${project.target.dir}/${artifact.id}-${version.id}.jar" tofile="${jboss.repository.dir}/lib/${artifact.id}.jar" overwrite="true"/>
+    <copy file="${project.target.dir}/${artifact.id}-${version.id}-container.jar" tofile="${jboss.repository.dir}/lib/${artifact.id}-container.jar" overwrite="true"/>
     <copy file="${project.target.dir}/${artifact.id}-${version.id}-sources.jar" tofile="${jboss.repository.dir}/lib/${artifact.id}-src.jar" overwrite="true"/>
     <copy file="${project.target.dir}/${artifact.id}-${version.id}-resources.zip" tofile="${jboss.repository.dir}/lib/${artifact.id}-resources.zip" overwrite="true"/>
     <copy file="${project.target.dir}/etc/component-info.xml" tofile="${jboss.repository.dir}/component-info.xml" overwrite="true"/>

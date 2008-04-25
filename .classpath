@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="lib" path="output/lib/jbossws-jboss50-container.jar"/>
-	<classpathentry kind="lib" path="output/lib/jbossws-jboss50.jar"/>
-	<classpathentry kind="lib" path="thirdparty/jboss-jaxrpc.jar"/>
-	<classpathentry kind="lib" path="thirdparty/jboss-jaxws.jar"/>
-	<classpathentry kind="lib" path="thirdparty/jboss-saaj.jar"/>
-	<classpathentry kind="lib" path="thirdparty/jbossws-common.jar"/>
-	<classpathentry kind="lib" path="thirdparty/jbossws-framework.jar"/>
-	<classpathentry kind="lib" path="thirdparty/jbossws-spi.jar"/>
-	<classpathentry kind="lib" path="thirdparty/servlet-api.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="output" path="target/eclipse-classes"/>
