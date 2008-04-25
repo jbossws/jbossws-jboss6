@@ -9,10 +9,6 @@
     <fileSet>
       <directory>src/main/resources</directory>
       <outputDirectory>/</outputDirectory>
-      <includes>
-        <include>jbossws-jboss42.sar/**</include>
-        <include>jbossws-jboss42-config.xml</include>
-      </includes>
     </fileSet>
   </fileSets>
 </assembly>

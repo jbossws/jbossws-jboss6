@@ -10,9 +10,9 @@
   
   <!-- Parent -->
   <parent>
-    <groupId>org.jboss.jbossas</groupId>
-    <artifactId>jboss-as-component-matrix</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <groupId>org.jboss.ws</groupId>
+    <artifactId>jbossws-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
   </parent>
   
   <!-- Properties -->
@@ -22,8 +22,28 @@
     <jbossws.spi.version>3.0.0-SNAPSHOT</jbossws.spi.version>
   </properties>
   
+  <!-- DependencyManagement -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-component-matrix</artifactId>
+        <version>${jboss.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
   <!-- Dependencies -->
   <dependencies>
+    
+    <!-- FIXME: Remove this dependency -->
+    <dependency>
+      <groupId>org.jboss.ws</groupId>
+      <artifactId>jbossws-framework</artifactId>
+      <version>3.0.2-SNAPSHOT</version>
+    </dependency>
     
     <!-- jbossws dependencies -->
     <dependency>
@@ -38,6 +58,13 @@
     </dependency>
     
     <!-- provided apis -->
+    
+    <!-- jboss dependencies -->
+      <dependency>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-server</artifactId>
+        <version>${jboss.version}</version>
+      </dependency>
     
     <!-- jboss thirdparty dependencies -->
     <dependency>
@@ -56,6 +83,14 @@
       <groupId>org.jboss.ejb3</groupId>
       <artifactId>jboss-ejb3-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.ejb3</groupId>
+      <artifactId>jboss-ejb3-ext-api</artifactId>
+    </dependency>
+      <dependency>
+        <groupId>org.jboss.security</groupId>
+        <artifactId>jboss-security-spi</artifactId>
+      </dependency>
   </dependencies>
   
   <!-- Plugins -->
