@@ -57,40 +57,44 @@
       <version>${jbossws.spi.version}</version>
     </dependency>
     
-    <!-- provided apis -->
-    
-    <!-- jboss dependencies -->
-      <dependency>
-        <groupId>org.jboss.jbossas</groupId>
-        <artifactId>jboss-as-server</artifactId>
-        <version>${jboss.version}</version>
-      </dependency>
+    <!-- jboss provided dependencies -->
+    <dependency>
+      <groupId>org.jboss.jbossas</groupId>
+      <artifactId>jboss-as-server</artifactId>
+      <version>${jboss.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.deployers</groupId>
+      <artifactId>jboss-deployers-structure-spi</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.metadata</groupId>
+      <artifactId>jboss-metadata</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ejb3</groupId>
+      <artifactId>jboss-ejb3-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ejb3</groupId>
+      <artifactId>jboss-ejb3-ext-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.security</groupId>
+      <artifactId>jboss-security-spi</artifactId>
+      <scope>provided</scope>
+    </dependency>
     
     <!-- jboss thirdparty dependencies -->
     <dependency>
       <groupId>org.jboss</groupId>
       <artifactId>jbossxb</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.jboss.deployers</groupId>
-      <artifactId>jboss-deployers-structure-spi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.metadata</groupId>
-      <artifactId>jboss-metadata</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.ejb3</groupId>
-      <artifactId>jboss-ejb3-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.ejb3</groupId>
-      <artifactId>jboss-ejb3-ext-api</artifactId>
-    </dependency>
-      <dependency>
-        <groupId>org.jboss.security</groupId>
-        <artifactId>jboss-security-spi</artifactId>
-      </dependency>
   </dependencies>
   
   <!-- Plugins -->
