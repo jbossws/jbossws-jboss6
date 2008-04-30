@@ -17,7 +17,16 @@
   
   <!-- Properties -->
   <properties>
+    <!--
+      JBoss component versions taken from   
+      http://snapshots.jboss.org/maven2/org/jboss/jbossas/jboss-as-component-matrix/5.0.0-SNAPSHOT 
+    -->
     <jboss.version>5.0.0-SNAPSHOT</jboss.version>
+    <jboss.ejb3.version>0.1.0-SNAPSHOT</jboss.ejb3.version>
+    <jboss.deployers.version>2.0.0-SNAPSHOT</jboss.deployers.version>
+    <jboss.metadata.version>1.0.0.Beta10</jboss.metadata.version>
+    <jboss.security.version>2.0.2.Beta7</jboss.security.version>
+    <jboss.jbossxb.version>2.0.0.CR8</jboss.jbossxb.version>
     <jbossws.common.version>3.0.0-SNAPSHOT</jbossws.common.version>
     <jbossws.spi.version>3.0.0-SNAPSHOT</jbossws.spi.version>
   </properties>
@@ -26,11 +35,49 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.jboss.ws</groupId>
+        <artifactId>jbossws-common</artifactId>
+        <version>${jbossws.common.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.ws</groupId>
+        <artifactId>jbossws-spi</artifactId>
+        <version>${jbossws.spi.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.jboss.jbossas</groupId>
-        <artifactId>jboss-as-component-matrix</artifactId>
+        <artifactId>jboss-as-server</artifactId>
         <version>${jboss.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.deployers</groupId>
+        <artifactId>jboss-deployers-structure-spi</artifactId>
+        <version>${jboss.deployers.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.metadata</groupId>
+        <artifactId>jboss-metadata</artifactId>
+        <version>${jboss.metadata.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.ejb3</groupId>
+        <artifactId>jboss-ejb3-core</artifactId>
+        <version>${jboss.ejb3.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.security</groupId>
+        <artifactId>jboss-security-spi</artifactId>
+        <version>${jboss.security.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss</groupId>
+        <artifactId>jbossxb</artifactId>
+        <version>${jboss.jbossxb.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -49,19 +96,16 @@
     <dependency>
       <groupId>org.jboss.ws</groupId>
       <artifactId>jbossws-common</artifactId>
-      <version>${jbossws.common.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.ws</groupId>
       <artifactId>jbossws-spi</artifactId>
-      <version>${jbossws.spi.version}</version>
     </dependency>
     
     <!-- jboss provided dependencies -->
     <dependency>
       <groupId>org.jboss.jbossas</groupId>
       <artifactId>jboss-as-server</artifactId>
-      <version>${jboss.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -77,11 +121,6 @@
     <dependency>
       <groupId>org.jboss.ejb3</groupId>
       <artifactId>jboss-ejb3-core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.ejb3</groupId>
-      <artifactId>jboss-ejb3-ext-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
