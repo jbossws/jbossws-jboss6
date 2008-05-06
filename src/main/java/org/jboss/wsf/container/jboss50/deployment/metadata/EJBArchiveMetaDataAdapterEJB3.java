@@ -24,19 +24,16 @@ package org.jboss.wsf.container.jboss50.deployment.metadata;
 // $Id$
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.common.jboss.WebserviceDescriptionMetaData;
 import org.jboss.metadata.common.jboss.WebserviceDescriptionsMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.ejb.jboss.WebservicesMetaData;
-import org.jboss.wsf.container.jboss50.ejb3.WebServiceDeploymentApiAdapter;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.j2ee.*;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData.PublishLocationAdapter;
-import org.jboss.wsf.spi.metadata.j2ee.PortComponentSpec;
-import org.jboss.ejb3.Ejb3Deployment;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -59,10 +56,8 @@ public class EJBArchiveMetaDataAdapterEJB3
    {     
       EJBArchiveMetaData umd = new EJBArchiveMetaData();
 
-      WebServiceDeployment apiAdapter = WebServiceDeploymentApiAdapter.createInstance(
-        unit.getAttachment(Ejb3Deployment.class)
-      );
-      buildEnterpriseBeansMetaData(umd, apiAdapter);
+      WebServiceDeployment webServiceDeployment = dep.getAttachment(WebServiceDeployment.class);
+      buildEnterpriseBeansMetaData(umd, webServiceDeployment);
 
       JBossMetaData jbMetaData = unit.getAttachment(JBossMetaData.class);
       if (jbMetaData != null)

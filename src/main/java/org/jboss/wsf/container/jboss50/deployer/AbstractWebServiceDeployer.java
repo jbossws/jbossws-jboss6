@@ -23,14 +23,13 @@ package org.jboss.wsf.container.jboss50.deployer;
 
 // $Id$
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.jboss.deployers.spi.DeploymentException;
 import org.jboss.deployers.spi.deployer.helpers.AbstractComponentDeployer;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
-import org.jboss.wsf.container.jboss50.deployer.DeployerHook;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This deployer that calls the registered DeployerHooks
@@ -43,7 +42,7 @@ public abstract class AbstractWebServiceDeployer<T> extends AbstractComponentDep
    // provide logging
    private static final Logger log = Logger.getLogger(AbstractWebServiceDeployer.class);
 
-   private List<DeployerHook> deployerHooks = new LinkedList<DeployerHook>();
+   protected List<DeployerHook> deployerHooks = new LinkedList<DeployerHook>();
 
    public void addDeployerHook(DeployerHook deployer)
    {
@@ -60,14 +59,12 @@ public abstract class AbstractWebServiceDeployer<T> extends AbstractComponentDep
    @Override
    public void internalDeploy(DeploymentUnit unit) throws DeploymentException
    {
-      for (DeployerHook deployer : deployerHooks)
-         deployer.deploy(unit);
+      for (DeployerHook deployer : deployerHooks) deployer.deploy(unit);
    }
 
    @Override
    public void internalUndeploy(DeploymentUnit unit)
    {
-      for (DeployerHook deployer : deployerHooks)
-         deployer.undeploy(unit);
+      for (DeployerHook deployer : deployerHooks) deployer.undeploy(unit);
    }
 }

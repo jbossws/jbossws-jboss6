@@ -25,10 +25,10 @@ package org.jboss.wsf.container.jboss50.deployment;
 
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
+import org.jboss.wsf.spi.WSFRuntime;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
-import org.jboss.wsf.spi.WSFRuntime;
-import org.jboss.ejb3.Ejb3Deployment;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 
 /**
  * Determines the correct runtime loader for per deployment type
@@ -42,7 +42,7 @@ public class RuntimeLoaderDeploymentAspect extends DeploymentAspect
    public void start(Deployment dep, WSFRuntime runtime)
    {
       // EJB3 endpoints
-      if (dep.getAttachment(Ejb3Deployment.class) != null)
+      if (dep.getAttachment(WebServiceDeployment.class) != null)
       {
          dep.setRuntimeClassLoader(dep.getInitialClassLoader());
       }

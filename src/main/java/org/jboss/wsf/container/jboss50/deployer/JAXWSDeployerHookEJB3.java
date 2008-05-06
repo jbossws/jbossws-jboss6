@@ -25,16 +25,15 @@ package org.jboss.wsf.container.jboss50.deployer;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
-import org.jboss.ejb3.Ejb3Deployment;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.metadata.serviceref.VirtualFileAdaptor;
-import org.jboss.wsf.container.jboss50.ejb3.WebServiceDeploymentApiAdapter;
 import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.wsf.container.jboss50.invocation.InvocationHandlerEJB3;
 
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceProvider;
@@ -65,15 +64,14 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
 
       Service service = dep.getService();
 
-      Ejb3Deployment ejb3Deployment = unit.getAttachment(Ejb3Deployment.class);
-      if (ejb3Deployment == null)
-         throw new IllegalStateException("Deployment unit does not contain ejb3 deployment");
+      WebServiceDeployment webServiceDeployment = unit.getAttachment(WebServiceDeployment.class);
+      if (webServiceDeployment == null)
+         throw new IllegalStateException("Deployment unit does not contain webServiceDeployment");
 
       // Copy the attachments
-      dep.addAttachment(Ejb3Deployment.class, ejb3Deployment);
+      dep.addAttachment(WebServiceDeployment.class, webServiceDeployment);
 
-      WebServiceDeployment apiAdapter = WebServiceDeploymentApiAdapter.createInstance(ejb3Deployment);
-      Iterator<WebServiceDeclaration> it = apiAdapter.getServiceEndpoints().iterator();
+      Iterator<WebServiceDeclaration> it = webServiceDeployment.getServiceEndpoints().iterator();
       while (it.hasNext())
       {
          WebServiceDeclaration container = it.next();
@@ -85,6 +83,12 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
             // Create the endpoint
             Endpoint ep = newEndpoint(epBean);
             ep.setShortName(ejbName);
+
+            String containName = container.getContainerName();
+            if(null==containName)
+               throw new IllegalArgumentException("Target container name not set");
+            ep.setProperty(InvocationHandlerEJB3.CONTAINER_NAME, containName);
+
             service.addEndpoint(ep);
          }
       }
@@ -95,14 +99,13 @@ public class JAXWSDeployerHookEJB3 extends AbstractDeployerHookEJB
    @Override
    public boolean isWebServiceDeployment(DeploymentUnit unit)
    {
-      Ejb3Deployment ejb3Deployment = unit.getAttachment(Ejb3Deployment.class);
-      if (ejb3Deployment == null)
+      WebServiceDeployment webServiceDeployment = unit.getAttachment(WebServiceDeployment.class);
+      if (null == webServiceDeployment )
          return false;
 
       boolean isWebServiceDeployment = false;
 
-      WebServiceDeployment apiAdapter = WebServiceDeploymentApiAdapter.createInstance(ejb3Deployment);
-      Iterator<WebServiceDeclaration> it = apiAdapter.getServiceEndpoints().iterator();
+      Iterator<WebServiceDeclaration> it = webServiceDeployment.getServiceEndpoints().iterator();
       while (it.hasNext())
       {
          WebServiceDeclaration container = it.next();

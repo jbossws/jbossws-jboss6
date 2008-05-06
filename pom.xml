@@ -24,7 +24,7 @@
     <jboss.version>5.0.0-SNAPSHOT</jboss.version>
     <jboss.ejb3.version>0.1.0-SNAPSHOT</jboss.ejb3.version>
     <jboss.deployers.version>2.0.0-SNAPSHOT</jboss.deployers.version>
-    <jboss.metadata.version>1.0.0.Beta10</jboss.metadata.version>
+    <jboss.metadata.version>1.0.0.Beta11</jboss.metadata.version>
     <jboss.security.version>2.0.2.Beta7</jboss.security.version>
     <jboss.jbossxb.version>2.0.0.CR8</jboss.jbossxb.version>
     <jbossws.common.version>3.0.0-SNAPSHOT</jbossws.common.version>

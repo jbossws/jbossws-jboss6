@@ -23,15 +23,13 @@ package org.jboss.wsf.container.jboss50.deployment.tomcat;
 
 //$Id$
 
-import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.ejb3.annotation.SecurityDomain;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.metadata.javaee.spec.SecurityRoleMetaData;
 import org.jboss.metadata.javaee.spec.SecurityRolesMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
-import org.jboss.wsf.container.jboss50.ejb3.WebServiceDeploymentApiAdapter;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.Iterator;
@@ -48,11 +46,10 @@ public class SecurityHandlerEJB3 implements SecurityHandler
    {
       String securityDomain = null;
 
-      Ejb3Deployment ejb3Deployment = dep.getAttachment(Ejb3Deployment.class);
-      if (ejb3Deployment != null)
+      WebServiceDeployment webServiceDeployment = dep.getAttachment(WebServiceDeployment.class);
+      if (webServiceDeployment != null)
       {
-         WebServiceDeployment apiAdapter = WebServiceDeploymentApiAdapter.createInstance(ejb3Deployment);
-         Iterator<WebServiceDeclaration> it = apiAdapter.getServiceEndpoints().iterator();
+         Iterator<WebServiceDeclaration> it = webServiceDeployment.getServiceEndpoints().iterator();
          while (it.hasNext())
          {
             WebServiceDeclaration container = it.next();
@@ -78,11 +75,10 @@ public class SecurityHandlerEJB3 implements SecurityHandler
 
    public void addSecurityRoles(JBossWebMetaData webApp, Deployment dep)
    {
-      Ejb3Deployment ejb3Deployment = dep.getAttachment(Ejb3Deployment.class);
-      if (ejb3Deployment != null)
+      WebServiceDeployment webServiceDeployment = dep.getAttachment(WebServiceDeployment.class);
+      if (webServiceDeployment != null)
       {
-         WebServiceDeployment apiAdapter = WebServiceDeploymentApiAdapter.createInstance(ejb3Deployment);
-         Iterator<WebServiceDeclaration> it = apiAdapter.getServiceEndpoints().iterator();
+         Iterator<WebServiceDeclaration> it = webServiceDeployment.getServiceEndpoints().iterator();
          while (it.hasNext())
          {
             WebServiceDeclaration container = it.next();

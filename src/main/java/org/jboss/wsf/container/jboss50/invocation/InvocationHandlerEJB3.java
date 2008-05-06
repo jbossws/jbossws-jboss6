@@ -24,17 +24,13 @@ package org.jboss.wsf.container.jboss50.invocation;
 // $Id$
 
 import org.jboss.dependency.spi.ControllerContext;
-import org.jboss.wsf.spi.invocation.integration.InvocationContextCallback;
-import org.jboss.wsf.spi.invocation.integration.ServiceEndpointContainer;
 import org.jboss.kernel.spi.dependency.KernelController;
-import org.jboss.wsf.common.ObjectNameFactory;
-import org.jboss.wsf.container.jboss50.ejb3.ServiceEndpointContainerApiAdapter;
-import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.invocation.Invocation;
+import org.jboss.wsf.spi.invocation.integration.InvocationContextCallback;
+import org.jboss.wsf.spi.invocation.integration.ServiceEndpointContainer;
 import org.jboss.wsf.spi.util.KernelLocator;
 
-import javax.management.ObjectName;
 import javax.xml.ws.WebServiceException;
 import java.lang.reflect.Method;
 
@@ -42,12 +38,18 @@ import java.lang.reflect.Method;
  * Handles invocations on EJB3 endpoints.
  *
  * @author Thomas.Diesler@jboss.org
+ * @author Heiko.Braun@jboss.com
+ * 
  * @since 25-Apr-2007
  */
 public class InvocationHandlerEJB3 extends AbstractInvocationHandler
 {
-   private ObjectName objectName;
+
+   public static final String CONTAINER_NAME = "org.jboss.wsf.spi.invocation.ContainerName";
+
+   private String containerName;
    private KernelController houston;
+   private ServiceEndpointContainer invocationTarget;
 
    InvocationHandlerEJB3()
    {
@@ -61,33 +63,27 @@ public class InvocationHandlerEJB3 extends AbstractInvocationHandler
 
    public void init(Endpoint ep)
    {
-      String ejbName = ep.getShortName();
-      ArchiveDeployment dep = (ArchiveDeployment)ep.getService().getDeployment();
-      String nameStr = "jboss.j2ee:name=" + ejbName + ",service=EJB3,jar=" + dep.getSimpleName();
-      if (dep.getParent() != null)
-      {
-         nameStr += ",ear=" + dep.getParent().getSimpleName();
-      }
-
-      objectName = ObjectNameFactory.create(nameStr.toString());
-
-      if (houston.getInstalledContext( objectName.getCanonicalName() ) == null)
-         throw new WebServiceException("Cannot find service endpoint target: " + objectName);
+      containerName = (String)ep.getProperty(InvocationHandlerEJB3.CONTAINER_NAME);
+      assert containerName!=null : "Target container name not set";
+      
+      ControllerContext context = houston.getInstalledContext(containerName);
+      if (context == null)
+         throw new WebServiceException("Cannot find service endpoint target: " + containerName);
+      
+      assert (context.getTarget() instanceof ServiceEndpointContainer) : "Invocation target mismatch";
+      this.invocationTarget = (ServiceEndpointContainer) context.getTarget();
    }
 
    public void invoke(Endpoint ep, Invocation wsInv) throws Exception
    {
       try
       {         
-         ControllerContext context = houston.getInstalledContext(objectName.getCanonicalName());
-         ServiceEndpointContainer apiAdapter = ServiceEndpointContainerApiAdapter.createInstance(context.getTarget());
-
-         Class beanClass = apiAdapter.getServiceImplementationClass();
+         Class beanClass = invocationTarget.getServiceImplementationClass();
          Method method = getImplMethod(beanClass, wsInv.getJavaMethod());
          Object[] args = wsInv.getArgs();
          InvocationContextCallback invProps = new EJB3InvocationContextCallback(wsInv);
-
-         Object retObj = apiAdapter.invokeEndpoint(method, args, invProps);
+         
+         Object retObj = invocationTarget.invokeEndpoint(method, args, invProps);
 
          wsInv.setReturnValue(retObj);
       }

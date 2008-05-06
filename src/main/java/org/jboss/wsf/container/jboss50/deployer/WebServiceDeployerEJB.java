@@ -21,27 +21,152 @@
  */
 package org.jboss.wsf.container.jboss50.deployer;
 
+import org.jboss.deployers.spi.DeploymentException;
+import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.ejb.deployers.EjbDeployment;
-import org.jboss.ejb3.Ejb3Deployment;
+import org.jboss.ejb.deployers.MergedJBossMetaDataDeployer;
+import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
+import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.logging.Logger;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 //$Id$
 
 /**
- * This web service deployer for EJB
- * 
+ * This web service deployer for EJB. Adopts EJB deployments to
+ * {@link org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration} an passes it to a chain of
+ * {@link org.jboss.wsf.container.jboss50.deployer.DeployerHook}'s.
+ *
  * @author Thomas.Diesler@jboss.org
+ * @author Heiko.Braun@jboss.com
+ *
  * @since 24-Apr-2007
  */
 public class WebServiceDeployerEJB extends AbstractWebServiceDeployer
 {
+   private static final Logger log = Logger.getLogger(WebServiceDeployerEJB.class);
+
    public WebServiceDeployerEJB()
    {
-      // Output of the EJBDeployer
+      addInput(MergedJBossMetaDataDeployer.EJB_MERGED_ATTACHMENT_NAME);   
+   
       addInput(EjbDeployment.class);
-      // Output of the EJB3Deployer
-      addInput(Ejb3Deployment.class);
+
       // Input for the TomcatDeployer
       addOutput(JBossWebMetaData.class);
+      
+      addOutput(WebServiceDeployment.class);
+
+   }
+
+   @Override
+   public void internalDeploy(DeploymentUnit unit) throws DeploymentException
+   {
+      JBossMetaData beans = (JBossMetaData)unit.getAttachment(
+        MergedJBossMetaDataDeployer.EJB_MERGED_ATTACHMENT_NAME
+      );
+
+      if(beans!=null)
+      {
+         WebServiceDeploymentAdapter wsDeployment = new WebServiceDeploymentAdapter();         
+         Iterator<JBossEnterpriseBeanMetaData> iterator = beans.getEnterpriseBeans().iterator();
+         while(iterator.hasNext())
+         {
+            JBossEnterpriseBeanMetaData ejb = iterator.next();
+            if(ejb.getEjbClass()!=null)
+            	wsDeployment.getEndpoints().add( new WebServiceDeclarationAdapter(ejb, unit.getClassLoader()) );
+            else
+               log.warn("Ingore ejb deployment with null classname: " + ejb);
+         }
+
+         unit.addAttachment(WebServiceDeployment.class, wsDeployment);
+
+         super.internalDeploy(unit);
+      }
+   }
+
+   @Override
+   public void internalUndeploy(DeploymentUnit unit)
+   {
+      super.internalUndeploy(unit);
+   }
+
+   /**
+    * Adopts EJB3 bean meta data to a {@link org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration}
+    */
+   private class WebServiceDeclarationAdapter implements WebServiceDeclaration
+   {
+
+      private JBossEnterpriseBeanMetaData ejbMetaData;
+      private ClassLoader loader;      
+
+      public WebServiceDeclarationAdapter(JBossEnterpriseBeanMetaData  ejbMetaData, ClassLoader loader)
+      {
+         this.ejbMetaData = ejbMetaData;
+         this.loader = loader;
+      }
+
+      public String getContainerName()
+      {
+         return ejbMetaData.determineContainerName();
+      }
+
+      public String getComponentName()
+      {
+         return ejbMetaData.getName();
+      }
+
+      public String getComponentClassName()
+      {
+         return ejbMetaData.getEjbClass();
+      }
+
+      public <T extends Annotation> T getAnnotation(Class<T> annotation)
+      {
+         Class bean = getComponentClass();
+         T result = null;
+         if(bean.isAnnotationPresent(annotation))
+         {
+            result = (T)bean.getAnnotation(annotation);
+         }
+
+         return result;
+      }
+
+      private Class getComponentClass()
+      {
+         try
+         {
+            return loader.loadClass(getComponentClassName());
+         } catch (ClassNotFoundException e)
+         {
+            throw new RuntimeException("Failed to load component class "+ getComponentClassName()+". Loader:" + this.loader);
+         }
+      }
+   }
+
+   /**
+    * Adopts an EJB deployment to a {@link org.jboss.wsf.spi.deployment.integration.WebServiceDeployment} 
+    */
+   private class WebServiceDeploymentAdapter implements WebServiceDeployment
+   {
+      private List<WebServiceDeclaration> endpoints = new ArrayList<WebServiceDeclaration>();
+
+      public List<WebServiceDeclaration> getServiceEndpoints()
+      {
+         return endpoints;  
+      }
+
+      public List<WebServiceDeclaration> getEndpoints()
+      {
+         return endpoints;
+      }
    }
 }
