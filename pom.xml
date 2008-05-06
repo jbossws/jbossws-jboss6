@@ -48,31 +48,26 @@
         <groupId>org.jboss.jbossas</groupId>
         <artifactId>jboss-as-server</artifactId>
         <version>${jboss.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss.deployers</groupId>
         <artifactId>jboss-deployers-structure-spi</artifactId>
         <version>${jboss.deployers.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss.metadata</groupId>
         <artifactId>jboss-metadata</artifactId>
         <version>${jboss.metadata.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss.ejb3</groupId>
         <artifactId>jboss-ejb3-core</artifactId>
         <version>${jboss.ejb3.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss.security</groupId>
         <artifactId>jboss-security-spi</artifactId>
         <version>${jboss.security.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss</groupId>
@@ -114,11 +109,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.jboss.metadata</groupId>
-      <artifactId>jboss-metadata</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.jboss.ejb3</groupId>
       <artifactId>jboss-ejb3-core</artifactId>
       <scope>provided</scope>
@@ -133,6 +123,12 @@
     <dependency>
       <groupId>org.jboss</groupId>
       <artifactId>jbossxb</artifactId>
+    </dependency>
+    
+    <!-- transitive dependencies -->
+    <dependency>
+      <groupId>org.jboss.metadata</groupId>
+      <artifactId>jboss-metadata</artifactId>
     </dependency>
   </dependencies>
   
@@ -149,25 +145,6 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>install</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <property name="artifact.id" value="${project.artifactId}"/>
-                <property name="version.id" value="${project.version}"/>
-                <property name="jboss.local.repository" value="${jboss.local.repository}"/>
-                <ant antfile="src/main/scripts/antrun-install.xml" target="install"/>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
