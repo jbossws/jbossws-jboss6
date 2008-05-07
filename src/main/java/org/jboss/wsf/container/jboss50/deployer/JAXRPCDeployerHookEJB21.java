@@ -32,6 +32,7 @@ import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
@@ -70,9 +71,14 @@ public class JAXRPCDeployerHookEJB21 extends AbstractDeployerHookEJB
       if (wsMetaData == null)
          throw new IllegalStateException("Deployment unit does not contain webservices meta data");
 
+      WebServiceDeployment webServiceDeployment = unit.getAttachment(WebServiceDeployment.class);
+      if (webServiceDeployment == null)
+         throw new IllegalStateException("Deployment unit does not contain webServiceDeployment");
+      
       // Copy the attachments
       dep.addAttachment(WebservicesMetaData.class, wsMetaData);
       dep.addAttachment(JBossMetaData.class, jbmd);
+      dep.addAttachment(WebServiceDeployment.class, webServiceDeployment);
 
       for (WebserviceDescriptionMetaData wsd : wsMetaData.getWebserviceDescriptions())
       {

@@ -24,12 +24,12 @@ package org.jboss.wsf.container.jboss50.deployment.metadata;
 //$Id$
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.JSEArchiveMetaData;
 import org.jboss.wsf.spi.transport.HttpSpec;
@@ -87,7 +87,7 @@ public class ContainerMetaDataAdapter
          }
          
          // EJB3 endpoints
-         else if (unit.getAttachment(WebServiceDeployment.class) != null)
+         else if (unit.getAttachment(Ejb3Deployment.class) != null)
          {
             EJBArchiveMetaData ejbMetaData = ejbMetaDataAdapterEJB3.buildMetaData(dep, unit);
             if (ejbMetaData != null)
