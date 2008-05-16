@@ -4,7 +4,8 @@
             xsi:schemaLocation="urn:jboss:bean-deployer bean-deployer_2_0.xsd"
             xmlns="urn:jboss:bean-deployer:2.0">
 
-   <!-- *********************************************************************************************************************
+   <!--
+   *********************************************************************************************************************
    Web Service deployment
 
    There are two deployers registered with the JBoss Main Deployer.
@@ -17,12 +18,12 @@
    Each WebServiceDeployer has a number of DeployerHooks registered with it
 
    - WebServiceDeployerEJB
-   - WSDeployerHook_JAXRPC_EJB21
-   - WSDeployerHook_JAXWS_EJB3
+      - WSDeployerHook_JAXRPC_EJB21
+      - WSDeployerHook_JAXWS_EJB3
 
    - WebServiceDeployerPreJSE
-   - WSDeployerHook_JAXRPC_JSE
-   - WSDeployerHook_JAXWS_JSE
+      - WSDeployerHook_JAXRPC_JSE
+      - WSDeployerHook_JAXWS_JSE
 
    Conceptually, each of these hooks implements the following pattern:
 
@@ -32,8 +33,8 @@
       DeploymentAspectManager.deploy(dep)
 
    DeployerHook.undeploy(unit)
-   Deployment dep = getDeployment(unit)
-   WSFRuntime.start(dep)
+      Deployment dep = getDeployment(unit)
+      WSFRuntime.start(dep)
 
    Each deployer hook has a web service WSFRuntime injected into it.
     
