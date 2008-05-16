@@ -41,13 +41,11 @@ import org.jboss.metadata.web.spec.WebResourceCollectionsMetaData;
 import org.jboss.wsf.spi.annotation.WebContext;
 import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.WSFDeploymentException;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
-import org.jboss.wsf.spi.WSFRuntime;
 import org.jboss.wsf.container.jboss50.deployment.tomcat.SecurityHandler;
 
 /**
