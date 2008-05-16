@@ -36,7 +36,6 @@ import static org.jboss.wsf.spi.deployment.Deployment.DeploymentState;
  */
 public abstract class AbstractDeployerHookEJB extends ArchiveDeployerHook
 {
-
    public void deploy(DeploymentUnit unit) throws DeploymentException
    {
       if(!ignoreDeployment(unit) && isWebServiceDeployment(unit))
@@ -49,8 +48,6 @@ public abstract class AbstractDeployerHookEJB extends ArchiveDeployerHook
 
          // execute the 'start' step
          getWsfRuntime().start(dep); 
-
       }
-
    }
 }

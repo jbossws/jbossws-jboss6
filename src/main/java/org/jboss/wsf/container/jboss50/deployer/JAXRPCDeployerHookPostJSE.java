@@ -71,4 +71,5 @@ public class JAXRPCDeployerHookPostJSE extends DeployerHookPostJSE
       WebservicesMetaData wsMetaData = getWebservicesMetaData(unit);
       return (wsMetaData!=null && super.isWebServiceDeployment(unit));
    }
+   
 }

@@ -47,7 +47,6 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 public class JAXRPCDeployerHookPreJSE extends AbstractDeployerHookJSE
 {
 
-
    public void undeploy(DeploymentUnit unit)
    {
       // the JAXRPCDeployerHookPostJSE deals with undeployments

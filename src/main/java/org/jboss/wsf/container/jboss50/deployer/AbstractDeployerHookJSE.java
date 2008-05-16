@@ -31,7 +31,6 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.transport.HttpSpec;
-import org.jboss.wsf.container.jboss50.deployment.tomcat.WebMetaDataModifier;
 
 /**
  * An abstract deployer for JSE Endpoints
