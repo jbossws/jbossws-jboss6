@@ -38,7 +38,6 @@ import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
  */
 public class RuntimeLoaderDeploymentAspect extends DeploymentAspect
 {
-
    public void start(Deployment dep, WSFRuntime runtime)
    {
       // EJB3 endpoints
