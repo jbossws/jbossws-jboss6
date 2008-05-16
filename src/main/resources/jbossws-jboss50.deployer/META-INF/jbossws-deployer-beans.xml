@@ -5,39 +5,39 @@
             xmlns="urn:jboss:bean-deployer:2.0">
 
    <!-- *********************************************************************************************************************
-  Web Service deployment
+   Web Service deployment
 
-  There are two deployers registered with the JBoss Main Deployer.
-  The order of which is important
+   There are two deployers registered with the JBoss Main Deployer.
+   The order of which is important
 
-  1) EJBDeployer < WebServiceDeployerEJB < WarDeployer
-  2) WebServiceDeployerPreJSE < WarDeployer
-  3) WarDeployer < WebServiceDeployerPostJSE
+   1) EJBDeployer < WebServiceDeployerEJB < WarDeployer
+   2) WebServiceDeployerPreJSE < WarDeployer
+   3) WarDeployer < WebServiceDeployerPostJSE
 
-  Each WebServiceDeployer has a number of DeployerHooks registered with it
+   Each WebServiceDeployer has a number of DeployerHooks registered with it
 
-  - WebServiceDeployerEJB
-  - WSDeployerHook_JAXRPC_EJB21
-  - WSDeployerHook_JAXWS_EJB3
+   - WebServiceDeployerEJB
+   - WSDeployerHook_JAXRPC_EJB21
+   - WSDeployerHook_JAXWS_EJB3
 
-  - WebServiceDeployerPreJSE
-  - WSDeployerHook_JAXRPC_JSE
-  - WSDeployerHook_JAXWS_JSE
+   - WebServiceDeployerPreJSE
+   - WSDeployerHook_JAXRPC_JSE
+   - WSDeployerHook_JAXWS_JSE
 
-  Conceptually, each of these hooks implements the following pattern:
+   Conceptually, each of these hooks implements the following pattern:
 
-  DeployerHook.deploy(unit)
-  if(isWebServiceDeployment)
-    Deployment dep = createDeployment(unit)
-    DeploymentAspectManager.deploy(dep)
+   DeployerHook.deploy(unit)
+   if(isWebServiceDeployment)
+      Deployment dep = createDeployment(unit)
+      DeploymentAspectManager.deploy(dep)
 
-  DeployerHook.undeploy(unit)
-  Deployment dep = getDeployment(unit)
-  WSFRuntime.start(dep)
+   DeployerHook.undeploy(unit)
+   Deployment dep = getDeployment(unit)
+   WSFRuntime.start(dep)
 
-  Each deployer hook has a web service WSFRuntime injected into it.
+   Each deployer hook has a web service WSFRuntime injected into it.
     
-  ********************************************************************************************************************* -->
+   ********************************************************************************************************************* -->
 
    <!--
    A web service deployer that hooks in after the EJB deployers
