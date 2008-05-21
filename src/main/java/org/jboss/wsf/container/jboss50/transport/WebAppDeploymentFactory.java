@@ -82,4 +82,9 @@ public class WebAppDeploymentFactory
 
       return unit;
    }
+   
+   public void destroy(Deployment dep)
+   {
+      // nothing to do?
+   }
 }

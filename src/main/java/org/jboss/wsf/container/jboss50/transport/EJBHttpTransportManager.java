@@ -36,6 +36,8 @@ import org.jboss.wsf.spi.transport.TransportSpec;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Creates a webapp dpeloyment and pushes it into the deployment framework
@@ -44,8 +46,10 @@ import java.net.URISyntaxException;
  */
 public class EJBHttpTransportManager implements TransportManager
 {
+   private static final String PROCESSED_BY_DEPLOYMENT_FACTORY = "processed.by.deployment.factory";
    private WebAppDeploymentFactory deploymentFactory;
    private WebAppGenerator generator;
+   private Map<String, Deployment> deploymentRegistry = new HashMap<String, Deployment>();
 
    public ListenerRef createListener(Endpoint endpoint, TransportSpec transportSpec)
    {
@@ -64,8 +68,15 @@ public class EJBHttpTransportManager implements TransportManager
       // TODO: Somehow the ServletClass and InitParameter need to go from TransportSpec into generator
       topLevelDeployment.setProperty(HttpSpec.PROPERTY_WEBAPP_SERVLET_CLASS, httpSpec.getServletClass());
       topLevelDeployment.setProperty(HttpSpec.PROPERTY_WEBAPP_CONTEXT_PARAMETERS, httpSpec.getContextParameter());      
-      JBossWebMetaData jbwMetaData = generator.create(topLevelDeployment);
-      deploymentFactory.create(topLevelDeployment, jbwMetaData);
+      
+      // TODO: JBWS-2188
+      Boolean alreadyDeployed = (Boolean)topLevelDeployment.getProperty(PROCESSED_BY_DEPLOYMENT_FACTORY); 
+      if ((alreadyDeployed == null) || (false == alreadyDeployed))
+      {
+         JBossWebMetaData jbwMetaData = generator.create(topLevelDeployment);
+         deploymentFactory.create(topLevelDeployment, jbwMetaData);
+         topLevelDeployment.setProperty(PROCESSED_BY_DEPLOYMENT_FACTORY, Boolean.TRUE);
+      }
 
       SPIProvider provider = SPIProviderResolver.getInstance().getProvider();
       ServerConfigFactory spi = provider.getSPI(ServerConfigFactory.class);
@@ -75,27 +86,47 @@ public class EJBHttpTransportManager implements TransportManager
       int port = serverConfig.getWebServicePort();
       String hostAndPort = host + (port > 0 ? ":" + port : "");
 
+      ListenerRef listenerRef = null;
       try
       {
          String ctx = httpSpec.getWebContext();
          String pattern = httpSpec.getUrlPattern();
-         ListenerRef ref =  new HttpListenerRef(
+         listenerRef =  new HttpListenerRef(
            ctx, pattern,
            new URI("http://"+hostAndPort+ctx+pattern)
          );
-
-         return ref;
-
-      } catch (URISyntaxException e)
+      }
+      catch (URISyntaxException e)
       {
          throw new RuntimeException("Failed to create ListenerRef", e);
       }
-      
+    
+      // Map listenerRef for destroy phase
+      deploymentRegistry.put( listenerRef.getUUID(), topLevelDeployment );
+
+      return listenerRef;
    }
 
    public void destroyListener(ListenerRef ref)
    {
-      // noop
+      Deployment dep = deploymentRegistry.get(ref.getUUID());
+      if (dep != null)
+      {
+         // TODO: JBWS-2188
+         Boolean alreadyDeployed = (Boolean)dep.getProperty(PROCESSED_BY_DEPLOYMENT_FACTORY); 
+         if ((alreadyDeployed != null) && (true == alreadyDeployed))
+         {
+            try
+            {
+               deploymentFactory.destroy(dep);
+            }
+            finally
+            {
+               deploymentRegistry.remove(ref.getUUID());
+            }
+            dep.removeProperty(PROCESSED_BY_DEPLOYMENT_FACTORY);
+         }
+      }
    }
 
    public void setDeploymentFactory(WebAppDeploymentFactory deploymentFactory)
