@@ -46,6 +46,7 @@ import org.jboss.wsf.spi.transport.TransportSpec;
 import javax.xml.ws.WebServiceException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -54,8 +55,8 @@ import java.util.HashMap;
  */
 public class EndpointAPIHttpTransportManager implements TransportManager
 {
-   private static Logger log = Logger.getLogger(EndpointAPIHttpTransportManager.class);
-
+   private static final String PROCESSED_BY_DEPLOYMENT_FACTORY = "processed.by.deployment.factory";
+   private WebAppDeploymentFactory deploymentFactory;
    private WebAppGenerator generator;
    private DeploymentFactory factory = new DeploymentFactory();
 
@@ -76,7 +77,15 @@ public class EndpointAPIHttpTransportManager implements TransportManager
 
       // Create JBossWebMetaData and attach it to the DeploymentUnit
       Deployment topLevelDeployment = endpoint.getService().getDeployment();
-      JBossWebMetaData jbwMetaData = generator.create(topLevelDeployment);
+      
+      // TODO: JBWS-2188
+      Boolean alreadyDeployed = (Boolean)topLevelDeployment.getProperty(PROCESSED_BY_DEPLOYMENT_FACTORY); 
+      if ((alreadyDeployed == null) || (false == alreadyDeployed))
+      {
+         JBossWebMetaData jbwMetaData = generator.create(topLevelDeployment);
+         deploymentFactory.create(topLevelDeployment, jbwMetaData);
+         topLevelDeployment.setProperty(PROCESSED_BY_DEPLOYMENT_FACTORY, Boolean.TRUE);
+      }
 
       // Server config
       SPIProvider provider = SPIProviderResolver.getInstance().getProvider();
@@ -92,8 +101,8 @@ public class EndpointAPIHttpTransportManager implements TransportManager
          String ctx = httpSpec.getWebContext();
          String pattern = httpSpec.getUrlPattern();
          listenerRef =  new HttpListenerRef( ctx, pattern, new URI("http://"+hostAndPort+ctx+pattern) );
-
-      } catch (URISyntaxException e)
+      }
+      catch (URISyntaxException e)
       {
          throw new RuntimeException("Failed to create ListenerRef", e);
       }
@@ -105,17 +114,34 @@ public class EndpointAPIHttpTransportManager implements TransportManager
       deploymentRegistry.put( listenerRef.getUUID(), topLevelDeployment );
 
       return listenerRef;
-
    }
 
    public void destroyListener(ListenerRef ref)
    {
       Deployment dep = deploymentRegistry.get(ref.getUUID());
-      if(null==dep)
-         throw new IllegalArgumentException("Unknown ListenerRef " + ref);
+      if (dep != null)
+      {
+         // TODO: JBWS-2188
+         Boolean alreadyDeployed = (Boolean)dep.getProperty(PROCESSED_BY_DEPLOYMENT_FACTORY); 
+         if ((alreadyDeployed != null) && (true == alreadyDeployed))
+         {
+            try
+            {
+               undeploy(dep);
+               deploymentFactory.destroy(dep);
+            }
+            finally
+            {
+               deploymentRegistry.remove(ref.getUUID());
+            }
+            dep.removeProperty(PROCESSED_BY_DEPLOYMENT_FACTORY);
+         }
+      }
+   }
 
-      undeploy(dep);
-      deploymentRegistry.remove(ref.getUUID());
+   public void setDeploymentFactory(WebAppDeploymentFactory deploymentFactory)
+   {
+      this.deploymentFactory = deploymentFactory;
    }
 
    public void setGenerator(WebAppGenerator generator)

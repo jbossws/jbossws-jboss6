@@ -83,6 +83,7 @@
 
    <bean name="EndpointAPIHttpTransport" class="org.jboss.wsf.container.jboss50.transport.EndpointAPIHttpTransportManager">
       <property name="generator"><inject bean="WSWebAppGenerator"/></property>
+      <property name="deploymentFactory"><inject bean="WSWebAppDeploymentFactory"/></property>      
       <property name="mainDeployer"><inject bean="MainDeployer"/></property>
       <property name="webMetaDataModifier"><inject bean="WSWebMetaDataModifier"/></property>
    </bean>

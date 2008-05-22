@@ -42,9 +42,6 @@ import org.jboss.wsf.spi.transport.HttpSpec;
  */
 public class WebAppDeploymentFactory
 {
-   // provide logging
-   private static Logger log = Logger.getLogger(WebAppDeploymentFactory.class);
-
    private WebMetaDataModifier webMetaDataModifier;
 
    public void setWebMetaDataModifier(WebMetaDataModifier webMetaDataModifier)
