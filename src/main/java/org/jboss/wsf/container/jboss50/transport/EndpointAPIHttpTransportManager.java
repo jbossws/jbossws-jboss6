@@ -46,7 +46,6 @@ import org.jboss.wsf.spi.transport.TransportSpec;
 import javax.xml.ws.WebServiceException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -55,6 +54,7 @@ import java.util.HashMap;
  */
 public class EndpointAPIHttpTransportManager implements TransportManager
 {
+   private static Logger log = Logger.getLogger(EndpointAPIHttpTransportManager.class);
    private static final String PROCESSED_BY_DEPLOYMENT_FACTORY = "processed.by.deployment.factory";
    private WebAppDeploymentFactory deploymentFactory;
    private WebAppGenerator generator;
@@ -100,7 +100,7 @@ public class EndpointAPIHttpTransportManager implements TransportManager
       {
          String ctx = httpSpec.getWebContext();
          String pattern = httpSpec.getUrlPattern();
-         listenerRef =  new HttpListenerRef( ctx, pattern, new URI("http://"+hostAndPort+ctx+pattern) );
+         listenerRef = new HttpListenerRef(ctx, pattern, new URI("http://" + hostAndPort + ctx + pattern));
       }
       catch (URISyntaxException e)
       {
@@ -128,15 +128,23 @@ public class EndpointAPIHttpTransportManager implements TransportManager
             try
             {
                undeploy(dep);
+            }
+            catch (Exception e)
+            {
+               log.error(e.getMessage(), e);
+            }
+            try
+            {
                deploymentFactory.destroy(dep);
             }
-            finally
+            catch (Exception e)
             {
-               deploymentRegistry.remove(ref.getUUID());
+               log.error(e.getMessage(), e);
             }
             dep.removeProperty(PROCESSED_BY_DEPLOYMENT_FACTORY);
          }
       }
+      deploymentRegistry.remove(ref.getUUID());
    }
 
    public void setDeploymentFactory(WebAppDeploymentFactory deploymentFactory)

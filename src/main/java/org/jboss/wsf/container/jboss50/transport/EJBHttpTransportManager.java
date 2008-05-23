@@ -21,6 +21,7 @@
  */
 package org.jboss.wsf.container.jboss50.transport;
 
+import org.jboss.logging.Logger;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.wsf.framework.transport.HttpListenerRef;
 import org.jboss.wsf.spi.SPIProvider;
@@ -46,6 +47,7 @@ import java.util.Map;
  */
 public class EJBHttpTransportManager implements TransportManager
 {
+   private static Logger log = Logger.getLogger(EJBHttpTransportManager.class);
    private static final String PROCESSED_BY_DEPLOYMENT_FACTORY = "processed.by.deployment.factory";
    private WebAppDeploymentFactory deploymentFactory;
    private WebAppGenerator generator;
@@ -91,10 +93,7 @@ public class EJBHttpTransportManager implements TransportManager
       {
          String ctx = httpSpec.getWebContext();
          String pattern = httpSpec.getUrlPattern();
-         listenerRef =  new HttpListenerRef(
-           ctx, pattern,
-           new URI("http://"+hostAndPort+ctx+pattern)
-         );
+         listenerRef = new HttpListenerRef(ctx, pattern, new URI("http://" + hostAndPort + ctx + pattern));
       }
       catch (URISyntaxException e)
       {
@@ -120,13 +119,14 @@ public class EJBHttpTransportManager implements TransportManager
             {
                deploymentFactory.destroy(dep);
             }
-            finally
+            catch (Exception e)
             {
-               deploymentRegistry.remove(ref.getUUID());
+               log.error(e.getMessage(), e);
             }
             dep.removeProperty(PROCESSED_BY_DEPLOYMENT_FACTORY);
          }
       }
+      deploymentRegistry.remove(ref.getUUID());
    }
 
    public void setDeploymentFactory(WebAppDeploymentFactory deploymentFactory)
