@@ -198,8 +198,6 @@
       <property name="sortAspectsOnCreate">false</property>
       <property name="aspects">
          <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
-
-            <!-- phase 1 -->
             <inject bean="WSContainerMetaDataDeploymentAspect"/>
             <inject bean="WSContextRootDeploymentAspect"/>
             <inject bean="WSHttpTransportDeploymentAspect"/>
@@ -209,8 +207,6 @@
             <inject bean="WSEndpointRegistryDeploymentAspect"/>
             <inject bean="WSModifyWebMetaDataDeploymentAspect"/>
             <inject bean="WSURLPatternDeploymentAspect"/>
-
-            <!-- phase 2 -->
             <inject bean="WSEndpointLifecycleDeploymentAspect"/>
             <inject bean="WSRuntimeLoaderDeploymentAspect"/>
          </set>
@@ -230,8 +226,8 @@
             <inject bean="WSEndpointMetricsDeploymentAspect"/>
             <inject bean="WSEndpointNameDeploymentAspect"/>
             <inject bean="WSEndpointRegistryDeploymentAspect"/>
+            <inject bean="WSModifyWebMetaDataDeploymentAspect"/>
             <inject bean="WSURLPatternDeploymentAspect"/>            
-            
             <inject bean="WSRuntimeLoaderDeploymentAspect"/>
          </set>
       </property>
