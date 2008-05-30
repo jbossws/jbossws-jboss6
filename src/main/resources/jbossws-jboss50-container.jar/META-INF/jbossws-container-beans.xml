@@ -134,7 +134,7 @@
    
    <bean name="WSHttpTransportDeploymentAspect" class="org.jboss.wsf.framework.deployment.HttpTransportDeploymentAspect">
       <property name="requires">URLPattern,ContextProperties</property>
-      <property name="provides">EndpointAddress</property>
+      <property name="provides">EndpointAddress,WebMetaData</property>
    </bean>
 
    <bean name="WSEndpointAPIDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointAPIDeploymentAspect">
