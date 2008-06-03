@@ -29,6 +29,7 @@
     <jboss.jbossxb.version>2.0.0.CR8</jboss.jbossxb.version>
     <jbossws.common.version>3.0.0-SNAPSHOT</jbossws.common.version>
     <jbossws.spi.version>3.0.0-SNAPSHOT</jbossws.spi.version>
+    <version.org.jboss.microcontainer>2.0.0.Beta14</version.org.jboss.microcontainer>
   </properties>
   
   <!-- DependencyManagement -->
@@ -135,6 +136,25 @@
       <artifactId>jbossxb</artifactId>
     </dependency>
 
+     <dependency>
+        <groupId>org.jboss.microcontainer</groupId>
+        <artifactId>jboss-dependency</artifactId>
+        <version>${version.org.jboss.microcontainer}</version>
+
+     </dependency>
+
+     <dependency>
+        <groupId>org.jboss.microcontainer</groupId>
+        <artifactId>jboss-kernel</artifactId>
+        <version>${version.org.jboss.microcontainer}</version>
+     </dependency>
+
+     <dependency>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-reflect</artifactId>
+        <version>2.0.0.Beta12</version>
+     </dependency>
+     
      <!-- thirdparty -->
      <dependency>
         <groupId>javax.xml.ws</groupId>
