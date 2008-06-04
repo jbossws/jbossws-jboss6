@@ -21,7 +21,7 @@
  */
 package org.jboss.wsf.container.jboss50.transport;
 
-import org.jboss.wsf.framework.transport.HttpListenerRef;
+import org.jboss.wsf.spi.transport.HttpListenerRef;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
 import org.jboss.wsf.spi.deployment.Endpoint;

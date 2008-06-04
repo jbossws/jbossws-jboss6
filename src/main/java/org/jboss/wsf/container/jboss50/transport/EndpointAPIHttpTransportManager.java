@@ -30,7 +30,6 @@ import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.wsf.container.jboss50.deployment.tomcat.WebMetaDataModifier;
-import org.jboss.wsf.framework.transport.HttpListenerRef;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
 import org.jboss.wsf.spi.deployment.Deployment;
@@ -38,16 +37,13 @@ import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.WSFDeploymentException;
 import org.jboss.wsf.spi.management.ServerConfig;
 import org.jboss.wsf.spi.management.ServerConfigFactory;
-import org.jboss.wsf.spi.transport.HttpSpec;
-import org.jboss.wsf.spi.transport.ListenerRef;
-import org.jboss.wsf.spi.transport.TransportManager;
-import org.jboss.wsf.spi.transport.TransportSpec;
+import org.jboss.wsf.spi.transport.*;
 
 import javax.xml.ws.WebServiceException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Heiko.Braun <heiko.braun@jboss.com>

@@ -23,7 +23,7 @@ package org.jboss.wsf.container.jboss50.transport;
 
 import org.jboss.logging.Logger;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
-import org.jboss.wsf.framework.transport.HttpListenerRef;
+import org.jboss.wsf.spi.transport.HttpListenerRef;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
 import org.jboss.wsf.spi.deployment.Deployment;

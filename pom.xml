@@ -91,14 +91,7 @@
   
   <!-- Dependencies -->
   <dependencies>
-    
-    <!-- FIXME: Remove this dependency -->
-    <dependency>
-      <groupId>org.jboss.ws</groupId>
-      <artifactId>jbossws-framework</artifactId>
-      <version>3.0.2-SNAPSHOT</version>
-    </dependency>
-    
+       
     <!-- jbossws dependencies -->
     <dependency>
       <groupId>org.jboss.ws</groupId>
