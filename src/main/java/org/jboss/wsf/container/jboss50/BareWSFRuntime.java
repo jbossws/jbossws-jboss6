@@ -22,7 +22,6 @@
 package org.jboss.wsf.container.jboss50;
 
 import org.jboss.logging.Logger;
-import org.jboss.wsf.spi.ComposableRuntime;
 import org.jboss.wsf.spi.WSFRuntime;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspectManager;
@@ -34,7 +33,7 @@ import org.jboss.wsf.spi.transport.TransportManagerFactory;
 /**
  * @author Heiko.Braun <heiko.braun@jboss.com>
  */
-public class BareWSFRuntime implements WSFRuntime, ComposableRuntime
+public class BareWSFRuntime implements WSFRuntime
 {
    private static final Logger log = Logger.getLogger(BareWSFRuntime.class);
  
@@ -50,18 +49,12 @@ public class BareWSFRuntime implements WSFRuntime, ComposableRuntime
 
    private TransportManagerFactory transportManagerFactory;
 
-   public String getRuntimeName()
-   {
-      return runtimeName;
-   }
-
-   public void setRuntimeName(String runtimeName)
+   public BareWSFRuntime(String runtimeName)
    {
       this.runtimeName = runtimeName;
    }
   
    // ---------------------------------------------------------------------------------
-
 
    public void create(Deployment deployment)
    {
@@ -84,7 +77,6 @@ public class BareWSFRuntime implements WSFRuntime, ComposableRuntime
    }
 
    // ---------------------------------------------------------------------------------
-
 
    public void setTransportManagerFactory(TransportManagerFactory factory)
    {
@@ -129,7 +121,6 @@ public class BareWSFRuntime implements WSFRuntime, ComposableRuntime
       this.requestHandlerFactory = factory;
    }
 
-
    public RequestHandlerFactory getRequestHandlerFactory()
    {
       return this.requestHandlerFactory;
@@ -149,6 +140,6 @@ public class BareWSFRuntime implements WSFRuntime, ComposableRuntime
 
    public String toString()
    {
-      return this.runtimeName+ " :" + super.toString();
+      return this.runtimeName+ ": " + super.toString();
    }
 }

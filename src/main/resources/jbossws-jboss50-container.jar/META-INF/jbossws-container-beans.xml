@@ -23,7 +23,9 @@
    -->
 
    <bean name="WebserviceJSERuntime" class="org.jboss.wsf.container.jboss50.BareWSFRuntime">
-      <property name="runtimeName">WebserviceJSERuntime</property>      
+      <constructor>
+         <parameter>WebserviceJSERuntime</parameter>
+      </constructor>
       <property name="deploymentAspectManager"><inject bean="WSDeploymentAspectManagerJSE"/></property>
       <property name="endpointRegistry"><inject bean="WSEndpointRegistry"/></property>
       <property name="transportManagerFactory"><inject bean="JSETransportManagerFactory"/></property>
@@ -32,7 +34,9 @@
    </bean>
 
    <bean name="WebserviceEJBRuntime" class="org.jboss.wsf.container.jboss50.BareWSFRuntime">
-      <property name="runtimeName">WebserviceEJBRuntime</property>
+      <constructor>
+         <parameter>WebserviceEJBRuntime</parameter>
+      </constructor>
       <property name="deploymentAspectManager"><inject bean="WSDeploymentAspectManagerEJB"/></property>
       <property name="endpointRegistry"><inject bean="WSEndpointRegistry"/></property>
       <property name="transportManagerFactory"><inject bean="EJBTransportManagerFactory"/></property>
@@ -41,7 +45,9 @@
    </bean>
 
    <bean name="EndpointAPIRuntime" class="org.jboss.wsf.container.jboss50.BareWSFRuntime">
-      <property name="runtimeName">EndpointAPIRuntime</property>
+      <constructor>
+         <parameter>EndpointAPIRuntime</parameter>
+      </constructor>
       <property name="deploymentAspectManager"><inject bean="WSDeploymentAspectManagerEndpointAPI"/></property>
       <property name="endpointRegistry"><inject bean="WSEndpointRegistry"/></property>      
       <property name="transportManagerFactory"><inject bean="EndpointAPITransportManagerFactory"/></property>      
