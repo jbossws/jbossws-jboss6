@@ -32,12 +32,13 @@
       http://snapshots.jboss.org/maven2/org/jboss/jbossas/jboss-as-component-matrix/5.0.0-SNAPSHOT 
     -->
     <jboss.version>5.0.0-SNAPSHOT</jboss.version>
-    <jboss.ejb3.version>0.1.0-SNAPSHOT</jboss.ejb3.version>
-    <jboss.deployers.version>2.0.0-SNAPSHOT</jboss.deployers.version>
-    <jboss.metadata.version>1.0.0.Beta11</jboss.metadata.version>
-    <jboss.security.version>2.0.2.Beta7</jboss.security.version>
-    <jboss.jbossxb.version>2.0.0.CR8</jboss.jbossxb.version>
-    <version.org.jboss.microcontainer>2.0.0.Beta14</version.org.jboss.microcontainer>
+    <jboss.ejb3.version>0.1.3-SNAPSHOT</jboss.ejb3.version>
+    <jboss.deployers.version>2.0.0.Beta16</jboss.deployers.version>
+    <jboss.jbossxb.version>2.0.0.CR9</jboss.jbossxb.version>
+    <jboss.metadata.version>1.0.0.Beta18</jboss.metadata.version>
+    <jboss.microcontainer.version>2.0.0.Beta15</jboss.microcontainer.version>
+    <jboss.security.version>2.0.2.CR3</jboss.security.version>
+    <jboss.vfs.version>2.0.0.Beta15</jboss.vfs.version>
   </properties>
   
   <!-- DependencyManagement -->
@@ -90,6 +91,11 @@
       </dependency>
       <dependency>
         <groupId>org.jboss</groupId>
+        <artifactId>jboss-vfs</artifactId>
+        <version>${jboss.vfs.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss</groupId>
         <artifactId>jbossxb</artifactId>
         <version>${jboss.jbossxb.version}</version>
       </dependency>
@@ -98,7 +104,7 @@
   
   <!-- Dependencies -->
   <dependencies>
-       
+    
     <!-- jbossws dependencies -->
     <dependency>
       <groupId>org.jboss.ws</groupId>
@@ -136,44 +142,39 @@
       <groupId>org.jboss</groupId>
       <artifactId>jbossxb</artifactId>
     </dependency>
-
-     <dependency>
-        <groupId>org.jboss.microcontainer</groupId>
-        <artifactId>jboss-dependency</artifactId>
-        <version>${version.org.jboss.microcontainer}</version>
-
-     </dependency>
-
-     <dependency>
-        <groupId>org.jboss.microcontainer</groupId>
-        <artifactId>jboss-kernel</artifactId>
-        <version>${version.org.jboss.microcontainer}</version>
-     </dependency>
-
-     <dependency>
-        <groupId>org.jboss</groupId>
-        <artifactId>jboss-reflect</artifactId>
-        <version>2.0.0.Beta12</version>
-     </dependency>
-     
-     <!-- thirdparty -->
-     <dependency>
-        <groupId>javax.xml.ws</groupId>
-        <artifactId>jaxws-api</artifactId>
-        <version>2.1</version>
-        <scope>compile</scope>
-     </dependency>
-     <dependency>
-        <groupId>javax.jws</groupId>
-        <artifactId>jsr181-api</artifactId>
-        <version>1.0-MR1</version>
-        <scope>compile</scope>
-     </dependency>
-     
+    <dependency>
+      <groupId>org.jboss.microcontainer</groupId>
+      <artifactId>jboss-dependency</artifactId>
+      <version>${jboss.microcontainer.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.microcontainer</groupId>
+      <artifactId>jboss-kernel</artifactId>
+      <version>${jboss.microcontainer.version}</version>
+    </dependency>
+    
+    <!-- thirdparty -->
+    <dependency>
+      <groupId>javax.xml.ws</groupId>
+      <artifactId>jaxws-api</artifactId>
+      <version>2.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.jws</groupId>
+      <artifactId>jsr181-api</artifactId>
+      <version>1.0-MR1</version>
+      <scope>compile</scope>
+    </dependency>
+    
     <!-- transitive dependencies -->
     <dependency>
       <groupId>org.jboss.metadata</groupId>
       <artifactId>jboss-metadata</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss</groupId>
+      <artifactId>jboss-vfs</artifactId>
     </dependency>
   </dependencies>
   
