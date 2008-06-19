@@ -2,11 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <name>JBoss Web Services - Container JBoss-5.0.1</name>
+  <name>JBoss Web Services - Container JBoss-5.0.0.x</name>
   <groupId>org.jboss.ws</groupId>
-  <artifactId>jbossws-jboss501</artifactId>
+  <artifactId>jbossws-jboss500x</artifactId>
   
-  <version>3.0.3-SNAPSHOT</version>
+  <version>3.0.2-SNAPSHOT</version>
   
   <!-- Parent -->
   <parent>
@@ -33,13 +33,13 @@
     -->
     <jboss.version>5.0.0-SNAPSHOT</jboss.version>
     <jboss.ejb3.version>0.1.4</jboss.ejb3.version>
-    <jboss.deployers.version>2.0.0.Beta16</jboss.deployers.version>
+    <jboss.deployers.version>2.0.0.Beta17</jboss.deployers.version>
     <jboss.jbossxb.version>2.0.0.CR10</jboss.jbossxb.version>
     <jboss.metadata.version>1.0.0.Beta20</jboss.metadata.version>
     <jboss.microcontainer.version>2.0.0.Beta15</jboss.microcontainer.version>
     <jboss.reflect.version>2.0.0.Beta12</jboss.reflect.version>
-    <jboss.security.version>2.0.2.CR3</jboss.security.version>
-    <jboss.vfs.version>2.0.0.Beta15</jboss.vfs.version>
+    <jboss.security.version>2.0.2.CR4</jboss.security.version>
+    <jboss.vfs.version>2.0.0.Beta18</jboss.vfs.version>
   </properties>
   
   <!-- DependencyManagement -->
