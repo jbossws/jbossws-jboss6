@@ -23,6 +23,7 @@ package org.jboss.wsf.container.jboss50.transport;
 
 // $Id$
 
+import org.jboss.deployers.client.spi.DeploymentFactory;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
@@ -60,21 +61,25 @@ public class WebAppDeploymentFactory
          throw new IllegalArgumentException("Web meta data is cannot be null");
 
       DeploymentUnit unit = dep.getAttachment(DeploymentUnit.class);
-      if (unit == null)
-         throw new IllegalStateException("Cannot obtain deployment unit");
-
-      try
+      if (unit != null)
       {
-         webMetaDataModifier.modifyMetaData(dep);
-      
-         // Attaching it to the DeploymentUnit will cause a new webapp deployment
-         unit.addAttachment(JBossWebMetaData.class, jbwmd);
-         unit.addAttachment(HttpSpec.PROPERTY_GENERATED_WEBAPP, Boolean.TRUE);
+         try
+         {
+            webMetaDataModifier.modifyMetaData(dep);
+         
+            // Attaching it to the DeploymentUnit will cause a new webapp deployment
+            unit.addAttachment(JBossWebMetaData.class, jbwmd);
+            unit.addAttachment(HttpSpec.PROPERTY_GENERATED_WEBAPP, Boolean.TRUE);
 
+         }
+         catch (Exception ex)
+         {
+            WSFDeploymentException.rethrow(ex);
+         }
       }
-      catch (Exception ex)
+      else
       {
-         WSFDeploymentException.rethrow(ex);
+         throw new IllegalStateException("Cannot obtain deployment unit");
       }
 
       return unit;
