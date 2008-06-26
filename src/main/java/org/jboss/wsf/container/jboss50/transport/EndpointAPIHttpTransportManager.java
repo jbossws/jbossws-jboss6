@@ -37,7 +37,11 @@ import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.WSFDeploymentException;
 import org.jboss.wsf.spi.management.ServerConfig;
 import org.jboss.wsf.spi.management.ServerConfigFactory;
-import org.jboss.wsf.spi.transport.*;
+import org.jboss.wsf.spi.transport.TransportManager;
+import org.jboss.wsf.spi.transport.ListenerRef;
+import org.jboss.wsf.spi.transport.TransportSpec;
+import org.jboss.wsf.spi.transport.HttpSpec;
+import org.jboss.wsf.spi.transport.HttpListenerRef;
 
 import javax.xml.ws.WebServiceException;
 import java.net.URI;
@@ -52,7 +56,6 @@ public class EndpointAPIHttpTransportManager implements TransportManager
 {
    private static Logger log = Logger.getLogger(EndpointAPIHttpTransportManager.class);
    private static final String PROCESSED_BY_DEPLOYMENT_FACTORY = "processed.by.deployment.factory";
-   private WebAppDeploymentFactory deploymentFactory;
    private WebAppGenerator generator;
    private DeploymentFactory factory = new DeploymentFactory();
 
@@ -74,14 +77,15 @@ public class EndpointAPIHttpTransportManager implements TransportManager
       // Create JBossWebMetaData and attach it to the DeploymentUnit
       Deployment topLevelDeployment = endpoint.getService().getDeployment();
       
-      // TODO: JBWS-2188
+      // Pass on to the main deployer
       Boolean alreadyDeployed = (Boolean)topLevelDeployment.getProperty(PROCESSED_BY_DEPLOYMENT_FACTORY); 
       if ((alreadyDeployed == null) || (false == alreadyDeployed))
       {
-         JBossWebMetaData jbwMetaData = generator.create(topLevelDeployment);
-         deploymentFactory.create(topLevelDeployment, jbwMetaData);
+         generator.create(topLevelDeployment);
+         deploy(topLevelDeployment);
          topLevelDeployment.setProperty(PROCESSED_BY_DEPLOYMENT_FACTORY, Boolean.TRUE);
       }
+
 
       // Server config
       SPIProvider provider = SPIProviderResolver.getInstance().getProvider();
@@ -102,9 +106,6 @@ public class EndpointAPIHttpTransportManager implements TransportManager
       {
          throw new RuntimeException("Failed to create ListenerRef", e);
       }
-
-      // Pass on to the main deployer
-      deploy(topLevelDeployment);
 
       // Map listenerRef for destroy phase
       deploymentRegistry.put( listenerRef.getUUID(), topLevelDeployment );
@@ -129,23 +130,10 @@ public class EndpointAPIHttpTransportManager implements TransportManager
             {
                log.error(e.getMessage(), e);
             }
-            try
-            {
-               deploymentFactory.destroy(dep);
-            }
-            catch (Exception e)
-            {
-               log.error(e.getMessage(), e);
-            }
             dep.removeProperty(PROCESSED_BY_DEPLOYMENT_FACTORY);
          }
       }
       deploymentRegistry.remove(ref.getUUID());
-   }
-
-   public void setDeploymentFactory(WebAppDeploymentFactory deploymentFactory)
-   {
-      this.deploymentFactory = deploymentFactory;
    }
 
    public void setGenerator(WebAppGenerator generator)
@@ -173,7 +161,7 @@ public class EndpointAPIHttpTransportManager implements TransportManager
       {
          webMetaDataModifier.modifyMetaData(dep);
 
-         AbstractDeployment deployment = createSimpleDeployment(dep.getSimpleName());
+         final AbstractDeployment deployment = createSimpleDeployment(dep.getService().getContextRoot());
          MutableAttachments mutableAttachments = (MutableAttachments)deployment.getPredeterminedManagedObjects();
          mutableAttachments.addAttachment(HttpSpec.PROPERTY_GENERATED_WEBAPP, Boolean.TRUE);
          mutableAttachments.addAttachment(ClassLoaderFactory.class, new ContextClassLoaderFactory());
@@ -190,7 +178,7 @@ public class EndpointAPIHttpTransportManager implements TransportManager
    {
       try
       {
-         AbstractDeployment deployment = createSimpleDeployment(dep.getSimpleName());
+         AbstractDeployment deployment = createSimpleDeployment(dep.getService().getContextRoot());
          mainDeployer.undeploy(deployment);
       }
       catch (Exception ex)
