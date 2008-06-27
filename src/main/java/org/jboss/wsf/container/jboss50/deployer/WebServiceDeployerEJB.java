@@ -27,9 +27,13 @@ import org.jboss.ejb.deployers.EjbDeployment;
 import org.jboss.ejb.deployers.MergedJBossMetaDataDeployer;
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
+import org.jboss.metadata.ejb.jboss.JBossSessionBeanMetaData;
+import org.jboss.metadata.javaee.spec.PortComponent;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.wsf.spi.metadata.j2ee.PortComponentMD;
+import org.jboss.wsf.spi.metadata.j2ee.PortComponentSpec;
 import org.jboss.logging.Logger;
 
 import java.lang.annotation.Annotation;
@@ -135,6 +139,23 @@ public class WebServiceDeployerEJB extends AbstractWebServiceDeployer
          if(bean.isAnnotationPresent(annotation))
          {
             result = (T)bean.getAnnotation(annotation);
+         }
+         
+         //[JBWS-2240] Workaround to have the port-component data available;
+         //TODO: info coming from the descriptor still need to be handled properly
+         if (PortComponentSpec.class.equals(annotation) && ejbMetaData instanceof JBossSessionBeanMetaData)
+         {
+        	 PortComponent pc = ((JBossSessionBeanMetaData)ejbMetaData).getPortComponent();
+        	 if (pc != null)
+        	 {
+        		 PortComponentMD pcMetaData = new PortComponentMD();
+            	 pcMetaData.setAuthMethod(pc.getAuthMethod());
+            	 pcMetaData.setPortComponentName(pc.getPortComponentName());
+            	 pcMetaData.setPortComponentURI(pc.getPortComponentURI());
+            	 pcMetaData.setSecureWSDLAccess(pc.getSecureWSDLAccess());
+            	 pcMetaData.setTransportGuarantee(pc.getTransportGuarantee());
+            	 result = (T)pcMetaData;
+        	 }
          }
 
          return result;
