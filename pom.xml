@@ -86,6 +86,11 @@
         <version>${jboss.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-system-jmx</artifactId>
+        <version>${jboss.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.jboss.metadata</groupId>
         <artifactId>jboss-metadata</artifactId>
         <version>${jboss.metadata.version}</version>
@@ -147,6 +152,11 @@
     <dependency>
       <groupId>org.jboss.jbossas</groupId>
       <artifactId>jboss-as-server</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.jbossas</groupId>
+      <artifactId>jboss-as-system-jmx</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
