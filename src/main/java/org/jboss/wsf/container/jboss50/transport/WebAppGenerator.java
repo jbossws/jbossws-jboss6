@@ -275,5 +275,10 @@ public class WebAppGenerator
          throw new WSFDeploymentException("Cannot obtain context root");
 
       jbwmd.setContextRoot(contextRoot);
+      String[] virtualHosts = dep.getService().getVirtualHosts();
+      if (virtualHosts != null && virtualHosts.length > 0)
+      {
+         jbwmd.setVirtualHosts(Arrays.asList(virtualHosts));
+      }
    }
 }
