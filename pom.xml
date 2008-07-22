@@ -32,10 +32,10 @@
       http://snapshots.jboss.org/maven2/org/jboss/jbossas/jboss-as-component-matrix/5.0.0-SNAPSHOT 
     -->
     <jboss.version>5.0.0-SNAPSHOT</jboss.version>
-    <jboss.ejb3.version>0.1.7</jboss.ejb3.version>
+    <jboss.ejb3.version>0.1.8</jboss.ejb3.version>
     <jboss.deployers.version>2.0.0.Beta18</jboss.deployers.version>
     <jboss.jbossxb.version>2.0.0.CR11</jboss.jbossxb.version>
-    <jboss.metadata.version>1.0.0.Beta28</jboss.metadata.version>
+    <jboss.metadata.version>1.0.0.Beta30</jboss.metadata.version>
     <jboss.microcontainer.version>2.0.0.Beta16</jboss.microcontainer.version>
     <jboss.reflect.version>2.0.0.Beta12</jboss.reflect.version>
     <jboss.security.version>2.0.2.CR6</jboss.security.version>
