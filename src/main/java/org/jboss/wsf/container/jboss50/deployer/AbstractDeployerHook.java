@@ -1,8 +1,8 @@
 /*
- * JBoss, Home of Professional Open Source
- * Copyright 2005, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2006, Red Hat Middleware LLC, and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -29,9 +29,6 @@ import org.jboss.wsf.spi.WSFRuntime;
 import org.jboss.wsf.spi.WSFRuntimeLocator;
 import org.jboss.wsf.spi.deployment.*;
 import org.jboss.wsf.container.jboss50.deployer.DeployerHook;
-
-//$Id$
-
 
 /**
  * An abstract web service deployer.
