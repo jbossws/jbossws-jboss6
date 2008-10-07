@@ -156,7 +156,7 @@
       <property name="provides">ContainerEndpointHandler</property>
    </bean>
 
-   <bean name="WSEndpointLifecycleDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointLifecycleDeploymentAspect">
+   <bean name="WSEndpointLifecycleDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointDeployerLifecycleDeploymentAspect">
       <property name="requires">LAST_DEPLOYMENT_ASPECT</property>
    </bean>
 
