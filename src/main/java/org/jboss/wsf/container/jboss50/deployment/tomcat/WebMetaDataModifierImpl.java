@@ -117,6 +117,16 @@ public class WebMetaDataModifierImpl implements WebMetaDataModifier
             initParams = new ArrayList<ParamValueMetaData>();
             servlet.setInitParam(initParams);
          }
+         
+         if (servlet.getLoadOnStartup() <= 0)
+         {
+            // [JBWS-2246] hack. We need to start all webservice endpoint servlets because of
+            // wsdl-publish-location feature. This feature generates wsdl to specified file
+            // location on the FS. Without starting the servlets the WSDL will not be published
+            // because publish wsdl deployment aspect is now called in endpoint init servlet
+            // lifecycle method and not in the deployers chain as it was in AS 4.x series.
+            servlet.setLoadOnStartup(1);
+         }
 
          String linkName = servlet.getServletName();
 
