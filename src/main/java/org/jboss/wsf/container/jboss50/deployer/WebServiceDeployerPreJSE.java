@@ -22,30 +22,22 @@
 package org.jboss.wsf.container.jboss50.deployer;
 
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 
 /**
- * This web service deployer for JSE
- * 
+ * Web service deployer for JSE endpoints executed before tomcat deployer
+ * @author richard.opalka@jboss.org 
  * @author Thomas.Diesler@jboss.org
- * @since 24-Apr-2007
+ * @author Heiko.Braun@jboss.com
  */
 public class WebServiceDeployerPreJSE extends AbstractWebServiceDeployer
 {
-   private int relOrderWar;
-
    public WebServiceDeployerPreJSE()
    {
-      addInput(JBossWebMetaData.class);
-   }
-
-   public void setRelOrderWar(int relOrderWar)
-   {
-      this.relOrderWar = relOrderWar;
-   }
-
-   @Override
-   public int getRelativeOrder()
-   {
-      return relOrderWar - 1;
+      // deployers ordering contract
+      addInput(JBossWebMetaData.class); // we're depending on the output from the parsing deployers
+      addInput(WebServiceDeployment.class); // we're depending on WS deployer EJB
+      addOutput(JBossWebMetaData.class); // we're modifying web metadata - the input for tomcat deployer
+      addOutput(WebServiceDeployment.class); // we're providing webservice metadata
    }
 }

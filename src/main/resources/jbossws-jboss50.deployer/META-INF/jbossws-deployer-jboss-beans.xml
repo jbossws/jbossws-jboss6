@@ -43,25 +43,17 @@
    <!--
    A web service deployer that hooks in after the EJB deployers
    -->
-   <bean name="WebServiceDeployerEJB" class="org.jboss.wsf.container.jboss50.deployer.WebServiceDeployerEJB">
-      <depends>EJB2xDeployer</depends>
-      <depends>Ejb3Deployer</depends>
-   </bean>
+   <bean name="WebServiceDeployerEJB" class="org.jboss.wsf.container.jboss50.deployer.WebServiceDeployerEJB"/>
 
    <!--
    A web service deployer that hooks in before the WAR deployer
    -->
-   <bean name="WebServiceDeployerPreJSE" class="org.jboss.wsf.container.jboss50.deployer.WebServiceDeployerPreJSE">
-      <property name="relOrderWar"><inject bean="WarDeployer" property="relativeOrder"/></property>
-      <depends>WebAppParsingDeployer</depends>
-   </bean>
+   <bean name="WebServiceDeployerPreJSE" class="org.jboss.wsf.container.jboss50.deployer.WebServiceDeployerPreJSE"/>
 
    <!--
    A web service deployer that hooks in after the WAR deployer
    -->
-   <bean name="WebServiceDeployerPostJSE" class="org.jboss.wsf.container.jboss50.deployer.WebServiceDeployerPostJSE">
-      <depends>WarDeployer</depends>
-   </bean>
+   <bean name="WebServiceDeployerPostJSE" class="org.jboss.wsf.container.jboss50.deployer.WebServiceDeployerPostJSE"/>
 
    <!--
    Register DeployerHooks with JBoss deployers

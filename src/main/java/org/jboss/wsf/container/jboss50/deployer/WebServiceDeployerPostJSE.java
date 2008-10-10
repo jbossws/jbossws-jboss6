@@ -22,15 +22,19 @@
 package org.jboss.wsf.container.jboss50.deployer;
 
 import org.jboss.web.deployers.WarDeployment;
+import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 
 /**
+ * Web service deployer for JSE endpoints executed after tomcat deployer
+ * @author richard.opalka@jboss.com
+ * @author Thomas.Diesler@jboss.org
  * @author Heiko.Braun@jboss.com
  */
 public class WebServiceDeployerPostJSE extends AbstractWebServiceDeployer
 {
    public WebServiceDeployerPostJSE()
    {
-      // Output from the TomcatDeployer
-      addInput(WarDeployment.class);
+      // deployers ordering contract
+      addInput(WarDeployment.class); // we're depending on the output from the TomcatDeployer
    }
 }
