@@ -21,16 +21,30 @@
  */
 package org.jboss.wsf.container.jboss50.deployer;
 
-import org.jboss.web.deployers.WarDeployment;
-
 /**
- * @author Heiko.Braun@jboss.com
+ * The main web service deployer
+ * 
+ * @author Thomas.Diesler@jboss.org
+ * @since 24-Apr-2007
  */
-public class WebServiceDeployerPostJSE extends AbstractWebServiceDeployer
+public class WebServiceMainDeployer extends AbstractWebServiceDeployer
 {
-   public WebServiceDeployerPostJSE()
+   private int relOrderJSE;
+   private int relOrderEJB;
+   
+   public void setRelOrderEJB(int relOrderEJB)
    {
-      // Output from the TomcatDeployer
-      addInput(WarDeployment.class);
+      this.relOrderEJB = relOrderEJB;
+   }
+   
+   public void setRelOrderJSE(int relOrderJSE)
+   {
+      this.relOrderJSE = relOrderJSE;
+   }
+   
+   @Override
+   public int getRelativeOrder()
+   {
+      return Math.max(relOrderEJB, relOrderJSE) + 1;
    }
 }

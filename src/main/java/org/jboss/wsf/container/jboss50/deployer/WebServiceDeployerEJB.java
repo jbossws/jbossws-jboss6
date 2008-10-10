@@ -47,9 +47,10 @@ import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
  * {@link org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration} an passes it to a chain of
  * {@link org.jboss.wsf.container.jboss50.deployer.DeployerHook}'s.
  *
- * @author richard.opalka@jboss.com
  * @author Thomas.Diesler@jboss.org
  * @author Heiko.Braun@jboss.com
+ *
+ * @since 24-Apr-2007
  */
 public class WebServiceDeployerEJB extends AbstractWebServiceDeployer
 {
@@ -57,12 +58,17 @@ public class WebServiceDeployerEJB extends AbstractWebServiceDeployer
 
    public WebServiceDeployerEJB()
    {
-      // deployers ordering contract
       addInput(MergedJBossMetaDataDeployer.EJB_MERGED_ATTACHMENT_NAME);   
+   
       addInput(EjbDeployment.class);
+      
       addInput(Ejb3Deployment.class);
-      addOutput(JBossWebMetaData.class); // we're creating web metadata - the input for tomcat deployer
-      addOutput(WebServiceDeployment.class); // we're providing webservice metadata
+
+      // Input for the TomcatDeployer
+      addOutput(JBossWebMetaData.class);
+      
+      addOutput(WebServiceDeployment.class);
+
    }
 
    @Override
