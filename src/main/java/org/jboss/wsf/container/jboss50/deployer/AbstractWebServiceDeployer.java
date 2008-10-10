@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This deployer that calls the registered DeployerHooks
+ * This is the deployer that calls the registered DeployerHooks
  * 
  * @author Thomas.Diesler@jboss.org
  * @since 24-Apr-2007

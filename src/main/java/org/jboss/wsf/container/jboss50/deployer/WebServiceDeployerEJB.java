@@ -43,7 +43,7 @@ import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 
 /**
- * This web service deployer for EJB. Adopts EJB deployments to
+ * This it the web service deployer for EJB. Adopts EJB deployments to
  * {@link org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration} an passes it to a chain of
  * {@link org.jboss.wsf.container.jboss50.deployer.DeployerHook}'s.
  *

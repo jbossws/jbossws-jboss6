@@ -24,7 +24,7 @@ package org.jboss.wsf.container.jboss50.deployer;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 
 /**
- * This web service deployer for JSE
+ * This is the web service deployer for JSE
  * 
  * @author Thomas.Diesler@jboss.org
  * @since 24-Apr-2007
@@ -36,6 +36,7 @@ public class WebServiceDeployerPreJSE extends AbstractWebServiceDeployer
    public WebServiceDeployerPreJSE()
    {
       addInput(JBossWebMetaData.class);
+      addOutput(JBossWebMetaData.class);
    }
 
    public void setRelOrderWar(int relOrderWar)
