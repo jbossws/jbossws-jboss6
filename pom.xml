@@ -24,8 +24,8 @@
   
   <!-- Properties -->
   <properties>
-    <jbossws.common.version>1.0.7-SNAPSHOT</jbossws.common.version>
-    <jbossws.spi.version>1.0.6-SNAPSHOT</jbossws.spi.version>
+    <jbossws.common.version>1.0.7.GA</jbossws.common.version>
+    <jbossws.spi.version>1.0.6.GA</jbossws.spi.version>
     
     <!--
       JBoss component versions taken from   
@@ -33,10 +33,10 @@
     -->
     <jboss.version>5.0.0-SNAPSHOT</jboss.version>
     <jboss.ejb3.version>1.0.0-Beta4</jboss.ejb3.version>
-    <jboss.deployers.version>2.0.0.CR1</jboss.deployers.version>
+    <jboss.deployers.version>2.0.0.CR2</jboss.deployers.version>
     <jboss.jbossxb.version>2.0.0.CR15</jboss.jbossxb.version>
     <jboss.metadata.version>1.0.0.CR1</jboss.metadata.version>
-    <jboss.microcontainer.version>2.0.0.CR1</jboss.microcontainer.version>
+    <jboss.microcontainer.version>2.0.0.CR2</jboss.microcontainer.version>
     <jboss.reflect.version>2.0.0.CR1</jboss.reflect.version>
     <jboss.security.version>2.0.2.CR6</jboss.security.version>
     <jboss.vfs.version>2.0.0.CR1</jboss.vfs.version>
