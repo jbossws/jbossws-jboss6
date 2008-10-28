@@ -88,19 +88,12 @@ public class WebServiceDeployerEJB extends AbstractWebServiceDeployer
          {
             JBossEnterpriseBeanMetaData ejb = iterator.next();
             EJBContainer ejbContainer = null;
-            if (ejb3Deployment != null)
+            if (ejb3Deployment != null && !ejb.isEntity())
             {
                ObjectName objName = null;
                try
                {
-                  String containerName = ejb.determineContainerName();
-                  if(containerName == null)
-                  {
-                     log.warn("Container name is null in metadata of " + ejb + ", will generate one.");
-                     String ejbName = ejb.getEjbName();
-                     containerName = JavaEEComponentHelper.createObjectName(ejb3Deployment, ejbName);
-                  }
-                  objName = new ObjectName(containerName);
+                  objName = new ObjectName(ejb.determineContainerName());
                }
                catch (Exception e)
                {
