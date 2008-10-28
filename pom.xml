@@ -32,13 +32,13 @@
       http://snapshots.jboss.org/maven2/org/jboss/jbossas/jboss-as-component-matrix/5.0.0-SNAPSHOT/jboss-as-component-matrix-5.0.0-20081006.031201-93.pom
     -->
     <jboss.version>5.0.0-SNAPSHOT</jboss.version>
-    <jboss.ejb3.version>1.0.0-Beta4</jboss.ejb3.version>
-    <jboss.deployers.version>2.0.0.CR2</jboss.deployers.version>
-    <jboss.jbossxb.version>2.0.0.CR15</jboss.jbossxb.version>
-    <jboss.metadata.version>1.0.0.CR1</jboss.metadata.version>
-    <jboss.microcontainer.version>2.0.0.CR2</jboss.microcontainer.version>
-    <jboss.reflect.version>2.0.0.CR1</jboss.reflect.version>
-    <jboss.security.version>2.0.2.CR6</jboss.security.version>
+    <jboss.ejb3.version>1.0.0-Beta5</jboss.ejb3.version>
+    <jboss.deployers.version>2.0.0.CR3</jboss.deployers.version>
+    <jboss.jbossxb.version>2.0.0.GA</jboss.jbossxb.version>
+    <jboss.metadata.version>1.0.0.CR3</jboss.metadata.version>
+    <jboss.microcontainer.version>2.0.0.CR3</jboss.microcontainer.version>
+    <jboss.reflect.version>2.0.0.GA</jboss.reflect.version>
+    <jboss.security.version>2.0.2.CR9</jboss.security.version>
     <jboss.vfs.version>2.0.0.CR1</jboss.vfs.version>
   </properties>
   
