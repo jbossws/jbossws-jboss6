@@ -40,7 +40,7 @@ public abstract class AbstractWebServiceDeployer<T> extends AbstractComponentDep
    // provide logging
    private static final Logger log = Logger.getLogger(AbstractWebServiceDeployer.class);
 
-   protected List<DeployerHook> deployerHooks = new LinkedList<DeployerHook>();
+   private List<DeployerHook> deployerHooks = new LinkedList<DeployerHook>();
 
    public void addDeployerHook(DeployerHook deployer)
    {

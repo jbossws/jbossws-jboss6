@@ -41,37 +41,30 @@ import org.w3c.dom.Element;
 
 /**
  * An abstract web service deployer.
- * <pre>
- *    deploy(unit)
+ * 
+ *    deploy(unit) 
  *      if(isWebServiceDeployment)
  *        dep = createDeployment(unit)
- *        create(dep)
- *        start(dep)
+ *        deploy(dep)
  *
  *    undeploy(unit)
  *      dep = getDeployment(unit) 
- *      stop(dep)
- *      destroy(dep)
- * </pre>
+ *      undeploy(dep)
  *
  * @author Thomas.Diesler@jboss.org
- * @author Heiko.Braun@jboss.com
- * 
  * @since 25-Apr-2007
  */
 public abstract class ArchiveDeployerHook extends AbstractDeployerHook
 {
-   
-   /**
-    * Executes the 'create' step only. <br/>
-    * Subclasses need to take care that the 'start' step is executed as well.          
-    */
+
    public void deploy(DeploymentUnit unit) throws DeploymentException
    {
-      if (!ignoreDeployment(unit) && isWebServiceDeployment(unit))
+      if (ignoreDeployment(unit))
+         return;
+
+      if (isWebServiceDeployment(unit))
       {
          log.debug("deploy: " + unit.getName());
-
          Deployment dep = getDeployment(unit);
          if (dep == null)
          {
@@ -79,22 +72,11 @@ public abstract class ArchiveDeployerHook extends AbstractDeployerHook
             dep.addAttachment(DeploymentUnit.class, unit);
          }
 
-         if(Deployment.DeploymentState.UNDEFINED == dep.getState())
-         {
-            getWsfRuntime().create(dep); 
-            unit.addAttachment(Deployment.class, dep);
-         }
-         else
-         {
-            throw new IllegalArgumentException("Cannot process Deployment in state " + dep.getState() + ": " + dep);
-         }
+         getDeploymentAspectManager().deploy(dep);
+         unit.addAttachment(Deployment.class, dep);
       }
    }
 
-   /**
-    * Executes the stop() and destroy() lifecycles
-    * @param unit
-    */
    public void undeploy(DeploymentUnit unit)
    {
       if (ignoreDeployment(unit))
@@ -104,8 +86,7 @@ public abstract class ArchiveDeployerHook extends AbstractDeployerHook
       if (dep != null)
       {
          log.debug("undeploy: " + unit.getName());
-         getWsfRuntime().stop(dep);
-         getWsfRuntime().destroy(dep);
+         getDeploymentAspectManager().undeploy(dep);
       }
    }
 

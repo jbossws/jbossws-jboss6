@@ -24,7 +24,6 @@ package org.jboss.wsf.container.jboss50.deployment.tomcat;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.WSFDeploymentException;
-import org.jboss.wsf.spi.WSFRuntime;
 
 /**
  * A deployer that modifies the web.xml meta data 
@@ -42,7 +41,7 @@ public class ModifyWebMetaDataDeploymentAspect extends DeploymentAspect
    }
 
    @Override
-   public void create(Deployment dep, WSFRuntime runtime)
+   public void create(Deployment dep)
    {
       try
       {

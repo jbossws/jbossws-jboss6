@@ -25,10 +25,7 @@ import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
-import org.jboss.wsf.spi.WSFRuntime;
-import org.jboss.wsf.spi.WSFRuntimeLocator;
 import org.jboss.wsf.spi.deployment.*;
-import org.jboss.wsf.container.jboss50.deployer.DeployerHook;
 
 /**
  * An abstract web service deployer.
@@ -43,30 +40,26 @@ public abstract class AbstractDeployerHook implements DeployerHook
    // provide logging
    protected final Logger log = Logger.getLogger(getClass());
 
-   protected String runtimeName;
-   private WSFRuntime wsfRuntime;
-
+   private DeploymentAspectManager deploymentAspectManager;
    private DeploymentModelFactory deploymentModelFactory;
 
-   public WSFRuntime getWsfRuntime()
+   protected String deploymentManagerName;
+
+   /** MC provided property **/
+   public void setDeploymentManagerName(String deploymentManagerName)
    {
-      if(null == wsfRuntime)
+      this.deploymentManagerName = deploymentManagerName;
+   }
+
+   public DeploymentAspectManager getDeploymentAspectManager()
+   {
+      if(null == deploymentAspectManager)
       {
          SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
-         wsfRuntime = spiProvider.getSPI(WSFRuntimeLocator.class).locateRuntime(runtimeName);
+         deploymentAspectManager = spiProvider.getSPI(DeploymentAspectManagerFactory.class).getDeploymentAspectManager( deploymentManagerName );
       }
-      
-      return wsfRuntime;
-   }
 
-   public void setWsfRuntime(WSFRuntime wsfRuntime)
-   {
-      this.wsfRuntime = wsfRuntime;
-   }
-
-   public void setRuntimeName(String runtimeName)
-   {
-      this.runtimeName = runtimeName;
+      return deploymentAspectManager;
    }
 
    public DeploymentModelFactory getDeploymentModelFactory()

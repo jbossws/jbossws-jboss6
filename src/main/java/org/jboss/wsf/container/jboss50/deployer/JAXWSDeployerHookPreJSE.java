@@ -46,12 +46,6 @@ import java.util.List;
 public class JAXWSDeployerHookPreJSE extends AbstractDeployerHookJSE
 {
 
-
-   public void undeploy(DeploymentUnit unit)
-   {
-      // the  JAXWSDeployerHookPostJSE deals with undeployment
-   }
-
    /** Get the deployment type this deployer can handle
     */
    public DeploymentType getDeploymentType()

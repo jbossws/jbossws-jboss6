@@ -21,22 +21,20 @@
  */
 package org.jboss.wsf.container.jboss50.transport;
 
-import org.jboss.wsf.common.ResourceLoaderAdapter;
+import javax.xml.ws.Endpoint;
+import javax.xml.ws.WebServiceException;
+
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
-import org.jboss.wsf.spi.WSFRuntime;
-import org.jboss.wsf.spi.WSFRuntimeLocator;
 import org.jboss.wsf.spi.deployment.AbstractExtensible;
-import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.DeploymentAspectManager;
+import org.jboss.wsf.spi.deployment.DeploymentAspectManagerFactory;
 import org.jboss.wsf.spi.deployment.DeploymentModelFactory;
 import org.jboss.wsf.spi.deployment.Service;
 import org.jboss.wsf.spi.http.HttpContext;
 import org.jboss.wsf.spi.http.HttpContextFactory;
 import org.jboss.wsf.spi.http.HttpServer;
-
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.WebServiceException;
 
 /**
  * A HTTP Server that uses DeploymentAspects
@@ -44,7 +42,7 @@ import javax.xml.ws.WebServiceException;
  * @author Thomas.Diesler@jboss.org
  * @since 07-Jul-2006
  */
-public class WSFRuntimeDelegateHttpServer extends AbstractExtensible implements HttpServer
+public class DeploymentAspectHttpServer extends AbstractExtensible implements HttpServer
 {
    /** Start an instance of this HTTP server */
    public void start()
@@ -69,18 +67,11 @@ public class WSFRuntimeDelegateHttpServer extends AbstractExtensible implements 
       {
          // Get the deployment model factory
          SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
-         WSFRuntimeLocator locator = spiProvider.getSPI(WSFRuntimeLocator.class);
-         WSFRuntime runtime = locator.locateRuntime("EndpointAPIRuntime");
-
          DeploymentModelFactory depModelFactory = spiProvider.getSPI(DeploymentModelFactory.class);
 
          // Create/Setup the deployment
          Deployment dep = depModelFactory.newDeployment("endpoint-deployment", implClass.getClassLoader());
-         dep.setType(Deployment.DeploymentType.JAXWS_JSE);
          dep.setRuntimeClassLoader(dep.getInitialClassLoader());
-         
-         // TODO: Hack, should this become another DeploymentAspect?
-         ((ArchiveDeployment)dep).setRootFile(new ResourceLoaderAdapter());
 
          // Create/Setup the service
          Service service = dep.getService();
@@ -88,13 +79,12 @@ public class WSFRuntimeDelegateHttpServer extends AbstractExtensible implements 
 
          // Create/Setup the endpoint
          org.jboss.wsf.spi.deployment.Endpoint ep = depModelFactory.newEndpoint(implClass.getName());
-         ep.setShortName(implClass.getName()+"-Endpoint");
-         ep.setURLPattern("/*");
          service.addEndpoint(ep);
 
          // Deploy using deployment aspects
-         runtime.create(dep);  
-         runtime.start(dep);  
+         DeploymentAspectManagerFactory depManagerFactory = spiProvider.getSPI(DeploymentAspectManagerFactory.class);
+         DeploymentAspectManager depManager = depManagerFactory.getDeploymentAspectManager("WSDeploymentAspectManagerEndpointAPI");
+         depManager.deploy(dep);
       }
       catch (RuntimeException rte)
       {
@@ -111,7 +101,6 @@ public class WSFRuntimeDelegateHttpServer extends AbstractExtensible implements 
    {
       try
       {
-         
       }
       catch (RuntimeException rte)
       {

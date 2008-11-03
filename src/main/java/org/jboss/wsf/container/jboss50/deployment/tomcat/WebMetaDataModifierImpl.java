@@ -28,7 +28,6 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ListenerMetaData;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.transport.HttpSpec;
 
 import javax.xml.ws.WebServiceException;
 import java.util.ArrayList;
@@ -72,11 +71,11 @@ public class WebMetaDataModifierImpl implements WebMetaDataModifier
    {
       RewriteResults results = new RewriteResults();
 
-      String servletClass = (String)dep.getProperty(HttpSpec.PROPERTY_WEBAPP_SERVLET_CLASS);
+      String servletClass = (String)dep.getProperty(PROPERTY_WEBAPP_SERVLET_CLASS);
       if (servletClass == null)
-         throw new IllegalStateException("Cannot obtain context property: " + HttpSpec.PROPERTY_WEBAPP_SERVLET_CLASS);
+         throw new IllegalStateException("Cannot obtain context property: " + PROPERTY_WEBAPP_SERVLET_CLASS);
 
-      Map<String, String> depCtxParams = (Map<String, String>)dep.getProperty(HttpSpec.PROPERTY_WEBAPP_CONTEXT_PARAMETERS);
+      Map<String, String> depCtxParams = (Map<String, String>)dep.getProperty(PROPERTY_WEBAPP_CONTEXT_PARAMETERS);
       if (depCtxParams != null)
       {
          List<ParamValueMetaData> contextParams = jbwmd.getContextParams();
@@ -95,7 +94,7 @@ public class WebMetaDataModifierImpl implements WebMetaDataModifier
          }
       }
 
-      String listenerClass = (String)dep.getProperty(HttpSpec.PROPERTY_WEBAPP_SERVLET_CONTEXT_LISTENER);
+      String listenerClass = (String)dep.getProperty(PROPERTY_WEBAPP_SERVLET_CONTEXT_LISTENER);
       if (listenerClass != null)
       {
          List<ListenerMetaData> listeners = jbwmd.getListeners();
@@ -118,16 +117,6 @@ public class WebMetaDataModifierImpl implements WebMetaDataModifier
             servlet.setInitParam(initParams);
          }
          
-         if (servlet.getLoadOnStartup() <= 0)
-         {
-            // [JBWS-2246] hack. We need to start all webservice endpoint servlets because of
-            // wsdl-publish-location feature. This feature generates wsdl to specified file
-            // location on the FS. Without starting the servlets the WSDL will not be published
-            // because publish wsdl deployment aspect is now called in endpoint init servlet
-            // lifecycle method and not in the deployers chain as it was in AS 4.x series.
-            servlet.setLoadOnStartup(1);
-         }
-
          String linkName = servlet.getServletName();
 
          // find the servlet-class

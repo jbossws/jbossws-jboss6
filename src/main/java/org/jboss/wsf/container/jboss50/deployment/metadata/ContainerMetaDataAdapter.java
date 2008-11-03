@@ -30,7 +30,7 @@ import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.JSEArchiveMetaData;
-import org.jboss.wsf.spi.transport.HttpSpec;
+import org.jboss.wsf.container.jboss50.deployment.tomcat.WebMetaDataModifier;
 
 import java.net.URL;
 
@@ -80,7 +80,7 @@ public class ContainerMetaDataAdapter
             if (dep instanceof ArchiveDeployment)
             {
                URL webURL = ((ArchiveDeployment)dep).getRootFile().toURL();
-               dep.setProperty(HttpSpec.PROPERTY_WEBAPP_URL, webURL);
+               dep.setProperty(WebMetaDataModifier.PROPERTY_WEBAPP_URL, webURL);
             }
          }
          

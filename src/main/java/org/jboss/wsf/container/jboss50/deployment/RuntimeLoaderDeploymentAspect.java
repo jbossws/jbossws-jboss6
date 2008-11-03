@@ -23,7 +23,6 @@ package org.jboss.wsf.container.jboss50.deployment;
 
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
-import org.jboss.wsf.spi.WSFRuntime;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
@@ -36,7 +35,7 @@ import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
  */
 public class RuntimeLoaderDeploymentAspect extends DeploymentAspect
 {
-   public void start(Deployment dep, WSFRuntime runtime)
+   public void create(Deployment dep)
    {
       // EJB3 endpoints
       if (dep.getAttachment(WebServiceDeployment.class) != null)

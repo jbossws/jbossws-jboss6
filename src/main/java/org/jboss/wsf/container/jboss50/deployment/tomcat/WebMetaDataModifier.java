@@ -31,5 +31,11 @@ import org.jboss.wsf.spi.deployment.Deployment;
  */
 public interface WebMetaDataModifier
 {            
+   final static String PROPERTY_GENERATED_WEBAPP = "org.jboss.ws.generated.webapp";
+   final static String PROPERTY_WEBAPP_CONTEXT_PARAMETERS = "org.jboss.ws.webapp.ContextParameterMap";
+   final static String PROPERTY_WEBAPP_SERVLET_CLASS = "org.jboss.ws.webapp.ServletClass";
+   final static String PROPERTY_WEBAPP_SERVLET_CONTEXT_LISTENER = "org.jboss.ws.webapp.ServletContextListener";
+   final static String PROPERTY_WEBAPP_URL = "org.jboss.ws.webapp.url";
+
    RewriteResults modifyMetaData(Deployment dep) throws ClassNotFoundException;
 }

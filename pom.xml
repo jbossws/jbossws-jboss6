@@ -24,8 +24,8 @@
   
   <!-- Properties -->
   <properties>
-    <jbossws.common.version>1.0.7.GA</jbossws.common.version>
-    <jbossws.spi.version>1.0.6.GA</jbossws.spi.version>
+    <jbossws.common.version>1.0.8-SNAPSHOT</jbossws.common.version>
+    <jbossws.spi.version>1.0.7-SNAPSHOT</jbossws.spi.version>
     
     <!--
       JBoss component versions taken from   
@@ -225,7 +225,6 @@
             </goals>
             <configuration>
               <descriptors>
-                <descriptor>src/main/scripts/assembly-container.xml</descriptor>
                 <descriptor>src/main/scripts/assembly-resources.xml</descriptor>
               </descriptors>
             </configuration>
