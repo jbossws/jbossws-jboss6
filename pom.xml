@@ -35,10 +35,10 @@
     <jboss.ejb3.version>1.0.0-Beta5</jboss.ejb3.version>
     <jboss.deployers.version>2.0.0.CR3</jboss.deployers.version>
     <jboss.jbossxb.version>2.0.0.GA</jboss.jbossxb.version>
-    <jboss.metadata.version>1.0.0.CR3</jboss.metadata.version>
+    <jboss.metadata.version>1.0.0.CR5</jboss.metadata.version>
     <jboss.microcontainer.version>2.0.0.CR3</jboss.microcontainer.version>
     <jboss.reflect.version>2.0.0.GA</jboss.reflect.version>
-    <jboss.security.version>2.0.2.CR9</jboss.security.version>
+    <jboss.security.version>2.0.2.CR11</jboss.security.version>
     <jboss.vfs.version>2.0.0.CR1</jboss.vfs.version>
   </properties>
   
