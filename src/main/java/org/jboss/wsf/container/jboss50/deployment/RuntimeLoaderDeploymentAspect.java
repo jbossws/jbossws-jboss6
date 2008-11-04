@@ -23,6 +23,7 @@ package org.jboss.wsf.container.jboss50.deployment;
 
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
+import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
@@ -52,6 +53,11 @@ public class RuntimeLoaderDeploymentAspect extends DeploymentAspect
       {
          JBossWebMetaData webMetaData = dep.getAttachment(JBossWebMetaData.class);
          ClassLoader classLoader = webMetaData.getContextLoader();
+         if (classLoader == null)
+         {
+            // [JBWS-2246] hack for .sar deployments incorporating web services deployments on AS bootstrap.
+            classLoader = dep.getInitialClassLoader();  
+         }
          dep.setRuntimeClassLoader(classLoader);
       }
       else
