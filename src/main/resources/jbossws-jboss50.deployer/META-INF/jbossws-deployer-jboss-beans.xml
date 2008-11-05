@@ -266,7 +266,7 @@
   </bean>
   
   <bean name="WSWebAppGeneratorDeploymentAspect" class="org.jboss.wsf.container.jboss50.transport.WebAppGeneratorDeploymentAspect">
-    <property name="requires">URLPattern</property>
+    <property name="requires">VirtualHosts,URLPattern</property>
     <property name="provides">WebMetaData</property>
     <property name="securityHandlerEJB21"><inject bean="WSSecurityHandlerEJB21"/></property>
     <property name="securityHandlerEJB3"><inject bean="WSSecurityHandlerEJB3"/></property>
@@ -339,6 +339,7 @@
       <set class="java.util.HashSet" elementClass="org.jboss.wsf.spi.deployment.DeploymentAspect">
         <inject bean="WSDynamicEndpointDeploymentAspect"/>
         <inject bean="WSEndpointAPIDeploymentAspect"/>
+        <inject bean="WSVirtualHostDeploymentAspect"/>
         <inject bean="WSEndpointAddressDeploymentAspect"/>
         <inject bean="WSEndpointHandlerDeploymentAspect"/>
         <inject bean="WSEndpointLifecycleDeploymentAspect"/>
