@@ -39,7 +39,7 @@
     <jboss.microcontainer.version>2.0.0.CR3</jboss.microcontainer.version>
     <jboss.reflect.version>2.0.0.GA</jboss.reflect.version>
     <jboss.security.version>2.0.2.CR11</jboss.security.version>
-    <jboss.vfs.version>2.0.0.CR1</jboss.vfs.version>
+    <jboss.vfs.version>2.0.0.CR5</jboss.vfs.version>
   </properties>
   
   <!-- DependencyManagement -->
