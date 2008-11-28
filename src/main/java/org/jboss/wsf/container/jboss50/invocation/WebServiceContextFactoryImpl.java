@@ -23,6 +23,7 @@ package org.jboss.wsf.container.jboss50.invocation;
 
 import org.jboss.wsf.spi.invocation.*;
 
+import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 /**
@@ -35,7 +36,11 @@ public class WebServiceContextFactoryImpl extends WebServiceContextFactory
    {
       ExtensibleWebServiceContext context = null;
 
-      if(type.toString().indexOf("EJB")!=-1 || type.toString().indexOf("MDB")!=-1)
+      //checking for a provided WebServiceContext in the MessageContext; to be removed after EJBTHREE-1604
+      WebServiceContext providedContext = (WebServiceContext)messageContext.get(WebServiceContext.class.toString());
+      if (providedContext != null)
+         context = new WebServiceContextDelegate(providedContext);
+      else if (type.toString().indexOf("EJB") != -1 || type.toString().indexOf("MDB") != -1)
          context = new WebServiceContextEJB(messageContext);
       else
          context = new WebServiceContextJSE(messageContext);
