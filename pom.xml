@@ -2,9 +2,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <name>JBoss Web Services - Container JBoss-5.0.0.x</name>
+  <name>JBoss Web Services - Container JBoss-5.1.0.x</name>
   <groupId>org.jboss.ws</groupId>
-  <artifactId>jbossws-jboss500x</artifactId>
+  <artifactId>jbossws-jboss510x</artifactId>
   
   <version>3.0.5-SNAPSHOT</version>
   
@@ -28,17 +28,17 @@
     <jbossws.spi.version>1.0.7-SNAPSHOT</jbossws.spi.version>
     
     <!--
-      JBoss component versions taken from   
-      http://snapshots.jboss.org/maven2/org/jboss/jbossas/jboss-as-component-matrix/5.0.0-SNAPSHOT/jboss-as-component-matrix-5.0.0-20081006.031201-93.pom
+      JBoss component versions taken from
+      http://snapshots.jboss.org/maven2/org/jboss/jbossas/jboss-as-component-matrix/5.1.0-SNAPSHOT/jboss-as-component-matrix-5.1.0-20081205.041602-1.pom
     -->
-    <jboss.version>5.0.0-SNAPSHOT</jboss.version>
-    <jboss.ejb3.version>1.0.0-Beta8</jboss.ejb3.version>
-    <jboss.deployers.version>2.0.0.GA</jboss.deployers.version>
+    <jboss.version>5.1.0-SNAPSHOT</jboss.version>
+    <jboss.ejb3.version>1.0.0-Beta10</jboss.ejb3.version>
+    <jboss.deployers.version>2.0.3.GA</jboss.deployers.version>
     <jboss.jbossxb.version>2.0.0.GA</jboss.jbossxb.version>
-    <jboss.metadata.version>1.0.0.CR7</jboss.metadata.version>
-    <jboss.microcontainer.version>2.0.1.GA</jboss.microcontainer.version>
+    <jboss.metadata.version>1.0.0.CR11</jboss.metadata.version>
+    <jboss.microcontainer.version>2.0.2.GA</jboss.microcontainer.version>
     <jboss.reflect.version>2.0.2.GA</jboss.reflect.version>
-    <jboss.security.version>2.0.2.SP2</jboss.security.version>
+    <jboss.security.version>2.0.2.SP3</jboss.security.version>
     <jboss.vfs.version>2.0.0.GA</jboss.vfs.version>
   </properties>
   
