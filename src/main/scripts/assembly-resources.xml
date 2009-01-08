@@ -10,8 +10,8 @@
       <directory>src/main/resources</directory>
       <outputDirectory>/</outputDirectory>
       <includes>
-        <include>jbossws-jboss50.deployer/**</include>
-        <include>jbossws-jboss50.jar/**</include>
+        <include>jbossws-jboss60.deployer/**</include>
+        <include>jbossws-jboss60.jar/**</include>
       </includes>
     </fileSet>
   </fileSets>
