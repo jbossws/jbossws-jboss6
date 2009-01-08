@@ -207,7 +207,7 @@
         <filtering>true</filtering>
       </resource>
       <resource>
-        <directory>src/main/resources/jbossws-jboss50.jar</directory>
+        <directory>src/main/resources/jbossws-jboss60.jar</directory>
       </resource>
     </resources>
     <plugins>
