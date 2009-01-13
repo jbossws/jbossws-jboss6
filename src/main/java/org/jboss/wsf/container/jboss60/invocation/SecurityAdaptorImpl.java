@@ -22,9 +22,15 @@
 package org.jboss.wsf.container.jboss60.invocation;
 
 import org.jboss.security.SecurityAssociation;
+import org.jboss.security.SecurityContext;
+import org.jboss.security.SecurityContextAssociation;
 import org.jboss.wsf.spi.invocation.SecurityAdaptor;
 
+import java.security.AccessController;
 import java.security.Principal;
+import java.security.PrivilegedAction;
+
+import javax.security.auth.Subject;
 
 /**
  * A JBoss specific SecurityAssociationAdaptor 
@@ -57,4 +63,34 @@ public class SecurityAdaptorImpl implements SecurityAdaptor
    {
       SecurityAssociation.setCredential(credential);
    }
+   
+   public void pushSubjectContext(Subject subject, Principal principal, Object credential)
+   {
+      SecurityAdaptorImpl.pushSubjectContext(principal, credential, subject);
+   }
+
+   private static SecurityContext getSecurityContext()
+   {
+      return (SecurityContext)AccessController.doPrivileged(new PrivilegedAction() {
+         public Object run()
+         {
+            return SecurityContextAssociation.getSecurityContext();
+         }
+      });
+   }
+
+   private static void pushSubjectContext(final Principal p, final Object cred, final Subject s)
+   {
+      AccessController.doPrivileged(new PrivilegedAction() {
+
+         public Object run()
+         {
+            SecurityContext sc = getSecurityContext();
+            if (sc == null)
+               throw new IllegalStateException("Security Context is null");
+            sc.getUtil().createSubjectInfo(p, cred, s);
+            return null;
+         }
+      });
+   }   
 }
