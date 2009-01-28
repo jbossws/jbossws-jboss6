@@ -6,7 +6,7 @@
   <groupId>org.jboss.ws</groupId>
   <artifactId>jbossws-jboss600x</artifactId>
   
-  <version>3.1.0-SNAPSHOT</version>
+  <version>3.1.0.CR1</version>
   
   <!-- Parent -->
   <parent>
@@ -17,15 +17,15 @@
   
   <!-- Source Control Management -->
   <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossws/container/jboss60/trunk</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossws/container/jboss60/trunk</developerConnection>
-    <url>http://fisheye.jboss.com/viewrep/JBossWS/container/jboss60/trunk</url>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossws/container/jboss60/tags/jbossws-jboss600x-3.1.0.CR1</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossws/container/jboss60/tags/jbossws-jboss600x-3.1.0.CR1</developerConnection>
+    <url>http://fisheye.jboss.com/viewrep/JBossWS/container/jboss60/tags/jbossws-jboss600x-3.1.0.CR1</url>
   </scm>
   
   <!-- Properties -->
   <properties>
-    <jbossws.common.version>1.0.9-SNAPSHOT</jbossws.common.version>
-    <jbossws.spi.version>1.1.0-SNAPSHOT</jbossws.spi.version>
+    <jbossws.common.version>1.0.9.CR1</jbossws.common.version>
+    <jbossws.spi.version>1.1.0.CR1</jbossws.spi.version>
     
     <jboss.version>6.0.0-SNAPSHOT</jboss.version>
     <jboss.ejb3.version>1.0.0-Beta11</jboss.ejb3.version>
