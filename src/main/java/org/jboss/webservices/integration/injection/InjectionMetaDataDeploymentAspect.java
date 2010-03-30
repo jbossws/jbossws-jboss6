@@ -31,8 +31,6 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.naming.Context;
-import javax.naming.NamingException;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.ejb3.common.resolvers.spi.EjbReferenceResolver;
@@ -61,9 +59,6 @@ import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
  */
 public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentAspect
 {
-
-   /** EJB 3 JNDI prefix. */
-   private static final String EJB3_JNDI_PREFIX = "java:env/";
 
    /** Resolver handling @Resource injections. */
    private static final ReferenceResolver RESOURCE_RESOLVER = new ResourceReferenceResolver();
@@ -125,7 +120,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
          for (Endpoint endpoint : dep.getService().getEndpoints())
          {
             // build POJO injections meta data
-            final InjectionsMetaData injectionsMD = this.buildInjectionsMetaData(envEntriesMD, resolvers, null);
+            final InjectionsMetaData injectionsMD = this.buildInjectionsMetaData(envEntriesMD, resolvers);
 
             // associate injections meta data with POJO endpoint
             endpoint.addAttachment(InjectionsMetaData.class, injectionsMD);
@@ -146,9 +141,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
 
                // build EJB 3 injections meta data
                final EnvironmentEntriesMetaData ejbEnvEntries = this.getEnvironmentEntries(ejbName, unit);
-               final Context jndiContext = this.getJndiContext(container);
-               final InjectionsMetaData injectionsMD = this.buildInjectionsMetaData(ejbEnvEntries, resolvers,
-                     jndiContext);
+               final InjectionsMetaData injectionsMD = this.buildInjectionsMetaData(ejbEnvEntries, resolvers);
 
                // associate injections meta data with EJB 3 endpoint
                final Endpoint endpoint = dep.getService().getEndpointByName(ejbName);
@@ -174,24 +167,6 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
    }
 
    /**
-    * Returns JNDI context associated with EJB 3 container.
-    * 
-    * @param container EJB 3 container
-    * @return JNDI context
-    */
-   private Context getJndiContext(final WebServiceDeclaration container)
-   {
-      try
-      {
-         return (Context) container.getContext().lookup(InjectionMetaDataDeploymentAspect.EJB3_JNDI_PREFIX);
-      }
-      catch (NamingException ne)
-      {
-         throw new RuntimeException(ne);
-      }
-   }
-
-   /**
     * Returns reference resolvers container.
     *
     * @param unit deployment unit
@@ -213,15 +188,14 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
     * @param envEntriesMD environment entries meta data
     * @param resolvers known annotation resolvers
     * @param jndiContext JNDI context to be propagated
-    * @return injections meta data
     */
    private InjectionsMetaData buildInjectionsMetaData(final EnvironmentEntriesMetaData envEntriesMD,
-         final Map<Class<? extends Annotation>, ReferenceResolver> resolvers, final Context jndiContext)
+         final Map<Class<? extends Annotation>, ReferenceResolver> resolvers)
    {
       final List<InjectionMetaData> injectionMD = new LinkedList<InjectionMetaData>();
       injectionMD.addAll(this.buildInjectionMetaData(envEntriesMD));
 
-      return new InjectionsMetaData(injectionMD, resolvers, jndiContext);
+      return new InjectionsMetaData(injectionMD, resolvers);
    }
 
    /**

@@ -23,8 +23,11 @@ package org.jboss.webservices.integration.invocation;
 
 import java.lang.reflect.Method;
 
+import javax.naming.Context;
+import javax.naming.NamingException;
 import javax.xml.ws.WebServiceException;
 
+import org.jboss.ejb3.EJBContainer;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.common.invocation.AbstractInvocationHandler;
 import org.jboss.wsf.spi.SPIProvider;
@@ -44,6 +47,8 @@ import org.jboss.wsf.spi.ioc.IoCContainerProxyFactory;
  */
 final class InvocationHandlerEJB3 extends AbstractInvocationHandler
 {
+   /** EJB3 JNDI context. */
+   private static final String EJB3_JNDI_PREFIX = "java:env/";
 
    /** MC kernel controller. */
    private final IoCContainerProxy iocContainer;
@@ -130,6 +135,12 @@ final class InvocationHandlerEJB3 extends AbstractInvocationHandler
          this.log.error("Method invocation failed with exception: " + t.getMessage(), t);
          this.handleInvocationException(t);
       }
+   }
+   
+   public Context getJNDIContext(final Endpoint ep) throws NamingException
+   {
+      final EJBContainer ejb3Container = (EJBContainer)getEjb3Container();
+      return (Context)ejb3Container.getEnc().lookup(EJB3_JNDI_PREFIX);
    }
 
    /**

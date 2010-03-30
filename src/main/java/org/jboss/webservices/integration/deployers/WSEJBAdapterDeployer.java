@@ -27,7 +27,6 @@ import java.util.List;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import javax.naming.Context;
 
 import org.jboss.deployers.spi.DeploymentException;
 import org.jboss.deployers.spi.deployer.helpers.AbstractRealDeployer;
@@ -174,16 +173,6 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
       public String getContainerName()
       {
          return this.ejbMetaData.determineContainerName();
-      }
-
-      /**
-       * Returns JNDI context associated with EJB container.
-       *
-       * @return JNDI context
-       */
-      public Context getContext()
-      {
-         return this.ejbContainer.getEnc();
       }
 
       /**
