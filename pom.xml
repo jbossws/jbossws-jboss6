@@ -5,6 +5,7 @@
   <name>JBoss Web Services - Container JBoss-6.0.0.M2</name>
   <groupId>org.jboss.ws</groupId>
   <artifactId>jbossws-jboss600M2</artifactId>
+  <description>JBossWS Container integration for JBoss AS 6.0.0.M2</description>
 
   <version>3.3.0.CR1</version>
 
@@ -12,7 +13,7 @@
   <parent>
     <groupId>org.jboss.ws</groupId>
     <artifactId>jbossws-parent</artifactId>
-    <version>1.0.5.GA</version>
+    <version>1.0.6.GA</version>
   </parent>
 
   <!-- Source Control Management -->
