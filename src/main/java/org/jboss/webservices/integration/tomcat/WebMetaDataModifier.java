@@ -22,7 +22,6 @@
 package org.jboss.webservices.integration.tomcat;
 
 import java.util.List;
-import java.util.Map;
 
 import org.jboss.logging.Logger;
 import org.jboss.metadata.javaee.spec.ParamValueMetaData;
@@ -34,6 +33,7 @@ import org.jboss.wsf.common.integration.WSConstants;
 import org.jboss.wsf.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
+import org.jboss.wsf.spi.deployment.ServletClassProvider;
 
 /**
  * The modifier of jboss web meta data.
@@ -66,37 +66,8 @@ final class WebMetaDataModifier
    {
       final JBossWebMetaData jbossWebMD = WSHelper.getRequiredAttachment(dep, JBossWebMetaData.class);
 
-      this.propagateContextProps(dep, jbossWebMD);
       this.configureEndpoints(dep, jbossWebMD);
       this.modifyContextRoot(dep, jbossWebMD);
-   }
-
-   /**
-    * Propagates stack specific context parameters if specified. 
-    *
-    * @param dep webservice deployment
-    * @param jbossWebMD web meta data
-    */
-   @SuppressWarnings("unchecked")
-   private void propagateContextProps(final Deployment dep, final JBossWebMetaData jbossWebMD)
-   {
-      final Map<String, String> stackContextParams = (Map<String, String>) dep
-            .getProperty(WSConstants.STACK_CONTEXT_PARAMS);
-
-      if (stackContextParams != null)
-      {
-         this.log.debug("Creating context parameters");
-         final List<ParamValueMetaData> contextParams = WebMetaDataHelper.getContextParams(jbossWebMD);
-
-         for (Map.Entry<String, String> entry : stackContextParams.entrySet())
-         {
-            final String paramName = entry.getKey();
-            final String paramValue = entry.getValue();
-
-            this.log.debug("Setting context parameter name: " + paramName + " value: " + paramValue);
-            WebMetaDataHelper.newParamValue(paramName, paramValue, contextParams);
-         }
-      }
    }
 
    /**
@@ -109,7 +80,7 @@ final class WebMetaDataModifier
    {
       final String transportClassName = this.getTransportClassName(dep);
       final ClassLoader loader = dep.getInitialClassLoader();
-      this.log.debug("Modifying servlets");
+      this.log.trace("Modifying servlets");
 
       for (final ServletMetaData servletMD : jbossWebMD.getServlets())
       {
@@ -151,11 +122,29 @@ final class WebMetaDataModifier
     */
    private String getTransportClassName(final Deployment dep)
    {
-      final String transportClassName = (String) dep.getProperty(WSConstants.STACK_TRANSPORT_CLASS);
+      String transportClassName = null;
+      String transportClassProviderName = (String) dep.getProperty(WSConstants.STACK_TRANSPORT_CLASS_PROVIDER);
+      if (transportClassProviderName != null)
+      {
+         try
+         {
+            ServletClassProvider scp = (ServletClassProvider)(Class.forName(transportClassProviderName).newInstance());
+            transportClassName = scp.getServletClassName();
+         }
+         catch (Exception e)
+         {
+            log.warn("Cannot get transport class name from " + WSConstants.STACK_TRANSPORT_CLASS_PROVIDER, e);
+         }
+      }
+      
+      if (transportClassName == null)
+      {
+         transportClassName = (String) dep.getProperty(WSConstants.STACK_TRANSPORT_CLASS);
+      }
 
       if (transportClassName == null)
       {
-         throw new IllegalStateException("Cannot obtain deployment property: " + WSConstants.STACK_TRANSPORT_CLASS);
+         throw new IllegalStateException("Cannot obtain deployment property : " + WSConstants.STACK_TRANSPORT_CLASS);
       }
 
       return transportClassName;
