@@ -7,13 +7,13 @@
   <artifactId>jbossws-jboss600M3</artifactId>
   <description>JBossWS Container integration for JBoss AS 6.0.0.M3</description>
 
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.4.0-SNAPSHOT</version>
 
   <!-- Parent -->
   <parent>
     <groupId>org.jboss.ws</groupId>
     <artifactId>jbossws-parent</artifactId>
-    <version>1.0.6.GA</version>
+    <version>1.0.7.GA</version>
   </parent>
 
   <!-- Source Control Management -->
@@ -25,9 +25,9 @@
 
   <!-- Properties -->
   <properties>
-    <jbossws.framework.version>3.3.0-SNAPSHOT</jbossws.framework.version>
-    <jbossws.common.version>1.3.0-SNAPSHOT</jbossws.common.version>
-    <jbossws.spi.version>1.3.0-SNAPSHOT</jbossws.spi.version>
+    <jbossws.framework.version>3.4.0-SNAPSHOT</jbossws.framework.version>
+    <jbossws.common.version>1.4.0-SNAPSHOT</jbossws.common.version>
+    <jbossws.spi.version>1.4.0-SNAPSHOT</jbossws.spi.version>
 
     <!--
       JBoss component versions taken from
