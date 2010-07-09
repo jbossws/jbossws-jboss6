@@ -130,6 +130,11 @@
         <artifactId>hornetq-jms-client</artifactId>
         <version>${jboss.hornetq.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.hornetq</groupId>
+        <artifactId>hornetq-jms</artifactId>
+        <version>${jboss.hornetq.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -209,6 +214,10 @@
     <dependency>
       <groupId>org.hornetq</groupId>
       <artifactId>hornetq-jms-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hornetq</groupId>
+      <artifactId>hornetq-jms</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jboss.metadata</groupId>

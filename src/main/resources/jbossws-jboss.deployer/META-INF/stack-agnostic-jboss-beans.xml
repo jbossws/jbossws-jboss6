@@ -50,12 +50,21 @@
     -->
   </bean>
 
-  <!-- deployers -->
-  <bean name="WSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.WSDescriptorDeployer">
-    <property name="name">webservices.xml</property>
-    <property name="useSchemaValidation">true</property>
+  <!-- stack agnostic webservices.xml processor -->
+  <bean name="WSDescriptorProcessor" class="org.jboss.wsf.framework.deployment.jms.WebservicesDescriptorProcessorImpl">
+    <property name="validating">true</property>
+    <property name="descriptorName">webservices.xml</property>
   </bean>
 
+  <!-- deployers -->
+  <bean name="WSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.WSDescriptorDeployer">
+    <incallback method="setProcessor"/>
+  </bean>
+  
+  <bean name="JMSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.JMSDescriptorDeployer">
+    <incallback method="setProcessor"/>
+  </bean>
+  
   <bean name="WSEJBAdapterDeployer" class="org.jboss.webservices.integration.deployers.WSEJBAdapterDeployer"/>
 
   <bean name="WSTypeDeployer" class="org.jboss.webservices.integration.deployers.WSTypeDeployer"/>

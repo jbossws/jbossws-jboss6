@@ -76,14 +76,14 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
    protected abstract void build(Deployment dep, DeploymentUnit unit);
 
    /**
-    * Creates new Web Service endpoint.
+    * Creates new Http Web Service endpoint.
     *
     * @param endpointClass endpoint class name
     * @param endpointName endpoint name
     * @param dep deployment
     * @return WS endpoint
     */
-   protected final Endpoint newEndpoint(final String endpointClass, final String endpointName, final Deployment dep)
+   protected final Endpoint newHttpEndpoint(final String endpointClass, final String endpointName, final Deployment dep)
    {
       if (endpointName == null)
       {
@@ -95,7 +95,34 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
          throw new NullPointerException("Null endpoint class");
       }
 
-      final Endpoint endpoint = this.deploymentModelFactory.newEndpoint(endpointClass);
+      final Endpoint endpoint = this.deploymentModelFactory.newHttpEndpoint(endpointClass);
+      endpoint.setShortName(endpointName);
+      dep.getService().addEndpoint(endpoint);
+
+      return endpoint;
+   }
+
+   /**
+    * Creates new JMS Web Service endpoint.
+    *
+    * @param endpointClass endpoint class name
+    * @param endpointName endpoint name
+    * @param dep deployment
+    * @return WS endpoint
+    */
+   protected final Endpoint newJMSEndpoint(final String endpointClass, final String endpointName, final Deployment dep)
+   {
+      if (endpointName == null)
+      {
+         throw new NullPointerException("Null endpoint name");
+      }
+
+      if (endpointClass == null)
+      {
+         throw new NullPointerException("Null endpoint class");
+      }
+
+      final Endpoint endpoint = this.deploymentModelFactory.newJMSEndpoint(endpointClass);
       endpoint.setShortName(endpointName);
       dep.getService().addEndpoint(endpoint);
 

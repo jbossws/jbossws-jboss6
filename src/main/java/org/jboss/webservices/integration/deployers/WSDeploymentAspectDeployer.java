@@ -23,11 +23,13 @@ package org.jboss.webservices.integration.deployers;
 
 import java.util.Set;
 
+import org.jboss.beans.metadata.spi.BeanMetaData;
 import org.jboss.deployers.spi.DeploymentException;
 import org.jboss.deployers.spi.deployer.helpers.AbstractRealDeployer;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
+import org.jboss.wsf.common.integration.JMSDeploymentAspect;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.DeploymentAspect;
 
@@ -56,27 +58,34 @@ final class WSDeploymentAspectDeployer extends AbstractRealDeployer
    WSDeploymentAspectDeployer(final DeploymentAspect aspect)
    {
       super();
-
-      // inputs
-      this.addInput(JBossWebMetaData.class);
-      this.addInput(Deployment.class);
-      if (aspect.isLast())
+      if (aspect instanceof JMSDeploymentAspect)
       {
-         this.addInput(WSDeploymentAspectDeployer.JBOSSWS_METADATA);
+         // inputs
+         this.addInput(org.jboss.system.metadata.ServiceDeployment.class);
+         this.addInput(org.jboss.system.metadata.ServiceMetaData.class);
       }
+      else
+      {
+         // inputs
+         this.addInput(JBossWebMetaData.class);
+         this.addInput(Deployment.class);
+         if (aspect.isLast())
+         {
+            this.addInput(WSDeploymentAspectDeployer.JBOSSWS_METADATA);
+         }
 
+         // outputs
+         this.addOutput(JBossWebMetaData.class);
+         if (!aspect.isLast())
+         {
+            this.addOutput(WSDeploymentAspectDeployer.JBOSSWS_METADATA);
+         }
+      }
       // propagate DA requirements and map them to deployer inputs
       final Set<String> inputs = aspect.getRequiresAsSet();
       for (String input : inputs)
       {
          this.addInput(WSDeploymentAspectDeployer.JBOSSWS_ATTACHMENT_PREFIX + input);
-      }
-
-      // outputs
-      this.addOutput(JBossWebMetaData.class);
-      if (!aspect.isLast())
-      {
-         this.addOutput(WSDeploymentAspectDeployer.JBOSSWS_METADATA);
       }
 
       // propagate DA provides and map them to deployer outputs

@@ -44,7 +44,7 @@ final class DeploymentModelBuilderJAXWS_JSE extends AbstractDeploymentModelBuild
          final String servletClass = ASHelper.getEndpointName(servlet);
          this.log.debug("JSE class: " + servletClass);
 
-         this.newEndpoint(servletClass, servletName, dep);
+         this.newHttpEndpoint(servletClass, servletName, dep);
       }
    }
 

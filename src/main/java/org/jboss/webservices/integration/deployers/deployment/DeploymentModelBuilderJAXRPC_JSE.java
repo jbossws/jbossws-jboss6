@@ -48,7 +48,7 @@ final class DeploymentModelBuilderJAXRPC_JSE extends AbstractDeploymentModelBuil
             final String servletClass = ASHelper.getEndpointName(servletMD);
             this.log.debug("JSE class: " + servletClass);
 
-            this.newEndpoint(servletClass, servletName, dep);
+            this.newHttpEndpoint(servletClass, servletName, dep);
          }
       }
    }

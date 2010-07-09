@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2010, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -21,30 +21,30 @@
  */
 package org.jboss.webservices.integration.deployers;
 
-import org.jboss.wsf.spi.metadata.webservices.WebservicesDescriptorProcessor;
-import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
+import org.jboss.wsf.spi.metadata.jms.JMSDescriptorProcessor;
+import org.jboss.wsf.spi.metadata.jms.JMSEndpointsMetaData;
 
 /**
- * webservices.xml deployer.
- *
+ * Stack agnostic JMS descriptor deployer.
+ * 
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-public final class WSDescriptorDeployer extends AbstractDescriptorDeployer<WebservicesDescriptorProcessor, WebservicesMetaData>
+public final class JMSDescriptorDeployer extends AbstractDescriptorDeployer<JMSDescriptorProcessor, JMSEndpointsMetaData>
 {
    /**
     * Constructor.
     */
-   public WSDescriptorDeployer()
+   public JMSDescriptorDeployer()
    {
-      super(WebservicesMetaData.class);
+      super(JMSEndpointsMetaData.class);
    }
-   
+
    /**
-    * MC incallback method. It will be invoked each time WebservicesDescriptorProcessor bean will be installed.
+    * MC incallback method. It will be invoked each time JMSDescriptorProcessor bean will be installed.
     * @param processor the processor
     */
    @Override
-   public void setProcessor(final WebservicesDescriptorProcessor processor)
+   public void setProcessor(final JMSDescriptorProcessor processor)
    {
       super.setProcessor(processor);
    }

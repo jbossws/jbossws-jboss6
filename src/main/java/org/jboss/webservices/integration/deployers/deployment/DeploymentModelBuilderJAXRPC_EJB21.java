@@ -49,7 +49,7 @@ final class DeploymentModelBuilderJAXRPC_EJB21 extends AbstractDeploymentModelBu
             final String ejbClass = beanMetaData.getEjbClass();
             this.log.debug("EJB21 class: " + ejbClass);
 
-            this.newEndpoint(ejbClass, ejbName, dep);
+            this.newHttpEndpoint(ejbClass, ejbName, dep);
          }
       }
    }
