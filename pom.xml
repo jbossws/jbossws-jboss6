@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>JBoss Web Services - Container JBoss-6.0.0.M3</name>
+  <name>JBoss Web Services - Container JBoss-6.0.0.M4</name>
   <groupId>org.jboss.ws</groupId>
-  <artifactId>jbossws-jboss600M3</artifactId>
-  <description>JBossWS Container integration for JBoss AS 6.0.0.M3</description>
+  <artifactId>jbossws-jboss600M4</artifactId>
+  <description>JBossWS Container integration for JBoss AS 6.0.0.M4</description>
 
   <version>3.4.0-SNAPSHOT</version>
 
@@ -18,9 +18,9 @@
 
   <!-- Source Control Management -->
   <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600M3</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600M3</developerConnection>
-    <url>http://fisheye.jboss.com/viewrep/JBossWS/container/jboss60/branches/jbossws-jboss600M3</url>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600M4</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600M4</developerConnection>
+    <url>http://fisheye.jboss.com/viewrep/JBossWS/container/jboss60/branches/jbossws-jboss600M4</url>
   </scm>
 
   <!-- Properties -->
@@ -28,21 +28,15 @@
     <jbossws.framework.version>3.4.0-SNAPSHOT</jbossws.framework.version>
     <jbossws.common.version>1.4.0-SNAPSHOT</jbossws.common.version>
     <jbossws.spi.version>1.4.0-SNAPSHOT</jbossws.spi.version>
-
-    <!--
-      JBoss component versions taken from
-      http://repository.jboss.org/maven2/org/jboss/jbossas/jboss-as-component-matrix/6.0.0.20100216-M2/jboss-as-component-matrix-6.0.0.20100216-M2.pom
-    -->
-    <jboss.version>6.0.0.20100429-M3</jboss.version>
-    <jboss.ejb3.version>1.2.2</jboss.ejb3.version>
-    <jboss.deployers.version>2.2.0.Alpha4</jboss.deployers.version>
+    <jboss.version>6.0.0.20100721-M4</jboss.version>
+    <jboss.deployers.version>2.2.0.Alpha6</jboss.deployers.version>
     <jboss.jbossxb.version>2.0.2.Beta7</jboss.jbossxb.version>
-    <jboss.metadata.version>2.0.0.Alpha14</jboss.metadata.version>
-    <jboss.reflect.version>2.2.0.Alpha4</jboss.reflect.version>
+    <jboss.metadata.version>2.0.0.Alpha16</jboss.metadata.version>
+    <jboss.reflect.version>2.2.0.Alpha9</jboss.reflect.version>
     <jboss.security.version>3.0.0.Beta4</jboss.security.version>
     <jboss.vfs.version>3.0.0.CR5</jboss.vfs.version>
-    <jboss.cl.version>2.2.0.Alpha4</jboss.cl.version>
-    <jboss.hornetq.version>2.1.0.BETA3</jboss.hornetq.version>
+    <jboss.cl.version>2.2.0.Alpha7</jboss.cl.version>
+    <jboss.hornetq.version>2.1.1.Final</jboss.hornetq.version>
   </properties>
 
   <!-- DependencyManagement -->
