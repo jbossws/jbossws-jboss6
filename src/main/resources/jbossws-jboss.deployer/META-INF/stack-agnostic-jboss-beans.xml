@@ -16,15 +16,6 @@
     </constructor>
   </bean>
 
-  <!-- Endpoint API http server -->
-  <bean name="WSHTTPServer" class="org.jboss.webservices.integration.endpoint.EndpointAPIHttpServer">
-    <constructor>
-      <parameter>
-        <inject bean="MainDeployer"/>
-      </parameter>
-    </constructor>
-  </bean>
-
   <!-- An abstraction of server configuration aspects. -->
   <bean name="WSServerConfig" class="org.jboss.webservices.integration.config.ServerConfigImpl">
     <property name="mbeanServer"><inject bean="WSMBeanServerLocator" property="mbeanServer"/></property>
