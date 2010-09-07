@@ -45,6 +45,7 @@ import org.jboss.wsf.common.injection.resolvers.ResourceReferenceResolver;
 import org.jboss.wsf.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
+import org.jboss.wsf.spi.deployment.Service;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.injection.InjectionMetaData;
@@ -131,20 +132,20 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
          this.log.debug("Building injection meta data for JAXWS EJB3 webservice deployment: " + dep.getSimpleName());
          final WebServiceDeployment webServiceDeployment = ASHelper.getRequiredAttachment(unit,
                WebServiceDeployment.class);
+         final Service service = dep.getService();
 
          // iterate through all EJB3 endpoints
          for (final WebServiceDeclaration container : webServiceDeployment.getServiceEndpoints())
          {
-            if (ASHelper.isWebServiceBean(container))
+            final String ejbName = container.getComponentName();
+            final Endpoint endpoint = service.getEndpointByName(ejbName);
+            if (endpoint != null && ASHelper.isWebServiceBean(container))
             {
-               final String ejbName = container.getComponentName();
-
                // build EJB 3 injections meta data
                final EnvironmentEntriesMetaData ejbEnvEntries = this.getEnvironmentEntries(ejbName, unit);
                final InjectionsMetaData injectionsMD = this.buildInjectionsMetaData(ejbEnvEntries, resolvers);
 
                // associate injections meta data with EJB 3 endpoint
-               final Endpoint endpoint = dep.getService().getEndpointByName(ejbName);
                endpoint.addAttachment(InjectionsMetaData.class, injectionsMD);
             }
          }

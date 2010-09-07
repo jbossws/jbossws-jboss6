@@ -120,7 +120,7 @@
   </bean>
 
   <bean name="WSEndpointRegistryDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointRegistryDeploymentAspect">
-    <property name="requires">EndpointName</property>
+    <property name="requires">EndpointName, EndpointAddress</property>
     <property name="provides">RegisteredEndpoint</property>
   </bean>
 
