@@ -135,7 +135,7 @@
   </bean>
 
   <bean name="WSWebMetaDataCreatingDeploymentAspect" class="org.jboss.webservices.integration.tomcat.WebMetaDataCreatingDeploymentAspect">
-    <property name="requires">VirtualHosts,URLPattern</property>
+    <property name="requires">VirtualHosts,URLPattern,EndpointAddress</property>
     <property name="provides">WebMetaData</property>
   </bean>
 
