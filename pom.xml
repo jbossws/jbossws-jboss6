@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>JBoss Web Services - Container JBoss-6.0.0.M4</name>
+  <name>JBoss Web Services - Container JBoss-6.0.0.M5</name>
   <groupId>org.jboss.ws</groupId>
   <artifactId>jbossws-jboss600M5</artifactId>
-  <description>JBossWS Container integration for JBoss AS 6.0.0.M4</description>
+  <description>JBossWS Container integration for JBoss AS 6.0.0.M5</description>
 
   <version>3.4.0-SNAPSHOT</version>
 
