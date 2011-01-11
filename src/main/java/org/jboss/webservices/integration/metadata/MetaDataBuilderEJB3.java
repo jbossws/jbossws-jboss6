@@ -46,7 +46,6 @@ import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
  */
 final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
 {
-
    /**
     * Constructor.
     */
@@ -57,7 +56,7 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
 
    /**
     * @see AbstractMetaDataBuilderEJB#buildEnterpriseBeansMetaData(Deployment, EJBArchiveMetaData)
-    * 
+    *
     * @param dep webservice deployment
     * @param ejbArchiveMD EJB archive meta data
     */
@@ -77,7 +76,7 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
 
    /**
     * Builds JBoss agnostic EJB meta data.
-    * 
+    *
     * @param wsEjbsMD jboss agnostic EJBs meta data
     * @param jbossEjbMD jboss specific EJB meta data
     */
@@ -142,7 +141,7 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
 
    /**
     * Returns activation config property value or null if not found.
-    * 
+    *
     * @param name activation property name
     * @param activationConfigProperties activation config properties
     * @return activation config property value
@@ -162,5 +161,4 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
 
       return null;
    }
-
 }

@@ -40,7 +40,6 @@ import org.jboss.wsf.common.management.AbstractServerConfigMBean;
  */
 public final class ServerConfigImpl extends AbstractServerConfig implements AbstractServerConfigMBean
 {
-
    /**
     * Constructor.
     */
@@ -51,17 +50,17 @@ public final class ServerConfigImpl extends AbstractServerConfig implements Abst
 
    /**
     * Gets server temp directory.
-    * 
+    *
     * @return temp directory
     */
    public File getServerTempDir()
    {
       return this.getDirFromServerConfig("ServerTempLocation");
    }
-   
+
    /**
     * Gets server home directory.
-    * 
+    *
     * @return home directory
     */
    public File getHomeDir()
@@ -71,14 +70,14 @@ public final class ServerConfigImpl extends AbstractServerConfig implements Abst
 
    /**
     * Gets server data directory.
-    * 
+    *
     * @return data directory
     */
    public File getServerDataDir()
    {
       return this.getDirFromServerConfig("ServerDataLocation");
    }
-   
+
    /**
     * Obtains the requested directory from the server configuration.
     *
@@ -114,5 +113,4 @@ public final class ServerConfigImpl extends AbstractServerConfig implements Abst
 
       return dir;
    }
-
 }

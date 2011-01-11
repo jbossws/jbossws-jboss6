@@ -33,7 +33,7 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
-import org.jboss.ejb3.common.resolvers.spi.EjbReferenceResolver;
+import org.jboss.ejb3.ejbref.resolver.spi.EjbReferenceResolver;
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeansMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.javaee.spec.EnvironmentEntriesMetaData;
@@ -102,7 +102,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
 
    /**
     * Builds injection meta data for all endpoints in deployment.
-    * 
+    *
     * @param dep webservice deployment
     */
    @Override
@@ -154,7 +154,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
 
    /**
     * Returns environment entries meta data associated with specified EJB 3 bean.
-    * 
+    *
     * @param ejbName EJB 3 bean to lookup environment entries for
     * @param unit deployment unit
     * @return environment entries meta data
@@ -185,7 +185,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
 
    /**
     * Builds JBossWS specific injections meta data.
-    * 
+    *
     * @param envEntriesMD environment entries meta data
     * @param resolvers known annotation resolvers
     * @param jndiContext JNDI context to be propagated
@@ -253,5 +253,4 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
 
       return retVal;
    }
-
 }

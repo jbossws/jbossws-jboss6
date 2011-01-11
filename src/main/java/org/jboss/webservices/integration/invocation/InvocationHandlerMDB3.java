@@ -31,7 +31,6 @@ import org.jboss.wsf.common.invocation.AbstractInvocationHandlerJSE;
  */
 final class InvocationHandlerMDB3 extends AbstractInvocationHandlerJSE
 {
-
    /**
     * Constructor.
     */
@@ -39,5 +38,4 @@ final class InvocationHandlerMDB3 extends AbstractInvocationHandlerJSE
    {
       super();
    }
-
 }

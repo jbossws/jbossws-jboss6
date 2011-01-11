@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2010, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,45 +19,51 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.webservices.integration.tomcat;
+package org.jboss.webservices.integration.weld;
 
+import org.jboss.deployers.structure.spi.DeploymentUnit;
+import org.jboss.weld.integration.deployer.DeployersUtils;
+import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
 import org.jboss.wsf.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
+import org.jboss.wsf.spi.deployment.Endpoint;
 
 /**
- * A deployment aspect that generates web app meta data for EJB endpoints.
+ * Weld deployment aspect that associates Weld Invocation handler
+ * if WS CDI integration is detected.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
- * @author <a href="mailto:tdiesler@redhat.com">Thomas Diesler</a>
  */
-public final class WebMetaDataCreatingDeploymentAspect extends AbstractDeploymentAspect
+public final class WeldDeploymentAspect extends AbstractDeploymentAspect
 {
-   /** Web meta data creator. */
-   private WebMetaDataCreator webMetaDataCreator = new WebMetaDataCreator();
 
-   /**
-    * Constructor.
-    */
-   public WebMetaDataCreatingDeploymentAspect()
+   public WeldDeploymentAspect()
    {
-      super();
+      // does nothing
    }
 
-   /**
-    * Creates web meta data for EJB deployments.
-    *
-    * @param dep webservice deployment
-    */
    @Override
    public void start(final Deployment dep)
    {
-      final boolean isEjbDeployment = WSHelper.isEjbDeployment(dep);
-
-      if (isEjbDeployment)
+      if (!WSHelper.isJaxwsJseDeployment(dep))
       {
-         this.log.debug("Creating web meta data for EJB webservice deployment: " + dep.getSimpleName());
-         this.webMetaDataCreator.create(dep);
+         // we support weld integration for JAXWS JSE endpoints only
+         return;
+      }
+
+      final DeploymentUnit deploymentUnit = WSHelper.getRequiredAttachment(dep, DeploymentUnit.class);
+      if (this.isWeldDeployment(deploymentUnit))
+      {
+         for (final Endpoint endpoint : dep.getService().getEndpoints())
+         {
+            endpoint.setInvocationHandler(new WeldInvocationHandler(endpoint.getInvocationHandler()));
+         }
       }
    }
+
+   private boolean isWeldDeployment(final DeploymentUnit unit)
+   {
+      return unit.getAttachment(DeployersUtils.WELD_FILES) != null;
+   }
+
 }

@@ -21,7 +21,7 @@
  */
 package org.jboss.webservices.integration.deployers;
 
-import org.jboss.wsf.spi.metadata.webservices.WebservicesDescriptorProcessor;
+import org.jboss.wsf.spi.metadata.webservices.WebservicesDescriptorParser;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 
 /**
@@ -29,8 +29,9 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-public final class WSDescriptorDeployer extends AbstractDescriptorDeployer<WebservicesDescriptorProcessor, WebservicesMetaData>
+public final class WSDescriptorDeployer extends AbstractDescriptorDeployer<WebservicesDescriptorParser, WebservicesMetaData>
 {
+
    /**
     * Constructor.
     */
@@ -38,14 +39,15 @@ public final class WSDescriptorDeployer extends AbstractDescriptorDeployer<Webse
    {
       super(WebservicesMetaData.class);
    }
-   
+
    /**
-    * MC incallback method. It will be invoked each time WebservicesDescriptorProcessor bean will be installed.
-    * @param processor the processor
+    * MC incallback method. It will be invoked each time WebservicesDescriptorParser bean will be installed.
+    * @param parser the parser
     */
    @Override
-   public void setProcessor(final WebservicesDescriptorProcessor processor)
+   public void setParser(final WebservicesDescriptorParser parser)
    {
-      super.setProcessor(processor);
+      super.setParser(parser);
    }
+
 }

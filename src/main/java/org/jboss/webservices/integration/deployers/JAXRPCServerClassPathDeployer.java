@@ -30,10 +30,9 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  * A deployer for properly setting the classpath for jaxrpc endpoint deployments;
  * it's triggered by the WebservicesMetaData which is attached to the unit
  * when a webservice.xml descriptor file is found in the deployment.
- * 
+ *
  * @author alessio.soldano@jboss.com
  * @since 03-Feb-2010
- *
  */
 public class JAXRPCServerClassPathDeployer extends JAXRPCIntegrationClassPathDeployer<WebservicesMetaData>
 {
@@ -42,7 +41,7 @@ public class JAXRPCServerClassPathDeployer extends JAXRPCIntegrationClassPathDep
       super(WebservicesMetaData.class);
       setInput(WebservicesMetaData.class); //makes the input mandatory instead of optional
    }
-   
+
    @Override
    protected boolean isClassPathChangeRequired(VFSDeploymentUnit unit)
    {

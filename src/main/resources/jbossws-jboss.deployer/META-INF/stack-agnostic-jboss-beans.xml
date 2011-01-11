@@ -2,6 +2,18 @@
 
 <deployment xmlns="urn:jboss:bean-deployer:2.0">
 
+  <!--  processes @WebServiceRef resources and their DD equivalents (EE.5.6 of Java EE6 spec) -->
+  <bean
+    name="org.jboss.switchboard.WebServiceRefResourceProvider"
+    class="org.jboss.webservices.integration.injection.ServiceRefResourceProvider"
+  />
+
+  <!--  processes @Resource annotated WebServiceContext beans (EE.5.6 of Java EE6 spec) -->
+  <bean
+    name="org.jboss.switchboard.WebServiceContextResourceProvider"
+    class="org.jboss.webservices.integration.injection.WebServiceContextResourceProvider"
+  />
+
   <!-- Wraps single instance of the kernel -->
   <bean name="WSIoCContainerProxy" class="org.jboss.webservices.integration.ioc.IoCContainerProxyImpl">
     <property name="kernel"><inject bean="jboss.kernel:service=Kernel"/></property>
@@ -49,13 +61,13 @@
 
   <!-- deployers -->
   <bean name="WSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.WSDescriptorDeployer">
-    <incallback method="setProcessor"/>
+    <incallback method="setParser"/>
   </bean>
-  
+
   <bean name="JMSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.JMSDescriptorDeployer">
-    <incallback method="setProcessor"/>
+    <incallback method="setParser"/>
   </bean>
-  
+
   <bean name="WSEJBAdapterDeployer" class="org.jboss.webservices.integration.deployers.WSEJBAdapterDeployer"/>
 
   <bean name="WSTypeDeployer" class="org.jboss.webservices.integration.deployers.WSTypeDeployer"/>
@@ -72,7 +84,7 @@
     <incallback method="addDeployer"/>
     <uncallback method="removeDeployer"/>
   </bean>
-  
+
   <!-- The AS specific deployment aspects -->
   <bean name="WSContainerMetaDataDeploymentAspect" class="org.jboss.webservices.integration.metadata.ContainerMetaDataDeploymentAspect">
     <property name="provides">ContainerMetaData, VFSRoot</property>
@@ -81,7 +93,7 @@
   <bean name="WSInjectionMetaDataDeploymentAspect" class="org.jboss.webservices.integration.injection.InjectionMetaDataDeploymentAspect">
     <property name="requires">WebMetaData</property>
     <property name="provides">InjectionMetaData</property>
-    <property name="ejbReferenceResolver"><inject bean="org.jboss.ejb3.EjbReferenceResolver"/></property>
+    <property name="ejbReferenceResolver"><inject bean="org.jboss.ejb3.ejbref.resolver.EjbReferenceResolver"/></property>
   </bean>
 
   <!-- TODO: remove this hacky aspect -->
@@ -137,6 +149,11 @@
   <bean name="WSWebMetaDataCreatingDeploymentAspect" class="org.jboss.webservices.integration.tomcat.WebMetaDataCreatingDeploymentAspect">
     <property name="requires">VirtualHosts,URLPattern,EndpointAddress</property>
     <property name="provides">WebMetaData</property>
+  </bean>
+
+  <bean name="WSWeldDeploymentAspect" class="org.jboss.webservices.integration.weld.WeldDeploymentAspect">
+    <property name="requires">StackEndpointHandler</property>
+    <property name="provides">CDIInjection</property>
   </bean>
 
 </deployment>

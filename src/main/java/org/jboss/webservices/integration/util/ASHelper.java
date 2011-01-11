@@ -47,8 +47,7 @@ import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
  */
 public final class ASHelper
 {
-
-   /** 
+   /**
     * EJB invocation property.
     */
    public static final String CONTAINER_NAME = "org.jboss.wsf.spi.invocation.ContainerName";
@@ -231,7 +230,7 @@ public final class ASHelper
 
    /**
     * Returns true if EJB container is webservice endpoint.
-    * 
+    *
     * @param ejbContainerAdapter EJB container adapter
     * @return true if EJB container is webservice endpoint, false otherwise
     */
@@ -258,7 +257,7 @@ public final class ASHelper
 
    /**
     * Returns servlet meta data for requested servlet name.
-    * 
+    *
     * @param jbossWebMD jboss web meta data
     * @param servletName servlet name
     * @return servlet meta data
@@ -310,12 +309,12 @@ public final class ASHelper
    }
 
    /**
-    * Returns required attachment value from deployment unit. 
-    * 
+    * Returns required attachment value from deployment unit.
+    *
     * @param <A> expected value
     * @param unit deployment unit
     * @param key attachment key
-    * @return required attachment 
+    * @return required attachment
     * @throws IllegalStateException if attachment value is null
     */
    public static <A> A getRequiredAttachment(final DeploymentUnit unit, final Class<A> key)
@@ -332,11 +331,11 @@ public final class ASHelper
 
    /**
     * Returns optional attachment value from deployment unit or null if not bound.
-    * 
+    *
     * @param <A> expected value
     * @param unit deployment unit
     * @param key attachment key
-    * @return optional attachment value or null 
+    * @return optional attachment value or null
     */
    public static <A> A getOptionalAttachment(final DeploymentUnit unit, final Class<A> key)
    {
@@ -345,7 +344,7 @@ public final class ASHelper
 
    /**
     * Returns true if deployment unit have attachment value associated with the <b>key</b>.
-    *  
+    *
     * @param unit deployment unit
     * @param key attachment key
     * @return true if contains attachment, false otherwise
@@ -415,5 +414,4 @@ public final class ASHelper
 
       return endpoints;
    }
-
 }

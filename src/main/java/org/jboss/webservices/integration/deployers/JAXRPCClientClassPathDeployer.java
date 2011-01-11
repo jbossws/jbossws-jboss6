@@ -32,10 +32,9 @@ import org.jboss.metadata.javaee.spec.ServiceReferencesMetaData;
  * when a application-client.xml descriptor file is found in the deployment.
  * This deployer then actually enables classpath modification when a jaxrpc-mapping
  * is specified in the descriptor.
- * 
+ *
  * @author alessio.soldano@jboss.com
  * @since 03-Feb-2010
- *
  */
 public abstract class JAXRPCClientClassPathDeployer<T> extends JAXRPCIntegrationClassPathDeployer<T>
 {
@@ -44,7 +43,7 @@ public abstract class JAXRPCClientClassPathDeployer<T> extends JAXRPCIntegration
       super(input);
       setInput(input); //makes the input mandatory instead of optional
    }
-   
+
    protected static boolean hasJaxRpcMappingReference(ServiceReferencesMetaData serviceReferences)
    {
       if (serviceReferences != null)
@@ -60,5 +59,4 @@ public abstract class JAXRPCClientClassPathDeployer<T> extends JAXRPCIntegration
       }
       return false;
    }
-   
 }

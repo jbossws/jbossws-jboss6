@@ -31,7 +31,6 @@ import org.jboss.wsf.spi.ioc.IoCContainerProxyFactory;
  */
 public final class IoCContainerProxyFactoryImpl implements IoCContainerProxyFactory
 {
-   
    /** Container proxy singleton. */
    private static final IoCContainerProxy CONTAINER = IoCContainerProxyImpl.getInstance();
 
@@ -45,12 +44,11 @@ public final class IoCContainerProxyFactoryImpl implements IoCContainerProxyFact
 
    /**
     * @see org.jboss.wsf.spi.ioc.IoCContainerProxyFactory#getContainer()
-    * 
+    *
     * @return IoC container proxy
     */
    public IoCContainerProxy getContainer()
    {
       return IoCContainerProxyFactoryImpl.CONTAINER;
    }
-
 }

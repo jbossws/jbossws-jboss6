@@ -35,7 +35,6 @@ import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
  */
 public final class WSDeploymentBuilder
 {
-
    /** Builder instance. */
    private static final WSDeploymentBuilder SINGLETON = new WSDeploymentBuilder();
 
@@ -61,7 +60,7 @@ public final class WSDeploymentBuilder
 
    /**
     * Factory method for obtaining builder instance. 
-    * 
+    *
     * @return builder instance
     */
    public static WSDeploymentBuilder getInstance()
@@ -71,7 +70,7 @@ public final class WSDeploymentBuilder
 
    /**
     * Builds JBossWS deployment model if web service deployment is detected.
-    * 
+    *
     * @param unit deployment unit
     */
    public void build(final DeploymentUnit unit)
@@ -83,5 +82,4 @@ public final class WSDeploymentBuilder
          WSDeploymentBuilder.builders.get(deploymentType).newDeploymentModel(unit);
       }
    }
-
 }

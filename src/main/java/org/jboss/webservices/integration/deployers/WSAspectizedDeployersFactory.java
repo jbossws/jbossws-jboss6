@@ -36,7 +36,6 @@ import org.jboss.wsf.spi.deployment.DeploymentAspect;
  */
 public final class WSAspectizedDeployersFactory
 {
-
    /** Logger. */
    private static final Logger LOGGER = Logger.getLogger(WSAspectizedDeployersFactory.class);
 
@@ -45,10 +44,10 @@ public final class WSAspectizedDeployersFactory
 
    /** Our deployers regitry. */
    private final Map<DeploymentAspect, Deployer> deployersRegistry = new HashMap<DeploymentAspect, Deployer>();
-   
+
    /**
     * Constructor.
-    * 
+    *
     * @param realDeployers real deployers registry
     */
    public WSAspectizedDeployersFactory(final DeployersImpl realDeployers)
@@ -58,7 +57,7 @@ public final class WSAspectizedDeployersFactory
 
    /**
     * MC incallback method. It will be called each time DeploymentAspect bean will be installed.
-    * 
+    *
     * @param aspect to create real WS aspectized deployer for
     */
    public void addDeployer(final DeploymentAspect aspect)
@@ -75,7 +74,7 @@ public final class WSAspectizedDeployersFactory
 
    /**
     * MC uncallback method. It will be called each time DeploymentAspect bean will be removed.
-    * 
+    *
     * @param aspect to remove real WS aspectized deployer for
     */
    public void removeDeployer(final DeploymentAspect aspect)
@@ -89,5 +88,4 @@ public final class WSAspectizedDeployersFactory
       this.deployersRegistry.remove(aspect);
       this.delegee.removeDeployer(wsAspectizedDeployer);
    }
-
 }

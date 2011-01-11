@@ -31,16 +31,15 @@ import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedHandlerMetaData.Handler
 
 /**
  * This Interceptor does the ws4ee handler processing on EJB 21 endpoints.
- * 
+ *
  * According to the ws4ee spec the handler logic must be invoked after the container
- * applied method level security to the invocation. 
+ * applied method level security to the invocation.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  * @author <a href="mailto:tdiesler@redhat.com">Thomas Diesler</a>
  */
 final class ServiceEndpointInterceptorEJB21 extends AbstractInterceptor
 {
-
    /**
     * Constructor.
     */
@@ -51,7 +50,7 @@ final class ServiceEndpointInterceptorEJB21 extends AbstractInterceptor
 
    /**
     * Before and after we call the EJB 21 service endpoint bean, we process the handler chains.
-    * 
+    *
     * @param jbossInvocation jboss invocation
     * @return ws invocation return value
     * @throws Exception if any error occurs
@@ -120,5 +119,4 @@ final class ServiceEndpointInterceptorEJB21 extends AbstractInterceptor
          throw ex;
       }
    }
-
 }

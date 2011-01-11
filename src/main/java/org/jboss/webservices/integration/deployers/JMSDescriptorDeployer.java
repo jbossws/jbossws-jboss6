@@ -21,16 +21,17 @@
  */
 package org.jboss.webservices.integration.deployers;
 
-import org.jboss.wsf.spi.metadata.jms.JMSDescriptorProcessor;
+import org.jboss.wsf.spi.metadata.jms.JMSDescriptorParser;
 import org.jboss.wsf.spi.metadata.jms.JMSEndpointsMetaData;
 
 /**
  * Stack agnostic JMS descriptor deployer.
- * 
+ *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-public final class JMSDescriptorDeployer extends AbstractDescriptorDeployer<JMSDescriptorProcessor, JMSEndpointsMetaData>
+public final class JMSDescriptorDeployer extends AbstractDescriptorDeployer<JMSDescriptorParser, JMSEndpointsMetaData>
 {
+
    /**
     * Constructor.
     */
@@ -40,12 +41,13 @@ public final class JMSDescriptorDeployer extends AbstractDescriptorDeployer<JMSD
    }
 
    /**
-    * MC incallback method. It will be invoked each time JMSDescriptorProcessor bean will be installed.
-    * @param processor the processor
+    * MC incallback method. It will be invoked each time JMSDescriptorParser bean will be installed.
+    * @param parser the parser
     */
    @Override
-   public void setProcessor(final JMSDescriptorProcessor processor)
+   public void setParser(final JMSDescriptorParser parser)
    {
-      super.setProcessor(processor);
+      super.setParser(parser);
    }
+
 }

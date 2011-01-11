@@ -32,40 +32,38 @@ import org.jboss.wsf.spi.metadata.jms.JMSEndpointMetaData;
 import org.jboss.wsf.spi.metadata.jms.JMSEndpointsMetaData;
 
 /**
- * Create JAXWS SPI Deployment for JAXWS_JMS type deployment
- * @author <a herf="ema@redhat.com>Jim Ma</a>
+ * Create JAXWS SPI Deployment for JAXWS_JMS type deployment.
  *
+ * @author <a herf="ema@redhat.com>Jim Ma</a>
  */
 public class DeploymentModelBuilderJAXWS_JMS extends AbstractDeploymentModelBuilder
 {
+   /**
+    * Constructor.
+    */
+   DeploymentModelBuilderJAXWS_JMS()
+   {
+      super();
+   }
 
-	   /**
-	    * Constructor.
-	    */
-	   DeploymentModelBuilderJAXWS_JMS()
-	   {
-	      super();
-	   }
-
-	   /**
-	    * Creates new JAXWS JMS deployment and registers it with deployment unit.
-	    * 
-	    * @param dep webservice deployment
-	    * @param unit deployment unit
-	    */
-	   @Override
-	   protected void build(final Deployment dep, final DeploymentUnit unit)
-	   {
-	      this.getAndPropagateAttachment(JMSEndpointsMetaData.class, unit, dep);
-	      JMSEndpointsMetaData jmsEndpointsMD = dep.getAttachment(JMSEndpointsMetaData.class);
-	      for (JMSEndpointMetaData endpoint : jmsEndpointsMD.getEndpointsMetaData())
-	      {
-	         if (endpoint.getName() == null) 
-	         {
-	            endpoint.setName(endpoint.getImplementor());
-	         }
-	         this.newJMSEndpoint(endpoint.getImplementor(), endpoint.getName(), dep);
-	      }
-	   }
-
-	}
+   /**
+    * Creates new JAXWS JMS deployment and registers it with deployment unit.
+    *
+    * @param dep webservice deployment
+    * @param unit deployment unit
+    */
+   @Override
+   protected void build(final Deployment dep, final DeploymentUnit unit)
+   {
+      this.getAndPropagateAttachment(JMSEndpointsMetaData.class, unit, dep);
+      JMSEndpointsMetaData jmsEndpointsMD = dep.getAttachment(JMSEndpointsMetaData.class);
+      for (JMSEndpointMetaData endpoint : jmsEndpointsMD.getEndpointsMetaData())
+      {
+         if (endpoint.getName() == null) 
+         {
+            endpoint.setName(endpoint.getImplementor());
+         }
+         this.newJMSEndpoint(endpoint.getImplementor(), endpoint.getName(), dep);
+      }
+   }
+}

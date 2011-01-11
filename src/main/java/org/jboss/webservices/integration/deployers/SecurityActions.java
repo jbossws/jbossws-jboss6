@@ -25,16 +25,16 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
- * 
+ * Security actions helper.
+ *
  * @author alessio.soldano@jboss.com
  * @since 17-Feb-2010
- *
  */
 class SecurityActions
 {
    /**
     * Get context classloader.
-    * 
+    *
     * @return the current context classloader
     */
    static ClassLoader getContextClassLoader()
@@ -54,7 +54,7 @@ class SecurityActions
          });
       }
    }
-   
+
    /**
     * Set context classloader.
     *
@@ -78,5 +78,4 @@ class SecurityActions
          });
       }
    }
-
 }

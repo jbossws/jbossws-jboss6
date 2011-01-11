@@ -33,7 +33,6 @@ import org.jboss.wsf.spi.deployment.Endpoint;
  */
 interface SecurityMetaDataAccessorEJB
 {
-
    /**
     * Obtains security domain from EJB deployment.
     *
@@ -73,5 +72,4 @@ interface SecurityMetaDataAccessorEJB
     * @return transport guarantee or null if not specified
     */
    String getTransportGuarantee(Endpoint endpoint);
-
 }

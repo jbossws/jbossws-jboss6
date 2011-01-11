@@ -49,7 +49,6 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  */
 public final class WSEJBAdapterDeployer extends AbstractRealDeployer
 {
-
    /**
     * Constructor.
     */
@@ -69,7 +68,7 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
 
    /**
     * Deploys WebServiceDeployment meta data.
-    * 
+    *
     * @param unit deployment unit
     * @throws DeploymentException exception
     */
@@ -107,7 +106,7 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
 
    /**
     * Returns EJB container if EJB3 deployment is detected and EJB meta data does not represent entity bean.
-    * 
+    *
     * @param ejb3Deployment EJB3 deployment meta data
     * @param ejbMD EJB meta data
     * @return EJB container or null if not EJB3 stateless bean
@@ -150,7 +149,7 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
 
       /**
        * Constructor.
-       * 
+       *
        * @param ejbMetaData EJB metadata
        * @param ejbContainer EJB container
        * @param loader class loader
@@ -234,7 +233,6 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
                   + " from loader: " + this.loader);
          }
       }
-
    }
 
    /**
@@ -243,7 +241,6 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
     */
    private static final class WebServiceDeploymentAdapter implements WebServiceDeployment
    {
-
       /** List of endpoints. */
       private final List<WebServiceDeclaration> endpoints = new ArrayList<WebServiceDeclaration>();
 
@@ -257,14 +254,12 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
 
       /**
        * Returns endpoints list.
-       * 
+       *
        * @return endpoints list
        */
       public List<WebServiceDeclaration> getServiceEndpoints()
       {
          return this.endpoints;
       }
-
    }
-
 }

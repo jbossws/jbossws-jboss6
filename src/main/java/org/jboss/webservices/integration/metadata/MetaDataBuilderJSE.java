@@ -51,14 +51,13 @@ import org.jboss.wsf.spi.metadata.j2ee.JSESecurityMetaData.JSEResourceCollection
 import org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter;
 
 /**
- * Builds container independent meta data from WEB container meta data. 
+ * Builds container independent meta data from WEB container meta data.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  * @author <a href="mailto:tdiesler@redhat.com">Thomas Diesler</a>
  */
 final class MetaDataBuilderJSE
 {
-
    /** Logger. */
    private final Logger log = Logger.getLogger(MetaDataBuilderJSE.class);
 
@@ -72,7 +71,7 @@ final class MetaDataBuilderJSE
 
    /**
     * Builds universal JSE meta data model that is AS agnostic.
-    * 
+    *
     * @param dep webservice deployment
     * @return universal JSE meta data model
     */
@@ -152,7 +151,7 @@ final class MetaDataBuilderJSE
 
    /**
     * Builds security meta data.
-    * 
+    *
     * @param securityConstraintsMD security constraints meta data
     * @return universal JSE security meta data model
     */
@@ -181,7 +180,7 @@ final class MetaDataBuilderJSE
 
    /**
     * Sets web resources in universal meta data model.
-    * 
+    *
     * @param jseSecurityMD universal JSE security meta data model
     * @param securityConstraintMD security constraint meta data
     */
@@ -203,7 +202,7 @@ final class MetaDataBuilderJSE
 
    /**
     * Returns servlet name to url pattern mappings.
-    * 
+    *
     * @param jbossWebMD jboss web meta data
     * @return servlet name to url pattern mappings
     */
@@ -225,7 +224,7 @@ final class MetaDataBuilderJSE
 
    /**
     * Returns servlet name to servlet class mappings.
-    * 
+    *
     * @param jbossWebMD jboss web meta data
     * @return servlet name to servlet mappings
     */
@@ -258,7 +257,7 @@ final class MetaDataBuilderJSE
     * If there's application.xml descriptor provided defining nested web module,
     * then context root defined there will be returned. 
     * Otherwise context root defined in jboss-web.xml will be returned.
-    * 
+    *
     * @param dep webservice deployment
     * @param jbossWebMD jboss web meta data
     * @return context root
@@ -284,5 +283,4 @@ final class MetaDataBuilderJSE
       // prefer context root defined in application.xml over one defined in jboss-web.xml
       return contextRoot != null ? contextRoot : jbossWebMD.getContextRoot();
    }
-
 }

@@ -47,7 +47,6 @@ import org.jboss.metadata.web.spec.WebResourceCollectionsMetaData;
  */
 public final class WebMetaDataHelper
 {
-
    /** Star utility string. */
    private static final String STAR_STRING = "*";
 
@@ -420,5 +419,4 @@ public final class WebMetaDataHelper
 
       return paramMD;
    }
-
 }

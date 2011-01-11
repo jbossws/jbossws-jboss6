@@ -33,13 +33,12 @@ import org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter;
  */
 final class PublishLocationAdapterImpl implements PublishLocationAdapter
 {
-
    /** Webservice descriptions meta data. */
    private final WebserviceDescriptionsMetaData wsDescriptionsMD;
 
    /**
     * Constructor.
-    * 
+    *
     * @param wsDescriptionsMD webservice descriptions meta data
     */
    PublishLocationAdapterImpl(final WebserviceDescriptionsMetaData wsDescriptionsMD)
@@ -51,7 +50,7 @@ final class PublishLocationAdapterImpl implements PublishLocationAdapter
 
    /**
     * @see org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter#getWsdlPublishLocationByName(String)
-    * 
+    *
     * @param endpointName endpoint name
     * @return publish location
     */
@@ -69,5 +68,4 @@ final class PublishLocationAdapterImpl implements PublishLocationAdapter
 
       return null;
    }
-
 }

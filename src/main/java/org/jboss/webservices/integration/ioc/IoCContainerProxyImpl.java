@@ -33,7 +33,6 @@ import org.jboss.wsf.spi.ioc.IoCContainerProxy;
  */
 public final class IoCContainerProxyImpl implements IoCContainerProxy
 {
-
    /** Singleton. */
    private static final IoCContainerProxy SINGLETON = new IoCContainerProxyImpl();
    /** JBoss MC kernel. */
@@ -46,7 +45,7 @@ public final class IoCContainerProxyImpl implements IoCContainerProxy
    {
       super();
    }
-   
+
    /**
     * Returns container proxy instance.
     *
@@ -56,10 +55,10 @@ public final class IoCContainerProxyImpl implements IoCContainerProxy
    {
       return IoCContainerProxyImpl.SINGLETON;
    }
-   
+
    /**
     * Sets JBoss kernel - invoked via MC injection.
-    * 
+    *
     * @param kernel JBoss kernel
     */
    public void setKernel(final Kernel kernel)
@@ -84,5 +83,4 @@ public final class IoCContainerProxyImpl implements IoCContainerProxy
 
       return (T)ctx.getTarget();
    }
-
 }

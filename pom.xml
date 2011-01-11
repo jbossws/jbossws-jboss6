@@ -2,12 +2,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>JBoss Web Services - Container JBoss-6.0.0.M5</name>
+  <name>JBoss Web Services - Container JBoss-6.0.0.Final</name>
   <groupId>org.jboss.ws</groupId>
-  <artifactId>jbossws-jboss600M5</artifactId>
-  <description>JBossWS Container integration for JBoss AS 6.0.0.M5</description>
+  <artifactId>jbossws-jboss600</artifactId>
+  <description>JBossWS Container integration for JBoss AS 6.0.0.Final</description>
 
-  <version>3.4.0-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
 
   <!-- Parent -->
   <parent>
@@ -18,30 +18,37 @@
 
   <!-- Source Control Management -->
   <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600M5</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600M5</developerConnection>
-    <url>http://fisheye.jboss.com/viewrep/JBossWS/container/jboss60/branches/jbossws-jboss600M5</url>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossws/container/jboss60/branches/jbossws-jboss600</developerConnection>
+    <url>http://fisheye.jboss.com/viewrep/JBossWS/container/jboss60/branches/jbossws-jboss600</url>
   </scm>
 
   <!-- Properties -->
   <properties>
-    <jbossws.framework.version>3.4.0-SNAPSHOT</jbossws.framework.version>
-    <jbossws.common.version>1.4.0-SNAPSHOT</jbossws.common.version>
-    <jbossws.spi.version>1.4.0-SNAPSHOT</jbossws.spi.version>
-    <jboss.version>6.0.0.20100911-M5</jboss.version>
-    <jboss.deployers.version>2.2.0.Alpha7</jboss.deployers.version>
-    <jboss.jbossxb.version>2.0.2.Beta7</jboss.jbossxb.version>
-    <jboss.metadata.version>2.0.0.Alpha16</jboss.metadata.version>
-    <jboss.reflect.version>2.2.0.Alpha9</jboss.reflect.version>
-    <jboss.security.version>3.0.0.Beta4</jboss.security.version>
-    <jboss.vfs.version>3.0.0.CR5</jboss.vfs.version>
-    <jboss.cl.version>2.2.0.Alpha8</jboss.cl.version>
+    <jbossws.framework.version>4.0.0-SNAPSHOT</jbossws.framework.version>
+    <jbossws.common.version>2.0.0-SNAPSHOT</jbossws.common.version>
+    <jbossws.spi.version>2.0.0-SNAPSHOT</jbossws.spi.version>
+    <jboss.version>6.0.0.Final</jboss.version>
+    <jboss.deployers.version>2.2.0.GA</jboss.deployers.version>
+    <jboss.jbossxb.version>2.0.3.GA</jboss.jbossxb.version>
+    <jboss.metadata.version>2.0.0.Alpha24</jboss.metadata.version>
+    <jboss.reflect.version>2.2.0.GA</jboss.reflect.version>
+    <jboss.picketbox.version>3.0.0.CR2</jboss.picketbox.version>
+    <jboss.vfs.version>3.0.0.GA</jboss.vfs.version>
+    <jboss.cl.version>2.2.0.GA</jboss.cl.version>
+    <jboss.weld.version>1.1.Beta2</jboss.weld.version>
     <jboss.hornetq.version>2.1.2.Final</jboss.hornetq.version>
+    <jboss.jaxws.api.version>1.0.0.Final</jboss.jaxws.api.version>
   </properties>
 
   <!-- DependencyManagement -->
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.jboss.spec.javax.xml.ws</groupId>
+        <artifactId>jboss-jaxws-api_2.2_spec</artifactId>
+        <version>${jboss.jaxws.api.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.jboss.ws</groupId>
         <artifactId>jbossws-framework</artifactId>
@@ -115,9 +122,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.jboss.security</groupId>
+        <groupId>org.picketbox</groupId>
         <artifactId>jboss-security-spi</artifactId>
-        <version>${jboss.security.version}</version>
+        <version>${jboss.picketbox.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hornetq</groupId>
@@ -128,6 +135,16 @@
         <groupId>org.hornetq</groupId>
         <artifactId>hornetq-jms</artifactId>
         <version>${jboss.hornetq.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>weld-int-deployer</artifactId>
+        <version>${jboss.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.weld</groupId>
+        <artifactId>weld-spi</artifactId>
+        <version>${jboss.weld.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -151,9 +168,8 @@
 
     <!-- jboss provided dependencies -->
     <dependency>
-      <groupId>javax.xml.ws</groupId>
-      <artifactId>jaxws-api</artifactId>
-      <version>2.1</version>
+      <groupId>org.jboss.spec.javax.xml.ws</groupId>
+      <artifactId>jboss-jaxws-api_2.2_spec</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -183,8 +199,18 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.jboss.security</groupId>
+      <groupId>org.picketbox</groupId>
       <artifactId>jboss-security-spi</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.jbossas</groupId>
+      <artifactId>weld-int-deployer</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-spi</artifactId>
       <scope>provided</scope>
     </dependency>
 
@@ -232,6 +258,39 @@
       </resource>
     </resources>
     <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <showDeprecation>false</showDeprecation>
+          <compilerArguments>
+            <endorseddirs>${project.build.directory}/endorsed</endorseddirs>
+          </compilerArguments>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.jboss.spec.javax.xml.ws</groupId>
+                  <artifactId>jboss-jaxws-api_2.2_spec</artifactId>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.build.directory}/endorsed</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>

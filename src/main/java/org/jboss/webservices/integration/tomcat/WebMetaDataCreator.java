@@ -46,7 +46,6 @@ import org.jboss.wsf.spi.deployment.Endpoint;
  */
 final class WebMetaDataCreator
 {
-
    /** Our Realm. */
    private static final String EJB_WEBSERVICE_REALM = "EJBWebServiceEndpointServlet Realm";
 
@@ -78,7 +77,7 @@ final class WebMetaDataCreator
       JBossWebMetaData jbossWebMD = ASHelper.getOptionalAttachment(unit, JBossWebMetaData.class);
       if (jbossWebMD == null)
       {
-    	 jbossWebMD = new JBossWebMetaData();
+         jbossWebMD = new JBossWebMetaData();
       }
 
       this.createWebAppDescriptor(dep, jbossWebMD);
@@ -368,5 +367,4 @@ final class WebMetaDataCreator
 
       return isJaxws ? this.ejb3SecurityAccessor : this.ejb21SecurityAccessor;
    }
-
 }

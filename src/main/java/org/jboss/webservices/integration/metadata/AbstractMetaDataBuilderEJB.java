@@ -44,13 +44,12 @@ import org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter;
  */
 abstract class AbstractMetaDataBuilderEJB
 {
-
    /** Logger. */
    protected final Logger log = Logger.getLogger(this.getClass());
 
    /**
     * Builds universal EJB meta data model that is AS agnostic.
-    * 
+    *
     * @param dep webservice deployment
     * @return universal EJB meta data model
     */
@@ -68,7 +67,7 @@ abstract class AbstractMetaDataBuilderEJB
 
    /**
     * Template method for build enterprise beans meta data.
-    * 
+    *
     * @param dep webservice deployment
     * @param ejbMetaData universal EJB meta data model
     */
@@ -82,7 +81,7 @@ abstract class AbstractMetaDataBuilderEJB
     *   <li>config name</li>
     *   <li>config file</li>
     * </ul>
-    * 
+    *
     * @param dep webservice deployment
     * @param ejbArchiveMD universal EJB meta data model
     */
@@ -151,5 +150,4 @@ abstract class AbstractMetaDataBuilderEJB
 
       return false;
    }
-
 }

@@ -35,7 +35,6 @@ import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
  */
 public final class ContainerMetaDataDeploymentAspect extends AbstractDeploymentAspect
 {
-
    /** JSE meta data builder. */
    private final MetaDataBuilderJSE metaDataBuilderJSE = new MetaDataBuilderJSE();
 
@@ -55,7 +54,7 @@ public final class ContainerMetaDataDeploymentAspect extends AbstractDeploymentA
 
    /**
     * Build container independent meta data.
-    * 
+    *
     * @param dep webservice deployment
     */
    @Override
@@ -80,5 +79,4 @@ public final class ContainerMetaDataDeploymentAspect extends AbstractDeploymentA
          dep.addAttachment(EJBArchiveMetaData.class, ejbMetaData);
       }
    }
-
 }

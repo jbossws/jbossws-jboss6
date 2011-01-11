@@ -36,7 +36,6 @@ import org.jboss.wsf.spi.management.ServerConfigFactory;
  */
 public final class ServerConfigFactoryImpl extends ServerConfigFactory
 {
-   
    /** The bean name in the kernel registry. */
    private static final String BEAN_NAME = "WSServerConfig";
 
@@ -50,7 +49,7 @@ public final class ServerConfigFactoryImpl extends ServerConfigFactory
 
    /**
     * Returns config registered in MC kernel.
-    * 
+    *
     * @return config
     */
    public ServerConfig getServerConfig()
@@ -58,8 +57,7 @@ public final class ServerConfigFactoryImpl extends ServerConfigFactory
       final SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
       final IoCContainerProxyFactory iocContainerFactory = spiProvider.getSPI(IoCContainerProxyFactory.class);
       final IoCContainerProxy iocContainer = iocContainerFactory.getContainer();
-      
+
       return iocContainer.getBean(ServerConfigFactoryImpl.BEAN_NAME, ServerConfig.class);
    }
-
 }

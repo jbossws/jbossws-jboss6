@@ -35,7 +35,6 @@ import org.jboss.wsf.spi.invocation.InvocationType;
  */
 public final class InvocationHandlerFactoryImpl extends InvocationHandlerFactory
 {
-
    /**
     * Constructor.
     */
@@ -46,7 +45,7 @@ public final class InvocationHandlerFactoryImpl extends InvocationHandlerFactory
 
    /**
     * Returns invocation handler associated with invocation type.
-    * 
+    *
     * @param type invocation type
     * @return invocation handler
     */
@@ -80,5 +79,4 @@ public final class InvocationHandlerFactoryImpl extends InvocationHandlerFactory
 
       return handler;
    }
-
 }

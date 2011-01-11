@@ -35,10 +35,9 @@ import org.jboss.webservices.integration.util.ASHelper;
  * when a ejb-jar.xml descriptor file is found in the deployment.
  * This deployer then actually enables classpath modification when a jaxrpc-mapping
  * is specified in the descriptor.
- * 
+ *
  * @author alessio.soldano@jboss.com
  * @since 03-Feb-2010
- *
  */
 public class JAXRPCEjbClientClassPathDeployer extends JAXRPCClientClassPathDeployer<EjbJarMetaData>
 {
@@ -46,7 +45,7 @@ public class JAXRPCEjbClientClassPathDeployer extends JAXRPCClientClassPathDeplo
    {
       super(EjbJarMetaData.class);
    }
-   
+
    @Override
    protected boolean isClassPathChangeRequired(VFSDeploymentUnit unit)
    {

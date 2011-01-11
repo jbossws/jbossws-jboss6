@@ -45,7 +45,6 @@ import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
  */
 final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
 {
-
    /**
     * Constructor.
     */
@@ -80,7 +79,7 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
 
    /**
     * Builds JBoss agnostic EJB meta data.
-    * 
+    *
     * @param wsEjbsMD jboss agnostic EJBs meta data
     * @param jbossEjbMD jboss specific EJB meta data
     */
@@ -154,5 +153,4 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
 
       return null;
    }
-
 }

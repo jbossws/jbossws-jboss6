@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2006, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -21,32 +21,47 @@
  */
 package org.jboss.webservices.integration.security;
 
-import org.jboss.wsf.spi.invocation.SecurityAdaptor;
-import org.jboss.wsf.spi.invocation.SecurityAdaptorFactory;
+import java.security.Key;
+import java.security.KeyStore;
+import java.util.Properties;
+
+import org.jboss.wsf.spi.security.JAASSecurityDomainAdaptor;
+import org.jboss.security.plugins.JaasSecurityDomain;
 
 /**
- * Security adapters factory.
+ * Adapt JaasSecurityDomain to jbossws spi
+ * 
+ * @author alessio.soldano@jboss.com
+ * @since 14-Dec-2010
  *
- * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
- * @author <a href="mailto:tdiesler@redhat.com">Thomas Diesler</a>
  */
-public final class SecurityAdapterFactoryImpl extends SecurityAdaptorFactory
+public class JaasSecurityDomainAdaptorImpl implements JAASSecurityDomainAdaptor
 {
-   /**
-    * Constructor.
-    */
-   public SecurityAdapterFactoryImpl()
+   private JaasSecurityDomain delegate;
+   
+   public JaasSecurityDomainAdaptorImpl(JaasSecurityDomain delegate)
    {
-      super();
+      this.delegate = delegate;
    }
 
-   /**
-    * Creates new security adapter instance.
-    *
-    * @return security adapter
-    */
-   public SecurityAdaptor newSecurityAdapter()
+   public KeyStore getKeyStore()
    {
-      return new SecurityAdapterImpl();
+      return delegate.getKeyStore();
    }
+
+   public KeyStore getTrustStore()
+   {
+      return delegate.getTrustStore();
+   }
+
+   public Properties getAdditionalOptions()
+   {
+      return delegate.getAdditionalOptions();
+   }
+
+   public Key getKey(String alias, String serviceAuthToken) throws Exception
+   {
+      return delegate.getKey(alias, serviceAuthToken);
+   }
+
 }

@@ -40,7 +40,6 @@ import org.jboss.wsf.spi.invocation.SecurityAdaptor;
  */
 final class SecurityAdapterImpl implements SecurityAdaptor
 {
-
    /**
     * Constructor.
     */
@@ -51,7 +50,7 @@ final class SecurityAdapterImpl implements SecurityAdaptor
 
    /**
     * @see org.jboss.wsf.spi.invocation.SecurityAdaptor#getPrincipal()
-    * 
+    *
     * @return principal
     */
    public Principal getPrincipal()
@@ -61,7 +60,7 @@ final class SecurityAdapterImpl implements SecurityAdaptor
 
    /**
     * @see org.jboss.wsf.spi.invocation.SecurityAdaptor#setPrincipal(Principal)
-    * 
+    *
     * @param principal principal
     */
    public void setPrincipal(final Principal principal)
@@ -71,7 +70,7 @@ final class SecurityAdapterImpl implements SecurityAdaptor
 
    /**
     * @see org.jboss.wsf.spi.invocation.SecurityAdaptor#getCredential()
-    * 
+    *
     * @return credential
     */
    public Object getCredential()
@@ -81,7 +80,7 @@ final class SecurityAdapterImpl implements SecurityAdaptor
 
    /**
     * @see org.jboss.wsf.spi.invocation.SecurityAdaptor#setCredential(Object)
-    *  
+    *
     * @param credential credential
     */
    public void setCredential(final Object credential)
@@ -91,7 +90,7 @@ final class SecurityAdapterImpl implements SecurityAdaptor
 
    /**
     * @see org.jboss.wsf.spi.invocation.SecurityAdaptor#pushSubjectContext(Subject, Principal, Object)
-    * 
+    *
     * @param subject subject
     * @param principal principal
     * @param credential credential
@@ -115,5 +114,4 @@ final class SecurityAdapterImpl implements SecurityAdaptor
          }
       });
    }
-
 }

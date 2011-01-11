@@ -30,13 +30,12 @@ import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 
 /**
- * This deployer initializes JBossWS deployment meta data. 
+ * This deployer initializes JBossWS deployment meta data.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
 public final class WSDeploymentDeployer extends AbstractRealDeployer
 {
-
    /**
     * Constructor.
     */
@@ -55,7 +54,7 @@ public final class WSDeploymentDeployer extends AbstractRealDeployer
 
    /**
     * Creates new Web Service deployment and registers it with deployment unit.
-    * 
+    *
     * @param unit deployment unit
     * @throws DeploymentException if any error occurs
     */
@@ -65,5 +64,4 @@ public final class WSDeploymentDeployer extends AbstractRealDeployer
       this.log.trace("Building JBoss agnostic webservices meta data model");
       WSDeploymentBuilder.getInstance().build(unit);
    }
-
 }

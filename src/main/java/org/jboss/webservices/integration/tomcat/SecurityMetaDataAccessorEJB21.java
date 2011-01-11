@@ -29,14 +29,13 @@ import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 
 /**
- * Creates web app security meta data for EJB 21 deployment. 
+ * Creates web app security meta data for EJB 21 deployment.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  * @author <a href="mailto:tdiesler@redhat.com">Thomas Diesler</a>
  */
 final class SecurityMetaDataAccessorEJB21 extends AbstractSecurityMetaDataAccessorEJB
 {
-
    /**
     * Constructor.
     */
@@ -71,5 +70,4 @@ final class SecurityMetaDataAccessorEJB21 extends AbstractSecurityMetaDataAccess
 
       return (assemblyDescriptorMD != null) ? assemblyDescriptorMD.getSecurityRoles() : null;
    }
-
 }

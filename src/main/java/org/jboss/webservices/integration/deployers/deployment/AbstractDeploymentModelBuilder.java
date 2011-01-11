@@ -1,6 +1,26 @@
+/*
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.jboss.webservices.integration.deployers.deployment;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +29,8 @@ import java.util.Set;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.logging.Logger;
-import org.jboss.metadata.serviceref.VirtualFileAdaptor;
 import org.jboss.vfs.VirtualFile;
+import org.jboss.webservices.integration.injection.VirtualFileAdaptor;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.common.ResourceLoaderAdapter;
 import org.jboss.wsf.spi.SPIProvider;
@@ -21,7 +41,6 @@ import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.wsf.spi.deployment.DeploymentModelFactory;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.UnifiedVirtualFile;
-import org.jboss.wsf.spi.deployment.WSFDeploymentException;
 
 /**
  * Base class for all deployment model builders.
@@ -30,7 +49,6 @@ import org.jboss.wsf.spi.deployment.WSFDeploymentException;
  */
 abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
 {
-
    /** WSDL, XSD and XML files filter. */
    private static final WSVirtualFileFilter WS_FILE_FILTER = new WSVirtualFileFilter();
 
@@ -148,7 +166,7 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
          for (VirtualFile vf : virtualFiles)
          {
             // Adding the roots of the virtual files.
-            uVirtualFiles.add(new VirtualFileAdaptor(vf)); // TODO: Figure out why this was using the VFS2 VFS root instead of the meta-data file itself.  
+            uVirtualFiles.add(new VirtualFileAdaptor(vf));  
          }
          dep.setMetadataFiles(new LinkedList<UnifiedVirtualFile>(uVirtualFiles));
       }
@@ -214,5 +232,4 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
 
       throw new IllegalStateException("Deployment unit does not contain " + attachment);
    }
-
 }

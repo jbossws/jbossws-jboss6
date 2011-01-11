@@ -29,9 +29,8 @@ import org.jboss.wsf.framework.management.DefaultJMSEndpointResolver;
 
 /**
  * A JMS endpoint resolver meant for working with HornetQ destination implementation
- * 
- * @author alessio.soldano@jboss.com
  *
+ * @author alessio.soldano@jboss.com
  */
 public class HornetQJMSResolver extends DefaultJMSEndpointResolver
 {
@@ -46,5 +45,4 @@ public class HornetQJMSResolver extends DefaultJMSEndpointResolver
          super.setDestination(destination);
       }
    }
-
 }

@@ -32,7 +32,6 @@ import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
  */
 public final class WebMetaDataModifyingDeploymentAspect extends AbstractDeploymentAspect
 {
-
    /** Web meta data modifier. */
    private WebMetaDataModifier webMetaDataModifier = new WebMetaDataModifier();
 
@@ -55,5 +54,4 @@ public final class WebMetaDataModifyingDeploymentAspect extends AbstractDeployme
       this.log.debug("Modifying web meta data for webservice deployment: " + dep.getSimpleName());
       this.webMetaDataModifier.modify(dep);
    }
-
 }

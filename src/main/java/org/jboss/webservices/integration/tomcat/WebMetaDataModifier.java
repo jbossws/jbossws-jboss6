@@ -45,7 +45,6 @@ import org.jboss.wsf.spi.deployment.ServletClassProvider;
  */
 final class WebMetaDataModifier
 {
-
    /** Logger. */
    private final Logger log = Logger.getLogger(WebMetaDataModifier.class);
 
@@ -136,7 +135,7 @@ final class WebMetaDataModifier
             log.warn("Cannot get transport class name from " + WSConstants.STACK_TRANSPORT_CLASS_PROVIDER, e);
          }
       }
-      
+
       if (transportClassName == null)
       {
          transportClassName = (String) dep.getProperty(WSConstants.STACK_TRANSPORT_CLASS);
@@ -149,5 +148,4 @@ final class WebMetaDataModifier
 
       return transportClassName;
    }
-
 }

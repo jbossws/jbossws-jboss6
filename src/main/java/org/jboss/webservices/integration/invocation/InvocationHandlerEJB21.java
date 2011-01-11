@@ -59,7 +59,6 @@ import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
  */
 final class InvocationHandlerEJB21 extends AbstractInvocationHandler
 {
-
    /** EJB21 JNDI name. */
    private String jndiName;
 
@@ -74,14 +73,12 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
     */
    InvocationHandlerEJB21()
    {
-      super();
-
       this.server = MBeanServerLocator.locateJBoss();
    }
 
    /**
     * Initializes EJB 21 endpoint.
-    * 
+    *
     * @param endpoint web service endpoint
     */
    public void init(final Endpoint endpoint)
@@ -107,7 +104,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
    /**
     * Gets EJB 21 container name lazily.
-    * 
+    *
     * @param endpoint webservice endpoint
     * @return EJB21 container name
     */
@@ -133,7 +130,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
    /**
     * Invokes EJB 21 endpoint.
-    * 
+    *
     * @param endpoint EJB 21 endpoint
     * @param wsInvocation web service invocation
     * @throws Exception if any error occurs
@@ -164,7 +161,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
    /**
     * Returns configured EJB 21 JBoss MBean invocation.
-    * 
+    *
     * @param wsInvocation webservice invocation
     * @return configured JBoss invocation
     */
@@ -208,7 +205,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
    /**
     * This method dynamically inserts EJB 21 webservice endpoint interceptor
     * to the last but one position in EJB 21 processing chain. See [JBWS-756] for more info.
-    * 
+    *
     * @param objectName EJB 21 object name
     * @param ejbName EJB 21 short name
     */
@@ -244,5 +241,4 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
          this.log.warn("Cannot register EJB 21 service endpoint interceptor: ", ex);
       }
    }
-
 }

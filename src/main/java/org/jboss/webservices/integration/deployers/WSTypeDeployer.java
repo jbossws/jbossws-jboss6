@@ -39,7 +39,6 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  */
 public final class WSTypeDeployer extends AbstractRealDeployer
 {
-
    /**
     * Constructor.
     */
@@ -59,7 +58,7 @@ public final class WSTypeDeployer extends AbstractRealDeployer
 
    /**
     * Detects WS deployment type and puts it to the deployment unit attachments.
-    * 
+    *
     * @param unit deployment unit
     * @throws DeploymentException on failure
     */
@@ -95,7 +94,7 @@ public final class WSTypeDeployer extends AbstractRealDeployer
 
    /**
     * Returns true if JAXRPC EJB deployment is detected.
-    * 
+    *
     * @param unit deployment unit
     * @return true if JAXRPC EJB, false otherwise
     */
@@ -109,7 +108,7 @@ public final class WSTypeDeployer extends AbstractRealDeployer
 
    /**
     * Returns true if JAXRPC JSE deployment is detected.
-    * 
+    *
     * @param unit deployment unit
     * @return true if JAXRPC JSE, false otherwise
     */
@@ -128,7 +127,7 @@ public final class WSTypeDeployer extends AbstractRealDeployer
 
    /**
     * Returns true if JAXWS EJB deployment is detected.
-    * 
+    *
     * @param unit deployment unit
     * @return true if JAXWS EJB, false otherwise
     */
@@ -146,7 +145,7 @@ public final class WSTypeDeployer extends AbstractRealDeployer
 
    /**
     * Returns true if JAXWS JSE deployment is detected.
-    * 
+    *
     * @param unit deployment unit
     * @return true if JAXWS JSE, false otherwise
     */
@@ -164,7 +163,7 @@ public final class WSTypeDeployer extends AbstractRealDeployer
 
    /**
     * Returns true if JAXWS JMS deployment is detected.
-    * 
+    *
     * @param unit deployment unit
     * @return true if JAXWS JMS, false otherwise
     */
@@ -172,5 +171,4 @@ public final class WSTypeDeployer extends AbstractRealDeployer
    {
       return ASHelper.hasAttachment(unit, JMSEndpointsMetaData.class);
    }
-
 }

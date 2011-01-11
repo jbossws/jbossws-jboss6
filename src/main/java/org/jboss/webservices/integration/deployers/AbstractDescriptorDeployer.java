@@ -21,59 +21,48 @@
  */
 package org.jboss.webservices.integration.deployers;
 
-import org.jboss.deployers.vfs.spi.deployer.ObjectModelFactoryDeployer;
+import org.jboss.deployers.vfs.spi.deployer.AbstractVFSParsingDeployer;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
-import org.jboss.vfs.VFSInputSource;
 import org.jboss.vfs.VirtualFile;
-import org.jboss.wsf.spi.metadata.DescriptorProcessor;
-import org.jboss.xb.binding.ObjectModelFactory;
-import org.xml.sax.InputSource;
+import org.jboss.wsf.spi.metadata.DescriptorParser;
 
 /**
- * Abstract descriptor deployer.
+ * Abstract descriptor deployer which deploys only if particular DD processor is available.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-abstract class AbstractDescriptorDeployer<P extends DescriptorProcessor<T>, T> extends ObjectModelFactoryDeployer<T>
+abstract class AbstractDescriptorDeployer<P extends DescriptorParser<T>, T> extends AbstractVFSParsingDeployer<T>
 {
-   private P ddProcessor;
+   private P ddParser;
 
    AbstractDescriptorDeployer(Class<T> output)
    {
       super(output);
       this.setName("UNSPECIFIED");
-      this.setUseSchemaValidation(false);
    }
 
+   @SuppressWarnings({"deprecation", "unchecked"})
    @Override
    protected T parse(final VFSDeploymentUnit unit, final VirtualFile file, final T root) throws Exception
    {
-      if (this.ddProcessor != null)
+      if (this.ddParser != null)
       {
-         InputSource source = new VFSInputSource(file);
-         ObjectModelFactory factory = this.ddProcessor.getFactory(file.toURL());
-         return getHelper().parse(source, root, factory);
+         return this.ddParser.parse(file.toURL());
       }
-      
+
       return null;
    }
 
    /**
-    * MC incallback method. It will be invoked each time subclass specific DescriptorProcessor bean will be installed.
+    * MC incallback method. It will be invoked each time subclass specific DescriptorParser bean will be installed.
     */
-   protected void setProcessor(final P ddProcessor)
+   protected void setParser(final P ddParser)
    {
-      if (this.ddProcessor != null)
-         throw new IllegalStateException("Only one " + this.ddProcessor.getClass() + " instance can be installed in MC");
-      
-      this.ddProcessor = ddProcessor;
-      this.setName(this.ddProcessor.getDescriptorName());
-      this.setUseSchemaValidation(this.ddProcessor.isValidating());
+      if (this.ddParser != null)
+         throw new IllegalStateException("Only one " + this.ddParser.getClass() + " instance can be installed in MC");
+
+      this.ddParser = ddParser;
+      this.setName(this.ddParser.getDescriptorName());
    }
-   
-   @Override
-   protected ObjectModelFactory getObjectModelFactory(final T root)
-   {
-      throw new UnsupportedOperationException();
-   }
+
 }

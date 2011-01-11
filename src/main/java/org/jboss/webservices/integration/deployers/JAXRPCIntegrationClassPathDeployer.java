@@ -36,25 +36,22 @@ import org.jboss.wsf.spi.management.ServerConfig;
  * An abstract deployer that properly set the classpath for JAX-RPC deployments.
  * This is performed adding a reference to an integration lib from the jaxrpc
  * deployers to the deployment unit's classpath.
- * 
+ *
  * @author alessio.soldano@jboss.com
  * @since 02-Feb-2010
- *
  */
 public abstract class JAXRPCIntegrationClassPathDeployer<T> extends UrlIntegrationDeployer<T>
 {
    private Set<String> libs;
-   
    private boolean integrationLibsFound = false;
    private ServerConfig wsServerConfig;
    private boolean stackRequiresIntegration;
-   
-   
+
    public JAXRPCIntegrationClassPathDeployer(Class<T> input)
    {
       super(input);
    }
-   
+
    protected abstract boolean isClassPathChangeRequired(VFSDeploymentUnit unit);
 
    @Override
@@ -62,13 +59,13 @@ public abstract class JAXRPCIntegrationClassPathDeployer<T> extends UrlIntegrati
    {
       return stackRequiresIntegration && integrationLibsFound && isClassPathChangeRequired(unit);
    }
-   
+
    @Override
    public void start()
    {
       //NOOP
    }
-   
+
    protected Set<URL> getJBossWSIntegrationUrls()
    {
       Set<URL> result = new HashSet<URL>();
@@ -97,12 +94,7 @@ public abstract class JAXRPCIntegrationClassPathDeployer<T> extends UrlIntegrati
       }
       return result;
    }
-   
-   /**
-    * Get server home.
-    *
-    * @return the jboss server home location
-    */
+
    protected String getServerHome()
    {
       return "${jboss.server.home.url}";
@@ -130,5 +122,4 @@ public abstract class JAXRPCIntegrationClassPathDeployer<T> extends UrlIntegrati
       //the Native stack does not requires the JAXRPC additional integration 
       stackRequiresIntegration = !wsServerConfig.getImplementationTitle().toLowerCase().contains("native");
    }
-
 }

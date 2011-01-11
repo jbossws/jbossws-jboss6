@@ -36,7 +36,6 @@ import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
  */
 abstract class AbstractSecurityMetaDataAccessorEJB implements SecurityMetaDataAccessorEJB
 {
-
    /** JAAS JNDI prefix. */
    private static final String JAAS_JNDI_PREFIX = "java:/jaas/";
 
@@ -126,5 +125,4 @@ abstract class AbstractSecurityMetaDataAccessorEJB implements SecurityMetaDataAc
 
       return ejbMD != null ? ejbMD.getSecurityMetaData() : null;
    }
-
 }

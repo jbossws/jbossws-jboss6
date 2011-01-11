@@ -35,7 +35,7 @@ import org.jboss.wsf.spi.deployment.DeploymentAspect;
 
 /**
  * A deployer that delegates to JBossWS deployment aspect.
- * 
+ *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
 final class WSDeploymentAspectDeployer extends AbstractRealDeployer
@@ -52,7 +52,7 @@ final class WSDeploymentAspectDeployer extends AbstractRealDeployer
 
    /**
     * Constructor.
-    * 
+    *
     * @param aspect deployment aspect
     */
    WSDeploymentAspectDeployer(final DeploymentAspect aspect)
@@ -102,7 +102,7 @@ final class WSDeploymentAspectDeployer extends AbstractRealDeployer
    /**
     * If deployed unit is related to web services this method delegates
     * to deployment aspect and calls its create() and start() methods.
-    * 
+    *
     * @param unit deployment unit
     * @throws DeploymentException on deployment failure
     */
@@ -133,7 +133,7 @@ final class WSDeploymentAspectDeployer extends AbstractRealDeployer
    /**
     * If undeployed unit is related to web services this method delegates
     * to deployment aspect and calls its stop() and destroy() methods.
-    * 
+    *
     * @param unit deployment unit
     */
    @Override
@@ -162,7 +162,7 @@ final class WSDeploymentAspectDeployer extends AbstractRealDeployer
 
    /**
     * Displays also WS deployment aspect being wrapped.
-    * 
+    *
     * @return deployer instance id including wrapped deployment aspect id.
     */
    @Override
@@ -172,5 +172,4 @@ final class WSDeploymentAspectDeployer extends AbstractRealDeployer
       sb.append(super.toString()).append('(').append(this.aspect).append(')');
       return sb.toString();
    }
-
 }

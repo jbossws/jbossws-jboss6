@@ -31,17 +31,16 @@ import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
 
 /**
- * Generates JACC permissions. (This is temporary and really hacky solution). 
- * 
- * TODO: remove this deployment aspect and update 
- * particular JACC deployer to execute after 
- * JBossWS has modified web meta data. 
+ * Generates JACC permissions. (This is temporary and really hacky solution).
+ *
+ * TODO: remove this deployment aspect and update
+ * particular JACC deployer to execute after
+ * JBossWS has modified web meta data.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
 public final class JACCPermissionsDeploymentAspect extends AbstractDeploymentAspect
 {
-
    /**
     * Constructor.
     */
@@ -55,7 +54,7 @@ public final class JACCPermissionsDeploymentAspect extends AbstractDeploymentAsp
     * does not go through the war security deployer. Hence the JACC
     * permissions are not created. There is a need to explicitly create
     * the war jacc permissions.
-    * 
+    *
     * @param dep webservice deployment
     */
    @Override
@@ -78,5 +77,4 @@ public final class JACCPermissionsDeploymentAspect extends AbstractDeploymentAsp
          throw new RuntimeException("Exception generating JACC perms: ", e);
       }
    }
-
 }

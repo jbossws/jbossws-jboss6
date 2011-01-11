@@ -43,7 +43,6 @@ import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
  */
 final class SecurityMetaDataAccessorEJB3 extends AbstractSecurityMetaDataAccessorEJB
 {
-
    /**
     * Constructor.
     */
@@ -152,8 +151,8 @@ final class SecurityMetaDataAccessorEJB3 extends AbstractSecurityMetaDataAccesso
 
    /**
     * Gets <b>WebContext</b> if associated with EJB endpoint.
-    * 
-    * @param endpoint EJB webservice endpoint 
+    *
+    * @param endpoint EJB webservice endpoint
     * @return web context associated with EJB or null
     */
    @SuppressWarnings(
@@ -208,5 +207,4 @@ final class SecurityMetaDataAccessorEJB3 extends AbstractSecurityMetaDataAccesso
          throw new IllegalStateException(errorMessage + firstDomain + secondDomain);
       }
    }
-
 }
