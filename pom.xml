@@ -25,7 +25,6 @@
 
   <!-- Properties -->
   <properties>
-    <jbossws.framework.version>4.0.0-SNAPSHOT</jbossws.framework.version>
     <jbossws.common.version>2.0.0-SNAPSHOT</jbossws.common.version>
     <jbossws.spi.version>2.0.0-SNAPSHOT</jbossws.spi.version>
     <jboss.version>6.0.0.Final</jboss.version>
@@ -48,11 +47,6 @@
         <groupId>org.jboss.spec.javax.xml.ws</groupId>
         <artifactId>jboss-jaxws-api_2.2_spec</artifactId>
         <version>${jboss.jaxws.api.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.ws</groupId>
-        <artifactId>jbossws-framework</artifactId>
-        <version>${jbossws.framework.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.ws</groupId>
@@ -115,7 +109,7 @@
             <groupId>org.jboss</groupId>
             <artifactId>jboss-jaxws</artifactId>
           </exclusion>
-            <exclusion>
+          <exclusion>
             <groupId>org.jboss</groupId>
             <artifactId>jboss-jaxrpc</artifactId>
           </exclusion>
@@ -140,6 +134,12 @@
         <groupId>org.jboss.jbossas</groupId>
         <artifactId>weld-int-deployer</artifactId>
         <version>${jboss.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.jboss.ws.native</groupId>
+            <artifactId>jbossws-native-core</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.jboss.weld</groupId>
@@ -153,10 +153,6 @@
   <dependencies>
 
     <!-- jbossws dependencies -->
-    <dependency>
-      <groupId>org.jboss.ws</groupId>
-      <artifactId>jbossws-framework</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.jboss.ws</groupId>
       <artifactId>jbossws-common</artifactId>
