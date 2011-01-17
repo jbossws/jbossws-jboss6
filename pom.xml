@@ -84,9 +84,9 @@
         <version>${jboss.deployers.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.jboss.ejb3.bom</groupId>
-        <artifactId>bom-as6</artifactId>
-        <version>0.1.2</version>
+        <groupId>org.jboss.ejb3.depchain</groupId>
+        <artifactId>jboss-ejb3-depchain-as6</artifactId>
+        <version>1.0.0-alpha-43</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
