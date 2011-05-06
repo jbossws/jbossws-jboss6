@@ -25,7 +25,7 @@ import javax.jms.Destination;
 
 import org.apache.log4j.Logger;
 import org.hornetq.jms.client.HornetQDestination;
-import org.jboss.wsf.framework.management.DefaultJMSEndpointResolver;
+import org.jboss.ws.common.management.DefaultJMSEndpointResolver;
 
 /**
  * A JMS endpoint resolver meant for working with HornetQ destination implementation

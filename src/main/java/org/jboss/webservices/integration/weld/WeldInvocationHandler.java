@@ -26,7 +26,7 @@ import javax.naming.NamingException;
 
 import org.jboss.weld.integration.injection.NonContextualObjectInjectionHelper;
 import org.jboss.weld.manager.api.WeldManager;
-import org.jboss.wsf.common.invocation.AbstractInvocationHandlerJSE;
+import org.jboss.ws.common.invocation.AbstractInvocationHandlerJSE;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.invocation.Invocation;
 import org.jboss.wsf.spi.invocation.InvocationHandler;

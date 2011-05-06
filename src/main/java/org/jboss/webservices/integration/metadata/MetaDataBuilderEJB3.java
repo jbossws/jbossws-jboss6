@@ -27,7 +27,7 @@ import java.util.List;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 
-import org.jboss.wsf.common.integration.WSHelper;
+import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;

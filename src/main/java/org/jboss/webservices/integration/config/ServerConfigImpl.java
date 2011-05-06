@@ -28,8 +28,8 @@ import java.net.URL;
 import javax.management.JMException;
 import javax.management.ObjectName;
 
-import org.jboss.wsf.common.management.AbstractServerConfig;
-import org.jboss.wsf.common.management.AbstractServerConfigMBean;
+import org.jboss.ws.common.management.AbstractServerConfig;
+import org.jboss.ws.common.management.AbstractServerConfigMBean;
 
 /**
  * AS specific ServerConfig.

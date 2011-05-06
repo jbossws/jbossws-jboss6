@@ -21,9 +21,9 @@
  */
 package org.jboss.webservices.integration.tomcat;
 
-import org.jboss.wsf.common.integration.WSHelper;
+import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
+import org.jboss.ws.common.integration.AbstractDeploymentAspect;
 
 /**
  * A deployment aspect that generates web app meta data for EJB endpoints.

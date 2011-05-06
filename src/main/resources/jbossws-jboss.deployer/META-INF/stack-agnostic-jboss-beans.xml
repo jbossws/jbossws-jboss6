@@ -20,7 +20,7 @@
   </bean>
 
   <!-- Locate the single instance of the MBeanServer -->
-  <bean name="WSMBeanServerLocator" class="org.jboss.wsf.framework.management.MBeanServerLocator">
+  <bean name="WSMBeanServerLocator" class="org.jboss.ws.common.management.MBeanServerLocator">
     <constructor>
       <parameter>
         <inject bean="JMXKernel" property="mbeanServer"/>
@@ -54,7 +54,7 @@
   </bean>
 
   <!-- stack agnostic webservices.xml processor -->
-  <bean name="WSDescriptorProcessor" class="org.jboss.wsf.framework.deployment.jms.WebservicesDescriptorProcessorImpl">
+  <bean name="WSDescriptorProcessor" class="org.jboss.ws.common.deployment.jms.WebservicesDescriptorProcessorImpl">
     <property name="validating">true</property>
     <property name="descriptorName">webservices.xml</property>
   </bean>
@@ -102,41 +102,41 @@
     <property name="provides">JACCPermisions</property>
   </bean>
 
-  <bean name="WSContextRootDeploymentAspect" class="org.jboss.wsf.framework.deployment.BackwardCompatibleContextRootDeploymentAspect">
+  <bean name="WSContextRootDeploymentAspect" class="org.jboss.ws.common.deployment.BackwardCompatibleContextRootDeploymentAspect">
     <property name="requires">ContainerMetaData</property>
     <property name="provides">ContextRoot</property>
   </bean>
 
-  <bean name="WSVirtualHostDeploymentAspect" class="org.jboss.wsf.framework.deployment.VirtualHostDeploymentAspect">
+  <bean name="WSVirtualHostDeploymentAspect" class="org.jboss.ws.common.deployment.VirtualHostDeploymentAspect">
     <property name="requires">ContainerMetaData</property>
     <property name="provides">VirtualHosts</property>
   </bean>
 
-  <bean name="WSEndpointAddressDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointAddressDeploymentAspect">
+  <bean name="WSEndpointAddressDeploymentAspect" class="org.jboss.ws.common.deployment.EndpointAddressDeploymentAspect">
     <property name="requires">URLPattern</property>
     <property name="provides">EndpointAddress</property>
   </bean>
 
-  <bean name="WSEndpointLifecycleDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointLifecycleDeploymentAspect">
+  <bean name="WSEndpointLifecycleDeploymentAspect" class="org.jboss.ws.common.deployment.EndpointLifecycleDeploymentAspect">
     <property name="provides">LifecycleHandler</property>
     <property name="last">true</property>
   </bean>
 
-  <bean name="WSEndpointMetricsDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointMetricsDeploymentAspect">
+  <bean name="WSEndpointMetricsDeploymentAspect" class="org.jboss.ws.common.deployment.EndpointMetricsDeploymentAspect">
     <property name="provides">EndpointMetrics</property>
   </bean>
 
-  <bean name="WSEndpointNameDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointNameDeploymentAspect">
+  <bean name="WSEndpointNameDeploymentAspect" class="org.jboss.ws.common.deployment.EndpointNameDeploymentAspect">
     <property name="requires">URLPattern</property>
     <property name="provides">EndpointName</property>
   </bean>
 
-  <bean name="WSEndpointRegistryDeploymentAspect" class="org.jboss.wsf.framework.deployment.EndpointRegistryDeploymentAspect">
+  <bean name="WSEndpointRegistryDeploymentAspect" class="org.jboss.ws.common.deployment.EndpointRegistryDeploymentAspect">
     <property name="requires">EndpointName, EndpointAddress</property>
     <property name="provides">RegisteredEndpoint</property>
   </bean>
 
-  <bean name="WSURLPatternDeploymentAspect" class="org.jboss.wsf.framework.deployment.URLPatternDeploymentAspect">
+  <bean name="WSURLPatternDeploymentAspect" class="org.jboss.ws.common.deployment.URLPatternDeploymentAspect">
     <property name="requires">ContextRoot, ContainerMetaData</property>
     <property name="provides">URLPattern</property>
   </bean>

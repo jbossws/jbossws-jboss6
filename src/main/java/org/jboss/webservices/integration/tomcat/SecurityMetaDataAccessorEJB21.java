@@ -24,7 +24,7 @@ package org.jboss.webservices.integration.tomcat;
 import org.jboss.metadata.common.ejb.IAssemblyDescriptorMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.javaee.spec.SecurityRolesMetaData;
-import org.jboss.wsf.common.integration.WSHelper;
+import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 

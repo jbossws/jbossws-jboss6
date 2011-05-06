@@ -23,8 +23,8 @@ package org.jboss.webservices.integration.weld;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.weld.integration.deployer.DeployersUtils;
-import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
-import org.jboss.wsf.common.integration.WSHelper;
+import org.jboss.ws.common.integration.AbstractDeploymentAspect;
+import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 

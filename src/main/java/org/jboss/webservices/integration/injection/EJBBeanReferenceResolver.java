@@ -29,7 +29,7 @@ import javax.ejb.EJB;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.ejb3.ejbref.resolver.spi.EjbReference;
 import org.jboss.ejb3.ejbref.resolver.spi.EjbReferenceResolver;
-import org.jboss.wsf.common.injection.resolvers.AbstractReferenceResolver;
+import org.jboss.ws.common.injection.resolvers.AbstractReferenceResolver;
 
 /**
  * EJB reference resolver.
@@ -72,7 +72,7 @@ final class EJBBeanReferenceResolver extends AbstractReferenceResolver<EJB>
    }
 
    /**
-    * @see org.jboss.wsf.common.injection.resolvers.AbstractReferenceResolver#resolveField(java.lang.reflect.Field)
+    * @see org.jboss.ws.common.injection.resolvers.AbstractReferenceResolver#resolveField(java.lang.reflect.Field)
     *
     * @param field to be resolved
     * @return JNDI name of referenced EJB object
@@ -88,7 +88,7 @@ final class EJBBeanReferenceResolver extends AbstractReferenceResolver<EJB>
    }
 
    /**
-    * @see org.jboss.wsf.common.injection.resolvers.AbstractReferenceResolver#resolveMethod(java.lang.reflect.Method)
+    * @see org.jboss.ws.common.injection.resolvers.AbstractReferenceResolver#resolveMethod(java.lang.reflect.Method)
     *
     * @param method to be resolved
     * @return JNDI name of referenced EJB object
