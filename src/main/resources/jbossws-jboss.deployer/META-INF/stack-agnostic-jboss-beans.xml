@@ -117,7 +117,7 @@
     <property name="provides">EndpointAddress</property>
   </bean>
 
-  <bean name="WSEndpointLifecycleDeploymentAspect" class="org.jboss.ws.common.deployment.EndpointLifecycleDeploymentAspect">
+  <bean name="WSEndpointLifecycleDeploymentAspect" class="org.jboss.webservices.integration.security.SecurityDomainContextDeploymentAspect">
     <property name="provides">LifecycleHandler</property>
     <property name="last">true</property>
   </bean>
