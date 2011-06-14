@@ -53,18 +53,8 @@
     -->
   </bean>
 
-  <!-- stack agnostic webservices.xml processor -->
-  <bean name="WSDescriptorProcessor" class="org.jboss.ws.common.deployment.jms.WebservicesDescriptorProcessorImpl">
-    <property name="validating">true</property>
-    <property name="descriptorName">webservices.xml</property>
-  </bean>
-
   <!-- deployers -->
   <bean name="WSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.WSDescriptorDeployer">
-    <incallback method="setParser"/>
-  </bean>
-
-  <bean name="JMSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.JMSDescriptorDeployer">
     <incallback method="setParser"/>
   </bean>
 
