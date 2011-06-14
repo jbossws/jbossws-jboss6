@@ -29,7 +29,6 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
-import org.jboss.wsf.spi.metadata.jms.JMSEndpointsMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 
 /**
@@ -84,11 +83,6 @@ public final class WSTypeDeployer extends AbstractRealDeployer
       {
          this.log.debug("Detected JAXRPC EJB21 deployment");
          unit.addAttachment(DeploymentType.class, DeploymentType.JAXRPC_EJB21);
-      }
-      else if (this.isJaxwsJmsDeployment(unit))
-      {
-         this.log.debug("Detected JAXWS JMS deployment");
-         unit.addAttachment(DeploymentType.class, DeploymentType.JAXWS_JMS);
       }
    }
 
@@ -159,16 +153,5 @@ public final class WSTypeDeployer extends AbstractRealDeployer
       }
 
       return false;
-   }
-
-   /**
-    * Returns true if JAXWS JMS deployment is detected.
-    *
-    * @param unit deployment unit
-    * @return true if JAXWS JMS, false otherwise
-    */
-   private boolean isJaxwsJmsDeployment(final DeploymentUnit unit)
-   {
-      return ASHelper.hasAttachment(unit, JMSEndpointsMetaData.class);
    }
 }
