@@ -22,17 +22,13 @@
 package org.jboss.webservices.integration.invocation;
 
 import java.lang.reflect.Method;
-import java.security.Principal;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.xml.ws.EndpointReference;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.WebServiceException;
-import javax.xml.ws.handler.MessageContext;
 
 import org.jboss.ejb3.EJBContainer;
-import org.jboss.ejb3.context.CurrentEJBContext;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.ws.common.injection.ThreadLocalAwareWebServiceContext;
 import org.jboss.ws.common.invocation.AbstractInvocationHandler;
@@ -45,7 +41,6 @@ import org.jboss.wsf.spi.invocation.integration.InvocationContextCallback;
 import org.jboss.wsf.spi.invocation.integration.ServiceEndpointContainer;
 import org.jboss.wsf.spi.ioc.IoCContainerProxy;
 import org.jboss.wsf.spi.ioc.IoCContainerProxyFactory;
-import org.w3c.dom.Element;
 
 /**
  * Handles invocations on EJB3 endpoints.
@@ -187,42 +182,7 @@ final class InvocationHandlerEJB3 extends AbstractInvocationHandler
    {
       final InvocationContext invocationContext = invocation.getInvocationContext();
 
-      return new WebServiceContextAdapter(invocationContext.getAttachment(WebServiceContext.class));
-   }
-
-   private static final class WebServiceContextAdapter implements WebServiceContext
-   {
-      private final WebServiceContext delegate;
-
-      private WebServiceContextAdapter(final WebServiceContext delegate)
-      {
-         this.delegate = delegate;
-      }
-
-      public MessageContext getMessageContext()
-      {
-         return this.delegate.getMessageContext();
-      }
-
-      public Principal getUserPrincipal()
-      {
-         return CurrentEJBContext.get().getCallerPrincipal();
-      }
-
-      public boolean isUserInRole(final String role)
-      {
-         return CurrentEJBContext.get().isCallerInRole(role);
-      }
-
-      public EndpointReference getEndpointReference(final Element... referenceParameters)
-      {
-         return delegate.getEndpointReference(referenceParameters);
-      }
-
-      public <T extends EndpointReference> T getEndpointReference(final Class<T> clazz, final Element... referenceParameters)
-      {
-         return delegate.getEndpointReference(clazz, referenceParameters);
-      }
+      return invocationContext.getAttachment(WebServiceContext.class);
    }
 
    /**
