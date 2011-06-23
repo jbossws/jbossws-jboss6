@@ -21,11 +21,14 @@
  */
 package org.jboss.webservices.integration.security;
 
+import java.util.ResourceBundle;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.jboss.logging.Logger;
 import org.jboss.security.plugins.JaasSecurityDomain;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.security.JAASSecurityDomainAdaptor;
 import org.jboss.wsf.spi.security.JAASSecurityDomainAdaptorResolver;
 
@@ -37,6 +40,7 @@ import org.jboss.wsf.spi.security.JAASSecurityDomainAdaptorResolver;
  */
 public class JaasSecurityDomainAdaptorResolverImpl implements JAASSecurityDomainAdaptorResolver
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(JaasSecurityDomainAdaptorResolverImpl.class);
    public JAASSecurityDomainAdaptor lookup(String jndi) throws Exception
    {
       InitialContext ic = null;
@@ -46,13 +50,13 @@ public class JaasSecurityDomainAdaptorResolverImpl implements JAASSecurityDomain
          Object o = ic.lookup(jndi);
          if (!(o instanceof JaasSecurityDomain))
          {
-            throw new Exception(jndi + " not bound to a JaasSecurityDomain but to a " + o.getClass().getName() + " instance");
+            throw new Exception(BundleUtils.getMessage(bundle, "NOT_BUNDTO_JAASSECURITYDOMAIN", new Object[] {jndi,o.getClass().getName()}));
          }
          return new JaasSecurityDomainAdaptorImpl((JaasSecurityDomain)o);
       }
       catch (NamingException e)
       {
-         throw new Exception("JNDI failure handling " + jndi, e);
+         throw new Exception(BundleUtils.getMessage(bundle, "JNDI_FAILURE_HANDLING",  jndi),  e);
       }
       finally
       {
@@ -64,7 +68,7 @@ public class JaasSecurityDomainAdaptorResolverImpl implements JAASSecurityDomain
             }
             catch (NamingException e)
             {
-               Logger.getLogger(JaasSecurityDomainAdaptorImpl.class).warn(this + " failed to close InitialContext", e);
+               Logger.getLogger(JaasSecurityDomainAdaptorImpl.class).warn(BundleUtils.getMessage(bundle, "FAILED_TO_CLOSE_INITIALCONTEXT", this),  e);
             }
          }
       }

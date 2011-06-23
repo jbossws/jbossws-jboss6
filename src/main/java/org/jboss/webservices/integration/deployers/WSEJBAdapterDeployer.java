@@ -24,6 +24,7 @@ package org.jboss.webservices.integration.deployers;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
@@ -38,6 +39,7 @@ import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
 import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
@@ -49,6 +51,7 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  */
 public final class WSEJBAdapterDeployer extends AbstractRealDeployer
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(WSEJBAdapterDeployer.class);
    /**
     * Constructor.
     */
@@ -96,7 +99,7 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
             }
             else
             {
-               this.log.warn("Ingoring EJB deployment with null classname: " + ejbName);
+               this.log.warn(BundleUtils.getMessage(bundle, "INGORING_EJB_DEPLOYMENT_WITH_NULL_CLASSNAME",  ejbName));
             }
          }
 
@@ -229,8 +232,7 @@ public final class WSEJBAdapterDeployer extends AbstractRealDeployer
          }
          catch (ClassNotFoundException cnfe)
          {
-            throw new RuntimeException("Failed to load component class: " + this.getComponentClassName()
-                  + " from loader: " + this.loader);
+            throw new RuntimeException(BundleUtils.getMessage(bundle, "FAILED_TO_LOAD_COMPONENT_CLASS", new Object[]{this.getComponentClassName(), this.loader}));
          }
       }
    }

@@ -22,6 +22,7 @@
 package org.jboss.webservices.integration.invocation;
 
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -30,6 +31,7 @@ import javax.xml.ws.WebServiceException;
 
 import org.jboss.ejb3.EJBContainer;
 import org.jboss.webservices.integration.util.ASHelper;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.injection.ThreadLocalAwareWebServiceContext;
 import org.jboss.ws.common.invocation.AbstractInvocationHandler;
 import org.jboss.wsf.spi.SPIProvider;
@@ -50,6 +52,7 @@ import org.jboss.wsf.spi.ioc.IoCContainerProxyFactory;
  */
 final class InvocationHandlerEJB3 extends AbstractInvocationHandler
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(InvocationHandlerEJB3.class);
    /** EJB3 JNDI context. */
    private static final String EJB3_JNDI_PREFIX = "java:env/";
 
@@ -83,7 +86,7 @@ final class InvocationHandlerEJB3 extends AbstractInvocationHandler
 
       if (this.containerName == null)
       {
-         throw new IllegalArgumentException("Container name cannot be null");
+         throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "CONTAINER_NAME_CANNOT_BE_NULL"));
       }
    }
 
@@ -101,7 +104,7 @@ final class InvocationHandlerEJB3 extends AbstractInvocationHandler
          this.serviceEndpointContainer = this.iocContainer.getBean(this.containerName, ServiceEndpointContainer.class);
          if (this.serviceEndpointContainer == null)
          {
-            throw new WebServiceException("Cannot find service endpoint target: " + this.containerName);
+            throw new WebServiceException(BundleUtils.getMessage(bundle, "CANNOT_FIND_SERVICE_ENDPOINT_TARGET",  this.containerName));
          }
       }
 
@@ -134,7 +137,7 @@ final class InvocationHandlerEJB3 extends AbstractInvocationHandler
       }
       catch (Throwable t)
       {
-         this.log.error("Method invocation failed with exception: " + t.getMessage(), t);
+         this.log.error(BundleUtils.getMessage(bundle, "METHOD_INVOCATION_FAILED",  t.getMessage()),  t);
          this.handleInvocationException(t);
       }
       finally

@@ -24,6 +24,7 @@ package org.jboss.webservices.integration.security;
 import java.security.AccessController;
 import java.security.Principal;
 import java.security.PrivilegedAction;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -35,6 +36,7 @@ import org.jboss.security.AuthenticationManager;
 import org.jboss.security.RealmMapping;
 import org.jboss.security.SecurityContext;
 import org.jboss.security.SecurityContextAssociation;
+import org.jboss.ws.api.util.BundleUtils;
 
 /**
  * org.jboss.wsf.spi.security.SecurityDomainContext implementation relying on AuthenticationManager
@@ -43,6 +45,7 @@ import org.jboss.security.SecurityContextAssociation;
  * @since 18-May-2011
  */
 public final class SecurityDomainContextAdaptor implements org.jboss.wsf.spi.security.SecurityDomainContext {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(SecurityDomainContextAdaptor.class);
 
     private AuthenticationManager authenticationManager;
     private RealmMapping realmMapping;
@@ -63,7 +66,7 @@ public final class SecurityDomainContextAdaptor implements org.jboss.wsf.spi.sec
           }
           catch (NamingException ne)
           {
-             throw new RuntimeException("Unable to lookup AuthenticationManager", ne);
+             throw new RuntimeException(BundleUtils.getMessage(bundle, "UNABLE_TO_LOOKUP_AUTHENTICATIONMANAGER"),  ne);
           }
        }
     }
@@ -98,7 +101,7 @@ public final class SecurityDomainContextAdaptor implements org.jboss.wsf.spi.sec
             public Void run() {
                 SecurityContext securityContext = SecurityContextAssociation.getSecurityContext();
                 if (securityContext == null) {
-                   throw new IllegalStateException("Security Context is null");
+                   throw new IllegalStateException(BundleUtils.getMessage(bundle, "SECURITY_CONTEXT_IS_NULL"));
                 }
                 securityContext.getUtil().createSubjectInfo(principal, credential, subject);
                 return null;

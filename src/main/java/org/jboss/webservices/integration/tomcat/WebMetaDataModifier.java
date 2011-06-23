@@ -22,6 +22,7 @@
 package org.jboss.webservices.integration.tomcat;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.jboss.logging.Logger;
 import org.jboss.metadata.javaee.spec.ParamValueMetaData;
@@ -29,6 +30,7 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.webservices.integration.util.WebMetaDataHelper;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.integration.WSConstants;
 import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
@@ -44,6 +46,7 @@ import org.jboss.wsf.spi.deployment.Endpoint;
  */
 final class WebMetaDataModifier
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(WebMetaDataModifier.class);
    /** Logger. */
    private final Logger log = Logger.getLogger(WebMetaDataModifier.class);
 
@@ -124,7 +127,7 @@ final class WebMetaDataModifier
 
       if (transportClassName == null)
       {
-         throw new IllegalStateException("Cannot obtain deployment property : " + WSConstants.STACK_TRANSPORT_CLASS);
+         throw new IllegalStateException(BundleUtils.getMessage(bundle, "CANNOT_OBTAIN_DEPLOYMENT_PROPERTY",  WSConstants.STACK_TRANSPORT_CLASS));
       }
 
       return transportClassName;

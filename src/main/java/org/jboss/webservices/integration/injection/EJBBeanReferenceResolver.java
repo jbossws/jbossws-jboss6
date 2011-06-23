@@ -23,12 +23,14 @@ package org.jboss.webservices.integration.injection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.ejb3.ejbref.resolver.spi.EjbReference;
 import org.jboss.ejb3.ejbref.resolver.spi.EjbReferenceResolver;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.injection.resolvers.AbstractReferenceResolver;
 
 /**
@@ -38,6 +40,7 @@ import org.jboss.ws.common.injection.resolvers.AbstractReferenceResolver;
  */
 final class EJBBeanReferenceResolver extends AbstractReferenceResolver<EJB>
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(EJBBeanReferenceResolver.class);
    /**
     * Deployment unit used for resolving process.
     */
@@ -60,11 +63,11 @@ final class EJBBeanReferenceResolver extends AbstractReferenceResolver<EJB>
 
       if (unit == null)
       {
-         throw new IllegalArgumentException("Deployment unit cannot be null");
+         throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "DEPLOYMENT_UNIT_CANNOT_BE_NULL"));
       }
       if (delegate == null)
       {
-         throw new IllegalArgumentException("Ejb reference resolver cannot be null");
+         throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "EJB_REFERENCE_RESOLVER_CANNOT_BE_NULL"));
       }
 
       this.unit = unit;

@@ -31,6 +31,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
@@ -38,6 +39,7 @@ import java.util.jar.JarOutputStream;
 import org.jboss.vfs.VFS;
 import org.jboss.vfs.VFSUtils;
 import org.jboss.vfs.VirtualFile;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.deployment.UnifiedVirtualFile;
 import org.jboss.wsf.spi.deployment.WritableUnifiedVirtualFile;
 
@@ -50,6 +52,7 @@ import org.jboss.wsf.spi.deployment.WritableUnifiedVirtualFile;
  */
 public final class VirtualFileAdaptor implements WritableUnifiedVirtualFile
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(VirtualFileAdaptor.class);
    private static final long serialVersionUID = -4509594124653184348L;
 
    private static final ObjectStreamField[] serialPersistentFields =
@@ -79,9 +82,9 @@ public final class VirtualFileAdaptor implements WritableUnifiedVirtualFile
    protected VirtualFileAdaptor(URL rootUrl, String path, boolean requiresMount)
    {
       if (rootUrl == null)
-         throw new IllegalArgumentException("Null root url");
+         throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "NULL_ROOT_URL"));
       if (path == null)
-         throw new IllegalArgumentException("Null path");
+         throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "NULL_PATH"));
 
       this.rootUrl = rootUrl;
       this.path = path;
@@ -106,17 +109,17 @@ public final class VirtualFileAdaptor implements WritableUnifiedVirtualFile
          }
          catch (URISyntaxException e)
          {
-            throw new IOException("Unable to get Virtualfile from URL: " + rootUrl, e);
+            throw new IOException(BundleUtils.getMessage(bundle, "UNABLE_TO_GET_VIRTUALFILE_FROM_URL",  rootUrl),  e);
          }
          file = root.getChild(path);
          
          if (!file.exists())
          {
-            throw new IOException("VirtualFile " + file + " does not exist");
+            throw new IOException(BundleUtils.getMessage(bundle, "VIRTUALFILE_DOES_NOT_EXIST",  file ));
          }
          else if (requiresMount && !isMounted(root, file))
          {
-            throw new IOException("VirtualFile " + file + " is not mounted");
+            throw new IOException(BundleUtils.getMessage(bundle, "VIRTUALFILE_IS_NOT_MOUNTED",  file ));
          }
       }
       return file;
@@ -132,7 +135,7 @@ public final class VirtualFileAdaptor implements WritableUnifiedVirtualFile
       final VirtualFile virtualFile = getFile();   
       final VirtualFile childFile = file.getChild(child);
       if(!childFile.exists())
-         throw new IOException("Child '" + child + "' not found for VirtualFile " + virtualFile);
+         throw new IOException(BundleUtils.getMessage(bundle, "CHILD_NOT_FOUND", new Object[]{ child , virtualFile}));
       return new VirtualFileAdaptor(childFile);
    }
 

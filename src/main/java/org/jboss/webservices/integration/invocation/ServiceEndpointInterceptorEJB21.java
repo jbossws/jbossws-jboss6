@@ -21,10 +21,13 @@
  */
 package org.jboss.webservices.integration.invocation;
 
+import java.util.ResourceBundle;
+
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
 
 import org.jboss.ejb.plugins.AbstractInterceptor;
 import org.jboss.invocation.InvocationKey;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.invocation.HandlerCallback;
 import org.jboss.wsf.spi.invocation.Invocation;
 import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedHandlerMetaData.HandlerType;
@@ -40,6 +43,7 @@ import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedHandlerMetaData.Handler
  */
 final class ServiceEndpointInterceptorEJB21 extends AbstractInterceptor
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(ServiceEndpointInterceptorEJB21.class);
    /**
     * Constructor.
     */
@@ -71,7 +75,7 @@ final class ServiceEndpointInterceptorEJB21 extends AbstractInterceptor
 
       if (callback == null || wsInvocation == null)
       {
-         log.warn("Handler callback not available");
+         log.warn(BundleUtils.getMessage(bundle, "HANDLER_CALLBACK_NOT_AVAILABLE"));
          return this.getNext().invoke(jbossInvocation);
       }
 
@@ -114,7 +118,7 @@ final class ServiceEndpointInterceptorEJB21 extends AbstractInterceptor
          }
          catch (Exception e)
          {
-            log.warn("Cannot process handlerChain.handleFault, ignoring: ", e);
+            log.warn(BundleUtils.getMessage(bundle, "CANNOT_PROCESS_HANDLEFAULT"), e);
          }
          throw ex;
       }

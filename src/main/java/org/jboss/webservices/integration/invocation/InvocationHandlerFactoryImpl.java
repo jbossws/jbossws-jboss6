@@ -21,6 +21,9 @@
  */
 package org.jboss.webservices.integration.invocation;
 
+import java.util.ResourceBundle;
+
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.invocation.InvocationHandlerJAXRPC;
 import org.jboss.ws.common.invocation.InvocationHandlerJAXWS;
 import org.jboss.wsf.spi.invocation.InvocationHandler;
@@ -35,6 +38,7 @@ import org.jboss.wsf.spi.invocation.InvocationType;
  */
 public final class InvocationHandlerFactoryImpl extends InvocationHandlerFactory
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(InvocationHandlerFactoryImpl.class);
    /**
     * Constructor.
     */
@@ -74,7 +78,7 @@ public final class InvocationHandlerFactoryImpl extends InvocationHandlerFactory
             handler = new InvocationHandlerMDB3();
             break;
          default :
-            throw new IllegalArgumentException("Unable to resolve spi.invocation.InvocationHandler for type " + type);
+            throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "UNABLE_TO_RESOLVE",  type));
       }
 
       return handler;

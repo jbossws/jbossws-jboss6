@@ -24,10 +24,12 @@ package org.jboss.webservices.integration.config;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ResourceBundle;
 
 import javax.management.JMException;
 import javax.management.ObjectName;
 
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.management.AbstractServerConfig;
 import org.jboss.ws.common.management.AbstractServerConfigMBean;
 
@@ -40,6 +42,7 @@ import org.jboss.ws.common.management.AbstractServerConfigMBean;
  */
 public final class ServerConfigImpl extends AbstractServerConfig implements AbstractServerConfigMBean
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(ServerConfigImpl.class);
    /**
     * Constructor.
     */
@@ -97,7 +100,7 @@ public final class ServerConfigImpl extends AbstractServerConfig implements Abst
       }
       catch (final JMException e)
       {
-         throw new RuntimeException("Could not obtain attribute " + attributeName + " from " + on, e);
+         throw new RuntimeException(BundleUtils.getMessage(bundle, "COULD_NOT_OBTAIN_ATTRIBUTE_FROM", new Object[]{ attributeName , on}),  e);
       }
 
       // Represent as a File
@@ -108,7 +111,7 @@ public final class ServerConfigImpl extends AbstractServerConfig implements Abst
       }
       catch (final URISyntaxException urise)
       {
-         throw new RuntimeException("Could not desired directory from URL: " + location, urise);
+         throw new RuntimeException(BundleUtils.getMessage(bundle, "COULD_NOT_DESIRED_DIRECTORY_FROM_URL",  location),  urise);
       }
 
       return dir;

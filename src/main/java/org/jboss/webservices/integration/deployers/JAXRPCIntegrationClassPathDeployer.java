@@ -23,6 +23,7 @@ package org.jboss.webservices.integration.deployers;
 
 import java.net.URL;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.jboss.deployers.vfs.plugins.classloader.UrlIntegrationDeployer;
@@ -30,6 +31,7 @@ import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.util.StringPropertyReplacer;
 import org.jboss.vfs.VFS;
 import org.jboss.vfs.VirtualFile;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.management.ServerConfig;
 
 /**
@@ -42,6 +44,7 @@ import org.jboss.wsf.spi.management.ServerConfig;
  */
 public abstract class JAXRPCIntegrationClassPathDeployer<T> extends UrlIntegrationDeployer<T>
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(JAXRPCIntegrationClassPathDeployer.class);
    private Set<String> libs;
    private boolean integrationLibsFound = false;
    private ServerConfig wsServerConfig;
@@ -90,7 +93,7 @@ public abstract class JAXRPCIntegrationClassPathDeployer<T> extends UrlIntegrati
       }
       catch (Exception e)
       {
-         throw new IllegalArgumentException("Unexpected error: " + e);
+         throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "UNEXPECTED_ERROR",  e));
       }
       return result;
    }

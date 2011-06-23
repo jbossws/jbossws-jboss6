@@ -252,6 +252,12 @@
       <resource>
         <directory>src/main/resources/jbossws-jboss.jar</directory>
       </resource>
+      <resource>
+        <directory>src/main/java</directory>
+         <includes>
+          <include>**/*.properties</include>
+         </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>

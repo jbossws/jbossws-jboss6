@@ -21,10 +21,13 @@
  */
 package org.jboss.webservices.integration.endpoint;
 
+import java.util.ResourceBundle;
+
 import javax.jms.Destination;
 
 import org.apache.log4j.Logger;
 import org.hornetq.jms.client.HornetQDestination;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.management.DefaultJMSEndpointResolver;
 
 /**
@@ -34,14 +37,14 @@ import org.jboss.ws.common.management.DefaultJMSEndpointResolver;
  */
 public class HornetQJMSResolver extends DefaultJMSEndpointResolver
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(HornetQJMSResolver.class);
    public void setDestination(Destination destination)
    {
       if (destination instanceof HornetQDestination)
          setFromName(destination, ((HornetQDestination)destination).isQueue());
       else
       {
-         Logger.getLogger(HornetQJMSResolver.class).warn(
-               "Destination '" + destination + "' is not a org.hornetq.jms.client.HornetQDestination instance, falling back to default JMS endpoint resolution");
+         Logger.getLogger(HornetQJMSResolver.class).warn(BundleUtils.getMessage(bundle, "DESTINATION_IS_NOT_HQDES", destination));
          super.setDestination(destination);
       }
    }

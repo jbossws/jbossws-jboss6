@@ -21,11 +21,14 @@
  */
 package org.jboss.webservices.integration.weld;
 
+import java.util.ResourceBundle;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.jboss.weld.integration.injection.NonContextualObjectInjectionHelper;
 import org.jboss.weld.manager.api.WeldManager;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.invocation.AbstractInvocationHandlerJSE;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.invocation.Invocation;
@@ -39,6 +42,7 @@ import org.jboss.wsf.spi.invocation.InvocationHandler;
  */
 public final class WeldInvocationHandler extends AbstractInvocationHandlerJSE
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(WeldInvocationHandler.class);
 
    private static final String BEAN_MANAGER_JNDI_NAME = "java:comp/BeanManager";
 
@@ -81,7 +85,7 @@ public final class WeldInvocationHandler extends AbstractInvocationHandlerJSE
            WeldManager beanManager = (WeldManager) new InitialContext().lookup(BEAN_MANAGER_JNDI_NAME);
            NonContextualObjectInjectionHelper.injectNonContextualInstance(instance, beanManager);
        } catch (NamingException e) {
-           throw new IllegalStateException("Unable to locate BeanManager");
+           throw new IllegalStateException(BundleUtils.getMessage(bundle, "UNABLE_TO_LOCATE_BEANMANAGER"));
        }
    }
 
