@@ -39,8 +39,8 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.webservices.integration.WebServiceDeclaration;
+import org.jboss.webservices.integration.WebServiceDeployment;
 
 /**
  * JBoss AS integration helper class.
