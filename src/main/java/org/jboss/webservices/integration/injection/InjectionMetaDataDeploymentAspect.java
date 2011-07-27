@@ -243,7 +243,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
             {
                // prepare injection target meta data
                targetClass = resourceInjectionTargetMD.getInjectionTargetClass();
-               targetName = resourceInjectionTargetMD.getInjectionTargetName();
+               targetName = getTargetName(resourceInjectionTargetMD);
 
                // build injection meta data for injection target
                final InjectionMetaData injectionMD = new InjectionMetaData(targetClass, targetName, envEntryValueClass,
@@ -255,5 +255,16 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
       }
 
       return retVal;
+   }
+
+   private String getTargetName(final ResourceInjectionTargetMetaData resourceInjectionTargetMD)
+   {
+      final String targetName = resourceInjectionTargetMD.getInjectionTargetName();
+      if (targetName.startsWith("set"))
+      {
+         final String propertyName = targetName.substring(3);
+         return propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
+      }
+      return targetName;
    }
 }

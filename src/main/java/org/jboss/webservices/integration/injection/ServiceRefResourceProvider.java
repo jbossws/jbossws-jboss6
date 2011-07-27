@@ -688,13 +688,28 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
             return field;
       }
 
+      final String targetName = getMethodName(target);
       for (Method method : clazz.getDeclaredMethods())
       {
-         if (method.getName().equals(target.getTargetName()))
+         if (method.getName().equals(targetName))
             return method;
       }
 
       throw new RuntimeException(BundleUtils.getMessage(bundle, "INJECTION_TARGET_NOT_FOUND",  target.getTargetClass()+ "." +target.getTargetName()));
-
    }
+   
+   private String getMethodName(final InjectionTarget target)
+   {
+      if (target.getTargetName() == null)
+      {
+         return null;
+      }
+      if (target.getTargetName().startsWith("set"))
+      {
+         return target.getTargetName();
+      }
+      
+      return "set" + target.getTargetName().substring(0, 1).toUpperCase() + target.getTargetName().substring(1);
+   }
+
 }
