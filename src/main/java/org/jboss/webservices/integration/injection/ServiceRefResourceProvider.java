@@ -386,13 +386,18 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
       final Addressing addressingSBMD = portComponentSBMD.getAddressing();
       if (addressingSBMD != null)
       {
+         portComponentUMDM.setAddressingAnnotationSpecified(true);
          portComponentUMDM.setAddressingEnabled(addressingSBMD.isEnabled());
          portComponentUMDM.setAddressingRequired(addressingSBMD.isRequired());
          portComponentUMDM.setAddressingResponses(addressingSBMD.getResponses());
       }
 
       // propagate respect binding properties
-      portComponentUMDM.setRespectBindingEnabled(portComponentSBMD.isRespectBindingEnabled());
+      if (portComponentSBMD.isRespectBindingEnabled())
+      {
+         portComponentUMDM.setRespectBindingAnnotationSpecified(true);
+         portComponentUMDM.setRespectBindingEnabled(true);
+      }
 
       // propagate link
       portComponentUMDM.setPortComponentLink(portComponentSBMD.getLink());
