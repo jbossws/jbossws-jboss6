@@ -21,9 +21,12 @@
  */
 package org.jboss.webservices.integration.deployers;
 
+import java.util.ResourceBundle;
+
 import org.jboss.deployers.vfs.spi.deployer.AbstractVFSParsingDeployer;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
 import org.jboss.vfs.VirtualFile;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.metadata.DescriptorParser;
 
 /**
@@ -33,6 +36,7 @@ import org.jboss.wsf.spi.metadata.DescriptorParser;
  */
 abstract class AbstractDescriptorDeployer<P extends DescriptorParser<T>, T> extends AbstractVFSParsingDeployer<T>
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(AbstractDescriptorDeployer.class);
    private P ddParser;
 
    AbstractDescriptorDeployer(Class<T> output)
@@ -45,7 +49,7 @@ abstract class AbstractDescriptorDeployer<P extends DescriptorParser<T>, T> exte
    @Override
    protected T parse(final VFSDeploymentUnit unit, final VirtualFile file, final T root) throws Exception
    {
-      if (this.ddParser != null) //default to using new parsers if available
+      if (this.ddParser != null)
       {
          return this.ddParser.parse(file.toURL());
       }
@@ -59,7 +63,7 @@ abstract class AbstractDescriptorDeployer<P extends DescriptorParser<T>, T> exte
    protected void setParser(final P ddParser)
    {
       if (this.ddParser != null)
-         throw new IllegalStateException("Only one " + this.ddParser.getClass() + " instance can be installed in MC");
+         throw new IllegalStateException(BundleUtils.getMessage(bundle, "ONLY_ONE_INSTANCE_CAN_BE_INSTALLED_IN_MC",  this.ddParser.getClass() ));
 
       this.ddParser = ddParser;
       this.setName(this.ddParser.getDescriptorName());

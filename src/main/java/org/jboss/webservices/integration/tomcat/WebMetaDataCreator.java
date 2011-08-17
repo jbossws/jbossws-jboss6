@@ -189,11 +189,14 @@ final class WebMetaDataCreator
 
       for (final Endpoint ep : dep.getService().getEndpoints())
       {
-         final String endpointName = ep.getShortName();
-         final List<String> urlPatterns = WebMetaDataHelper.getUrlPatterns(((HttpEndpoint)ep).getURLPattern());
+         if (ep instanceof HttpEndpoint)
+         {
+             final String endpointName = ep.getShortName();
+             final List<String> urlPatterns = WebMetaDataHelper.getUrlPatterns(((HttpEndpoint)ep).getURLPattern());
 
-         this.log.debug("Servlet name: " + endpointName + ", URL patterns: " + urlPatterns);
-         WebMetaDataHelper.newServletMapping(endpointName, urlPatterns, servletMappings);
+             this.log.debug("Servlet name: " + endpointName + ", URL patterns: " + urlPatterns);
+             WebMetaDataHelper.newServletMapping(endpointName, urlPatterns, servletMappings);
+         }
       }
    }
 
@@ -233,7 +236,7 @@ final class WebMetaDataCreator
          final String authMethod = ejbMDAccessor.getAuthMethod(ejbEndpoint);
          final boolean hasAuthMethod = authMethod != null;
 
-         if (hasAuthMethod || hasTransportGuarantee)
+         if (ejbEndpoint instanceof HttpEndpoint && (hasAuthMethod || hasTransportGuarantee))
          {
             final List<SecurityConstraintMetaData> securityConstraints = WebMetaDataHelper
                   .getSecurityConstraints(jbossWebMD);

@@ -74,7 +74,7 @@ public final class WebServiceContextResourceProvider implements MCBasedResourceP
       {
          return this.target;
       }
-
+      
       @Override
       public Collection<?> getInvocationDependencies()
       {

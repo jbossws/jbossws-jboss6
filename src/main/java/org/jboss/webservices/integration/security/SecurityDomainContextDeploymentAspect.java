@@ -19,45 +19,35 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.webservices.integration.tomcat;
+package org.jboss.webservices.integration.security;
 
-import org.jboss.ws.common.integration.WSHelper;
+import org.jboss.ws.common.deployment.EndpointLifecycleDeploymentAspect;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.ws.common.integration.AbstractDeploymentAspect;
+import org.jboss.wsf.spi.deployment.Endpoint;
+import org.jboss.wsf.spi.security.SecurityDomainContext;
 
 /**
- * A deployment aspect that generates web app meta data for EJB endpoints.
+ * Extends EndpointLifecycleDeploymentAspect to setup the SecurityDomainContext
  *
- * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
- * @author <a href="mailto:tdiesler@redhat.com">Thomas Diesler</a>
+ * @author <a href="mailto:alessio.soldano@jboss.com">Alessio Soldano/a>
  */
-public final class WebMetaDataCreatingDeploymentAspect extends AbstractDeploymentAspect
+public final class SecurityDomainContextDeploymentAspect extends EndpointLifecycleDeploymentAspect
 {
-   /** Web meta data creator. */
-   private WebMetaDataCreator webMetaDataCreator = new WebMetaDataCreator();
-
    /**
     * Constructor.
     */
-   public WebMetaDataCreatingDeploymentAspect()
+   public SecurityDomainContextDeploymentAspect()
    {
       super();
    }
 
-   /**
-    * Creates web meta data for EJB deployments.
-    *
-    * @param dep webservice deployment
-    */
    @Override
    public void start(final Deployment dep)
    {
-      final boolean isEjbDeployment = WSHelper.isEjbDeployment(dep);
-
-      if (isEjbDeployment)
-      {
-         this.log.debug("Creating web meta data for EJB webservice deployment: " + dep.getSimpleName());
-         this.webMetaDataCreator.create(dep);
+      super.start(dep);
+      SecurityDomainContext context = new SecurityDomainContextAdaptor();
+      for (Endpoint ep : dep.getService().getEndpoints()) {
+         ep.setSecurityDomainContext(context);
       }
    }
 }

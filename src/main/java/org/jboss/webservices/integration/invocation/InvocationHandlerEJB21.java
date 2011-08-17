@@ -23,6 +23,7 @@ package org.jboss.webservices.integration.invocation;
 
 import java.lang.reflect.Method;
 import java.security.Principal;
+import java.util.ResourceBundle;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -37,6 +38,7 @@ import org.jboss.invocation.InvocationKey;
 import org.jboss.invocation.InvocationType;
 import org.jboss.invocation.PayloadKey;
 import org.jboss.mx.util.MBeanServerLocator;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.ObjectNameFactory;
 import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.ws.common.invocation.AbstractInvocationHandler;
@@ -59,6 +61,7 @@ import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
  */
 final class InvocationHandlerEJB21 extends AbstractInvocationHandler
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(InvocationHandlerEJB21.class);
    /** EJB21 JNDI name. */
    private String jndiName;
 
@@ -90,7 +93,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
       if (ejbMD == null)
       {
-         throw new WebServiceException("Cannot obtain ejb meta data for: " + ejbName);
+         throw new WebServiceException(BundleUtils.getMessage(bundle, "CANNOT_OBTAIN_EJB_META_DATA",  ejbName));
       }
 
       // get the bean's JNDI name
@@ -98,7 +101,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
 
       if (this.jndiName == null)
       {
-         throw new WebServiceException("Cannot obtain JNDI name for: " + ejbName);
+         throw new WebServiceException(BundleUtils.getMessage(bundle, "CANNOT_OBTAIN_JNDI_NAME",  ejbName));
       }
    }
 
@@ -118,7 +121,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
          final boolean ejb21NotRegistered = !this.server.isRegistered(this.ejb21ContainerName);
          if (ejb21NotRegistered)
          {
-            throw new IllegalArgumentException("Cannot find service endpoint target: " + this.ejb21ContainerName);
+            throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "CANNOT_FIND_SERVICE_ENDPOINT_TARGET",  this.ejb21ContainerName));
          }
 
          // Inject the Service endpoint interceptor
@@ -154,7 +157,7 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
       }
       catch (Exception e)
       {
-         this.log.error("Method invocation failed with exception: " + e.getMessage(), e);
+         this.log.error(BundleUtils.getMessage(bundle, "METHOD_INVOCATION_FAILED",  e.getMessage()),  e);
          this.handleInvocationException(e);
       }
    }
@@ -171,13 +174,13 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
       final MessageContext msgContext = wsInvocation.getInvocationContext().getAttachment(MessageContext.class);
       if (msgContext == null)
       {
-         throw new IllegalStateException("Cannot obtain MessageContext");
+         throw new IllegalStateException(BundleUtils.getMessage(bundle, "CANNOT_OBTAIN_MESSAGECONTEXT"));
       }
 
       final HandlerCallback callback = wsInvocation.getInvocationContext().getAttachment(HandlerCallback.class);
       if (callback == null)
       {
-         throw new IllegalStateException("Cannot obtain HandlerCallback");
+         throw new IllegalStateException(BundleUtils.getMessage(bundle, "CANNOT_OBTAIN_HANDLERCALLBACK"));
       }
 
       // prepare security data
@@ -234,11 +237,11 @@ final class InvocationHandlerEJB21 extends AbstractInvocationHandler
             currentInterceptor = nextInterceptor;
          }
 
-         this.log.warn("Cannot find EJB 21 service endpoint interceptor insert point");
+         this.log.warn(BundleUtils.getMessage(bundle, "CANNOT_FIND_EJB21_INSERT_POINT"));
       }
       catch (Exception ex)
       {
-         this.log.warn("Cannot register EJB 21 service endpoint interceptor: ", ex);
+         this.log.warn(BundleUtils.getMessage(bundle, "CANNOT_REGISTER_EJB21_INTERCEPTOR"),  ex);
       }
    }
 }

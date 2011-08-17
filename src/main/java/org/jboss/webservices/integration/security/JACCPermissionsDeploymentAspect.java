@@ -21,13 +21,16 @@
  */
 package org.jboss.webservices.integration.security;
 
+import java.util.ResourceBundle;
+
 import javax.security.jacc.PolicyConfiguration;
 import javax.security.jacc.PolicyConfigurationFactory;
 
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.web.WebPermissionMapping;
-import org.jboss.ws.common.integration.WSHelper;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.integration.AbstractDeploymentAspect;
+import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 
 /**
@@ -41,6 +44,7 @@ import org.jboss.wsf.spi.deployment.Deployment;
  */
 public final class JACCPermissionsDeploymentAspect extends AbstractDeploymentAspect
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(JACCPermissionsDeploymentAspect.class);
    /**
     * Constructor.
     */
@@ -74,7 +78,7 @@ public final class JACCPermissionsDeploymentAspect extends AbstractDeploymentAsp
       }
       catch (Exception e)
       {
-         throw new RuntimeException("Exception generating JACC perms: ", e);
+         throw new RuntimeException(BundleUtils.getMessage(bundle, "EXCEPTION_GENERATING_JACC_PERMS"),  e);
       }
    }
 }

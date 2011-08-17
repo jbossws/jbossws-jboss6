@@ -22,10 +22,10 @@
 package org.jboss.webservices.integration.metadata;
 
 import org.jboss.ws.common.integration.WSHelper;
-import org.jboss.ws.common.integration.AbstractDeploymentAspect;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.JSEArchiveMetaData;
+import org.jboss.ws.common.integration.AbstractDeploymentAspect;
 
 /**
  * An aspect that builds container independent meta data. 

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -41,7 +42,9 @@ import org.jboss.metadata.javaee.spec.EnvironmentEntryMetaData;
 import org.jboss.metadata.javaee.spec.ResourceInjectionTargetMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.injection.resolvers.ResourceReferenceResolver;
+import org.jboss.ws.common.integration.AbstractDeploymentAspect;
 import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
@@ -51,7 +54,6 @@ import org.jboss.webservices.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.injection.InjectionMetaData;
 import org.jboss.wsf.spi.metadata.injection.InjectionsMetaData;
 import org.jboss.wsf.spi.metadata.injection.ReferenceResolver;
-import org.jboss.ws.common.integration.AbstractDeploymentAspect;
 
 /**
  * Deployment aspect that builds injection meta data.
@@ -60,6 +62,7 @@ import org.jboss.ws.common.integration.AbstractDeploymentAspect;
  */
 public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentAspect
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(InjectionMetaDataDeploymentAspect.class);
 
    /** Resolver handling @Resource injections. */
    private static final ReferenceResolver RESOURCE_RESOLVER = new ResourceReferenceResolver();
@@ -94,7 +97,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
    {
       if (this.ejbReferenceResolver == null)
       {
-         throw new IllegalStateException("No EjbReferenceResolver set by MC");
+         throw new IllegalStateException(BundleUtils.getMessage(bundle, "NO_EJBREFERENCERESOLVER_SET_BY_MC"));
       }
 
       return this.ejbReferenceResolver;
@@ -240,7 +243,7 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
             {
                // prepare injection target meta data
                targetClass = resourceInjectionTargetMD.getInjectionTargetClass();
-               targetName = resourceInjectionTargetMD.getInjectionTargetName();
+               targetName = getTargetName(resourceInjectionTargetMD);
 
                // build injection meta data for injection target
                final InjectionMetaData injectionMD = new InjectionMetaData(targetClass, targetName, envEntryValueClass,
@@ -252,5 +255,16 @@ public final class InjectionMetaDataDeploymentAspect extends AbstractDeploymentA
       }
 
       return retVal;
+   }
+
+   private String getTargetName(final ResourceInjectionTargetMetaData resourceInjectionTargetMD)
+   {
+      final String targetName = resourceInjectionTargetMD.getInjectionTargetName();
+      if (targetName.startsWith("set"))
+      {
+         final String propertyName = targetName.substring(3);
+         return propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
+      }
+      return targetName;
    }
 }

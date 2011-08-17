@@ -24,6 +24,7 @@ package org.jboss.webservices.integration.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.jws.WebService;
 import javax.servlet.Servlet;
@@ -36,6 +37,7 @@ import org.jboss.metadata.common.jboss.WebserviceDescriptionsMetaData;
 import org.jboss.metadata.web.jboss.JBossServletMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.webservices.integration.WebServiceDeclaration;
 import org.jboss.webservices.integration.WebServiceDeployment;
@@ -47,6 +49,7 @@ import org.jboss.webservices.integration.WebServiceDeployment;
  */
 public final class ASHelper
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(ASHelper.class);
    /**
     * EJB invocation property.
     */
@@ -272,7 +275,7 @@ public final class ASHelper
          }
       }
 
-      throw new IllegalStateException("Cannot find servlet for link: " + servletName);
+      throw new IllegalStateException(BundleUtils.getMessage(bundle, "CANNOT_FIND_SERVLET_FOR_LINK",  servletName));
    }
 
    /**
@@ -301,7 +304,7 @@ public final class ASHelper
          }
          catch (ClassNotFoundException cnfe)
          {
-            ASHelper.LOGGER.warn("Cannot load servlet class: " + endpointClassName, cnfe);
+            ASHelper.LOGGER.warn(BundleUtils.getMessage(bundle, "CANNOT_LOAD_SERVLET_CLASS",  endpointClassName),  cnfe);
          }
       }
 
@@ -322,7 +325,7 @@ public final class ASHelper
       final A value = unit.getAttachment(key);
       if (value == null)
       {
-         ASHelper.LOGGER.error("Cannot find attachment in deployment unit: " + key);
+         ASHelper.LOGGER.error(BundleUtils.getMessage(bundle, "CANNOT_FIND_ATTACHMENT_IN_DEPLOYMENT_UNIT",  key));
          throw new IllegalStateException();
       }
 
@@ -367,7 +370,7 @@ public final class ASHelper
       {
          if (wsDescriptionsMD.size() > 1)
          {
-            ASHelper.LOGGER.warn("Multiple <webservice-description> elements not supported");
+            ASHelper.LOGGER.warn(BundleUtils.getMessage(bundle, "MULTIPLE_WS_DESP_ELEMENTS_NOT_SUPPORTED"));
          }
 
          if (wsDescriptionsMD.size() > 0)

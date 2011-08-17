@@ -24,6 +24,7 @@ package org.jboss.webservices.integration.deployers.deployment;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
@@ -32,6 +33,7 @@ import org.jboss.logging.Logger;
 import org.jboss.vfs.VirtualFile;
 import org.jboss.webservices.integration.injection.VirtualFileAdaptor;
 import org.jboss.webservices.integration.util.ASHelper;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.ws.common.ResourceLoaderAdapter;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
@@ -49,6 +51,7 @@ import org.jboss.wsf.spi.deployment.UnifiedVirtualFile;
  */
 abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(AbstractDeploymentModelBuilder.class);
    /** WSDL, XSD and XML files filter. */
    private static final WSVirtualFileFilter WS_FILE_FILTER = new WSVirtualFileFilter();
 
@@ -105,12 +108,12 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
    {
       if (endpointName == null)
       {
-         throw new NullPointerException("Null endpoint name");
+         throw new NullPointerException(BundleUtils.getMessage(bundle, "NULL_ENDPOINT_NAME"));
       }
 
       if (endpointClass == null)
       {
-         throw new NullPointerException("Null endpoint class");
+         throw new NullPointerException(BundleUtils.getMessage(bundle, "NULL_ENDPOINT_CLASS"));
       }
 
       final Endpoint endpoint = this.deploymentModelFactory.newHttpEndpoint(endpointClass);
@@ -132,12 +135,12 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
    {
       if (endpointName == null)
       {
-         throw new NullPointerException("Null endpoint name");
+         throw new NullPointerException(BundleUtils.getMessage(bundle, "NULL_ENDPOINT_NAME"));
       }
 
       if (endpointClass == null)
       {
-         throw new NullPointerException("Null endpoint class");
+         throw new NullPointerException(BundleUtils.getMessage(bundle, "NULL_ENDPOINT_CLASS"));
       }
 
       final Endpoint endpoint = this.deploymentModelFactory.newJMSEndpoint(endpointClass);
@@ -230,6 +233,6 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
          return attachmentValue;
       }
 
-      throw new IllegalStateException("Deployment unit does not contain " + attachment);
+      throw new IllegalStateException(BundleUtils.getMessage(bundle, "DEPLOYMENT_UNIT_DOES_NOT_CONTAIN",  attachment));
    }
 }

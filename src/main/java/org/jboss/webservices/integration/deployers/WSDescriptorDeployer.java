@@ -31,6 +31,7 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  */
 public final class WSDescriptorDeployer extends AbstractDescriptorDeployer<WebservicesDescriptorParser, WebservicesMetaData>
 {
+
    /**
     * Constructor.
     */
@@ -48,4 +49,5 @@ public final class WSDescriptorDeployer extends AbstractDescriptorDeployer<Webse
    {
       super.setParser(parser);
    }
+
 }

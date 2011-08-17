@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.naming.Referenceable;
 import javax.xml.namespace.QName;
@@ -53,6 +54,7 @@ import org.jboss.switchboard.javaee.jboss.environment.JBossPortComponent;
 import org.jboss.switchboard.javaee.jboss.environment.JBossServiceRefType;
 import org.jboss.switchboard.mc.spi.MCBasedResourceProvider;
 import org.jboss.switchboard.spi.Resource;
+import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
 import org.jboss.wsf.spi.deployment.UnifiedVirtualFile;
@@ -65,8 +67,8 @@ import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedPortComponentRefMetaDat
 import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedServiceRefMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedStubPropertyMetaData;
 import org.jboss.wsf.spi.serviceref.ServiceRefHandler;
-import org.jboss.wsf.spi.serviceref.ServiceRefHandlerFactory;
 import org.jboss.wsf.spi.serviceref.ServiceRefHandler.Type;
+import org.jboss.wsf.spi.serviceref.ServiceRefHandlerFactory;
 
 /**
  * Service reference resource provider.
@@ -82,6 +84,7 @@ import org.jboss.wsf.spi.serviceref.ServiceRefHandler.Type;
  */
 public final class ServiceRefResourceProvider implements MCBasedResourceProvider<ServiceRefType>
 {
+   private static final ResourceBundle bundle = BundleUtils.getBundle(ServiceRefResourceProvider.class);
 
    private static final Logger log = Logger.getLogger(ServiceRefResourceProvider.class);
 
@@ -151,7 +154,7 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
       }
       else
       {
-         throw new IllegalArgumentException("Can only handle real VFS deployments: " + tempDeploymentUnit);
+         throw new IllegalArgumentException(BundleUtils.getMessage(bundle, "CAN_ONLY_HANDLE_REAL_VFS_DEPLOYMENTS",  tempDeploymentUnit));
       }
    }
 
@@ -219,8 +222,7 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
             }
             else
             {
-               log.warn("Ignoring <port-component-ref> without <service-endpoint-interface> and <port-qname>: "
-                     + portComponentUMDM);
+               log.warn(BundleUtils.getMessage(bundle, "IGNORING_PORT_REF", portComponentUMDM));
             }
          }
       }
@@ -384,7 +386,7 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
       final Addressing addressingSBMD = portComponentSBMD.getAddressing();
       if (addressingSBMD != null)
       {
-    	 portComponentUMDM.setAddressingAnnotationSpecified(true);
+         portComponentUMDM.setAddressingAnnotationSpecified(true);
          portComponentUMDM.setAddressingEnabled(addressingSBMD.isEnabled());
          portComponentUMDM.setAddressingRequired(addressingSBMD.isRequired());
          portComponentUMDM.setAddressingResponses(addressingSBMD.getResponses());
@@ -393,7 +395,7 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
       // propagate respect binding properties
       if (portComponentSBMD.isRespectBindingEnabled())
       {
-    	 portComponentUMDM.setRespectBindingAnnotationSpecified(true);
+         portComponentUMDM.setRespectBindingAnnotationSpecified(true);
          portComponentUMDM.setRespectBindingEnabled(true);
       }
 
@@ -682,8 +684,7 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
       }
       catch (ClassNotFoundException e)
       {
-         throw new RuntimeException("<injection-target> class: " + target.getTargetClass()
-               + " was not found in deployment");
+         throw new RuntimeException(BundleUtils.getMessage(bundle, "INJECTION_TARGET_CLASS_NOT_FOUND",  target.getTargetClass()));
       }
 
       for (Field field : clazz.getDeclaredFields())
@@ -692,14 +693,28 @@ public final class ServiceRefResourceProvider implements MCBasedResourceProvider
             return field;
       }
 
+      final String targetName = getMethodName(target);
       for (Method method : clazz.getDeclaredMethods())
       {
-         if (method.getName().equals(target.getTargetName()))
+         if (method.getName().equals(targetName))
             return method;
       }
 
-      throw new RuntimeException("<injection-target> could not be found: " + target.getTargetClass() + "."
-            + target.getTargetName());
-
+      throw new RuntimeException(BundleUtils.getMessage(bundle, "INJECTION_TARGET_NOT_FOUND",  target.getTargetClass()+ "." +target.getTargetName()));
    }
+   
+   private String getMethodName(final InjectionTarget target)
+   {
+      if (target.getTargetName() == null)
+      {
+         return null;
+      }
+      if (target.getTargetName().startsWith("set"))
+      {
+         return target.getTargetName();
+      }
+      
+      return "set" + target.getTargetName().substring(0, 1).toUpperCase() + target.getTargetName().substring(1);
+   }
+
 }
