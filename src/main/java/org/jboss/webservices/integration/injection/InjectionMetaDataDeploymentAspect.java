@@ -41,17 +41,17 @@ import org.jboss.metadata.javaee.spec.EnvironmentEntryMetaData;
 import org.jboss.metadata.javaee.spec.ResourceInjectionTargetMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
-import org.jboss.wsf.common.injection.resolvers.ResourceReferenceResolver;
-import org.jboss.wsf.common.integration.WSHelper;
+import org.jboss.ws.common.injection.resolvers.ResourceReferenceResolver;
+import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
 import org.jboss.wsf.spi.deployment.Service;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.webservices.integration.WebServiceDeclaration;
+import org.jboss.webservices.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.injection.InjectionMetaData;
 import org.jboss.wsf.spi.metadata.injection.InjectionsMetaData;
 import org.jboss.wsf.spi.metadata.injection.ReferenceResolver;
-import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
+import org.jboss.ws.common.integration.AbstractDeploymentAspect;
 
 /**
  * Deployment aspect that builds injection meta data.

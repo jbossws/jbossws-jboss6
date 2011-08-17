@@ -29,7 +29,7 @@ import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.switchboard.javaee.jboss.environment.JBossResourceEnvRefType;
 import org.jboss.switchboard.mc.spi.MCBasedResourceProvider;
 import org.jboss.switchboard.spi.Resource;
-import org.jboss.wsf.common.injection.ThreadLocalAwareWebServiceContext;
+import org.jboss.ws.common.injection.ThreadLocalAwareWebServiceContext;
 
 /**
  * WebServiceContext resource provider.
@@ -74,7 +74,7 @@ public final class WebServiceContextResourceProvider implements MCBasedResourceP
       {
          return this.target;
       }
-      
+
       @Override
       public Collection<?> getInvocationDependencies()
       {

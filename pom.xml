@@ -35,7 +35,7 @@
     <jboss.picketbox.version>3.0.0.CR2</jboss.picketbox.version>
     <jboss.vfs.version>3.0.1.GA</jboss.vfs.version>
     <jboss.cl.version>2.2.1.GA</jboss.cl.version>
-    <jboss.weld.version>1.1.2.Final</jboss.weld.version>
+    <jboss.weld.version>1.1.Beta2</jboss.weld.version>
     <jboss.hornetq.version>2.2.5.Final</jboss.hornetq.version>
     <jboss.jaxws.api.version>1.0.0.Final</jboss.jaxws.api.version>
   </properties>

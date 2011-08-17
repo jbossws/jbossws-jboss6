@@ -23,24 +23,17 @@ package org.jboss.webservices.integration.deployers;
 
 import org.jboss.deployers.vfs.spi.deployer.AbstractVFSParsingDeployer;
 import org.jboss.deployers.vfs.spi.structure.VFSDeploymentUnit;
-import org.jboss.vfs.VFSInputSource;
 import org.jboss.vfs.VirtualFile;
 import org.jboss.wsf.spi.metadata.DescriptorParser;
-import org.jboss.wsf.spi.metadata.DescriptorProcessor;
-import org.jboss.xb.binding.ObjectModelFactory;
-import org.jboss.xb.binding.Unmarshaller;
-import org.jboss.xb.binding.UnmarshallerFactory;
-import org.xml.sax.InputSource;
 
 /**
  * Abstract descriptor deployer which deploys only if particular DD processor is available.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-abstract class AbstractDescriptorDeployer<P extends DescriptorProcessor<T>, Q extends DescriptorParser<T>, T> extends AbstractVFSParsingDeployer<T>
+abstract class AbstractDescriptorDeployer<P extends DescriptorParser<T>, T> extends AbstractVFSParsingDeployer<T>
 {
-   private P ddProcessor;
-   private Q ddParser;
+   private P ddParser;
 
    AbstractDescriptorDeployer(Class<T> output)
    {
@@ -56,35 +49,14 @@ abstract class AbstractDescriptorDeployer<P extends DescriptorProcessor<T>, Q ex
       {
          return this.ddParser.parse(file.toURL());
       }
-      else if (this.ddProcessor != null)
-      {
-         InputSource source = new VFSInputSource(file);
-         Unmarshaller unmarshaller = UnmarshallerFactory.newInstance().newUnmarshaller();
-         unmarshaller.setValidation(this.ddProcessor.isValidating());
-         ObjectModelFactory factory = this.ddProcessor.getFactory(file.toURL());
-         return (T)unmarshaller.unmarshal(source, factory, root);
-      }
 
       return null;
    }
 
    /**
-    * MC incallback method. It will be invoked each time subclass specific DescriptorProcessor bean will be installed.
-    */
-   @Deprecated
-   protected void setProcessor(final P ddProcessor)
-   {
-      if (this.ddProcessor != null)
-         throw new IllegalStateException("Only one " + this.ddProcessor.getClass() + " instance can be installed in MC");
-
-      this.ddProcessor = ddProcessor;
-      this.setName(this.ddProcessor.getDescriptorName());
-   }
-   
-   /**
     * MC incallback method. It will be invoked each time subclass specific DescriptorParser bean will be installed.
     */
-   protected void setParser(final Q ddParser)
+   protected void setParser(final P ddParser)
    {
       if (this.ddParser != null)
          throw new IllegalStateException("Only one " + this.ddParser.getClass() + " instance can be installed in MC");

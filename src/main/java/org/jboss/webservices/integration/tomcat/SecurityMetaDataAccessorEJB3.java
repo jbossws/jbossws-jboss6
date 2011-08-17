@@ -28,12 +28,12 @@ import javax.annotation.security.RolesAllowed;
 import org.jboss.ejb3.annotation.SecurityDomain;
 import org.jboss.metadata.javaee.spec.SecurityRoleMetaData;
 import org.jboss.metadata.javaee.spec.SecurityRolesMetaData;
-import org.jboss.wsf.common.integration.WSHelper;
-import org.jboss.wsf.spi.annotation.WebContext;
+import org.jboss.ws.common.integration.WSHelper;
+import org.jboss.ws.api.annotation.WebContext;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.webservices.integration.WebServiceDeclaration;
+import org.jboss.webservices.integration.WebServiceDeployment;
 
 /**
  * Creates web app security meta data for EJB 3 deployment.

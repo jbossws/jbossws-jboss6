@@ -26,9 +26,9 @@ import javax.security.jacc.PolicyConfigurationFactory;
 
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.web.WebPermissionMapping;
-import org.jboss.wsf.common.integration.WSHelper;
+import org.jboss.ws.common.integration.WSHelper;
+import org.jboss.ws.common.integration.AbstractDeploymentAspect;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.common.integration.AbstractDeploymentAspect;
 
 /**
  * Generates JACC permissions. (This is temporary and really hacky solution).

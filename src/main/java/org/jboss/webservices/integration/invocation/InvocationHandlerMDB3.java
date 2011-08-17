@@ -21,7 +21,7 @@
  */
 package org.jboss.webservices.integration.invocation;
 
-import org.jboss.wsf.common.invocation.AbstractInvocationHandlerJSE;
+import org.jboss.ws.common.invocation.AbstractInvocationHandlerJSE;
 
 /**
  * Handles invocations on MDB EJB3 endpoints.

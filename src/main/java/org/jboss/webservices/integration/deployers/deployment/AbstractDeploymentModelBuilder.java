@@ -32,7 +32,7 @@ import org.jboss.logging.Logger;
 import org.jboss.vfs.VirtualFile;
 import org.jboss.webservices.integration.injection.VirtualFileAdaptor;
 import org.jboss.webservices.integration.util.ASHelper;
-import org.jboss.wsf.common.ResourceLoaderAdapter;
+import org.jboss.ws.common.ResourceLoaderAdapter;
 import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
 import org.jboss.wsf.spi.deployment.ArchiveDeployment;

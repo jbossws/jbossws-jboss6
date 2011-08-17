@@ -26,8 +26,8 @@ import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.webservices.integration.WebServiceDeclaration;
+import org.jboss.webservices.integration.WebServiceDeployment;
 
 /**
  * Creates new JAXWS EJB3 deployment.

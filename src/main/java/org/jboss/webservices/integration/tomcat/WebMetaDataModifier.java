@@ -29,11 +29,10 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.webservices.integration.util.WebMetaDataHelper;
-import org.jboss.wsf.common.integration.WSConstants;
-import org.jboss.wsf.common.integration.WSHelper;
+import org.jboss.ws.common.integration.WSConstants;
+import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.ServletClassProvider;
 
 /**
  * The modifier of jboss web meta data.
@@ -121,29 +120,11 @@ final class WebMetaDataModifier
     */
    private String getTransportClassName(final Deployment dep)
    {
-      String transportClassName = null;
-      String transportClassProviderName = (String) dep.getProperty(WSConstants.STACK_TRANSPORT_CLASS_PROVIDER);
-      if (transportClassProviderName != null)
-      {
-         try
-         {
-            ServletClassProvider scp = (ServletClassProvider)(Class.forName(transportClassProviderName).newInstance());
-            transportClassName = scp.getServletClassName();
-         }
-         catch (Exception e)
-         {
-            log.warn("Cannot get transport class name from " + WSConstants.STACK_TRANSPORT_CLASS_PROVIDER, e);
-         }
-      }
+      String transportClassName = (String) dep.getProperty(WSConstants.STACK_TRANSPORT_CLASS);
 
       if (transportClassName == null)
       {
-         transportClassName = (String) dep.getProperty(WSConstants.STACK_TRANSPORT_CLASS);
-      }
-
-      if (transportClassName == null)
-      {
-         throw new IllegalStateException("Cannot obtain deployment property : " + WSConstants.STACK_TRANSPORT_CLASS);
+         throw new IllegalStateException("Cannot obtain deployment property:" +  WSConstants.STACK_TRANSPORT_CLASS);
       }
 
       return transportClassName;

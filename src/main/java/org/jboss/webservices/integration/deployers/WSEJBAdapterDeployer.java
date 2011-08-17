@@ -38,8 +38,8 @@ import org.jboss.ejb3.Ejb3Deployment;
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeclaration;
-import org.jboss.wsf.spi.deployment.integration.WebServiceDeployment;
+import org.jboss.webservices.integration.WebServiceDeclaration;
+import org.jboss.webservices.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 
 /**
