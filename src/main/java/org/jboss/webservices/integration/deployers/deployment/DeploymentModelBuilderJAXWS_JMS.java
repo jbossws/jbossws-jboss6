@@ -28,6 +28,7 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.Endpoint.EndpointType;
 import org.jboss.wsf.spi.metadata.jms.JMSEndpointMetaData;
 import org.jboss.wsf.spi.metadata.jms.JMSEndpointsMetaData;
 
@@ -63,7 +64,7 @@ public class DeploymentModelBuilderJAXWS_JMS extends AbstractDeploymentModelBuil
          {
             endpoint.setName(endpoint.getImplementor());
          }
-         this.newJMSEndpoint(endpoint.getImplementor(), endpoint.getName(), dep);
+         this.newJMSEndpoint(endpoint.getImplementor(), endpoint.getName(), dep, EndpointType.JAXWS_JMS);
       }
    }
 }

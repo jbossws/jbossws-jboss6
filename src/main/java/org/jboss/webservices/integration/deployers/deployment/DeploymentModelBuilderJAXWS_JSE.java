@@ -28,6 +28,7 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.Endpoint.EndpointType;
 
 /**
  * Creates new JAXWS JSE deployment.
@@ -64,7 +65,7 @@ final class DeploymentModelBuilderJAXWS_JSE extends AbstractDeploymentModelBuild
          final String servletClass = ASHelper.getEndpointName(servlet);
          this.log.debug("JSE class: " + servletClass);
 
-         this.newHttpEndpoint(servletClass, servletName, dep);
+         this.newHttpEndpoint(servletClass, servletName, dep, EndpointType.JAXWS_JSE);
       }
    }
 }
