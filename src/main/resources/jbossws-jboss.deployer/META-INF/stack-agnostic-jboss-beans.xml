@@ -62,8 +62,6 @@
 
   <bean name="WSTypeDeployer" class="org.jboss.webservices.integration.deployers.WSTypeDeployer"/>
 
-  <bean name="WSDeploymentDeployer" class="org.jboss.webservices.integration.deployers.WSDeploymentDeployer"/>
-
   <!-- WSDeploymentAspectDeployers factory -->
   <bean name="WSAspectizedDeployersFactory" class="org.jboss.webservices.integration.deployers.WSAspectizedDeployersFactory">
     <constructor>
