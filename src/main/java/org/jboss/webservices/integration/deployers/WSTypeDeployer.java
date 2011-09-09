@@ -26,9 +26,11 @@ import org.jboss.deployers.spi.deployer.helpers.AbstractRealDeployer;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
-import org.jboss.webservices.integration.util.ASHelper;
-import org.jboss.wsf.spi.deployment.Deployment.DeploymentType;
 import org.jboss.webservices.integration.WebServiceDeployment;
+import org.jboss.webservices.integration.deployers.deployment.WSDeploymentBuilder;
+import org.jboss.webservices.integration.util.ASHelper;
+import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.Endpoint.EndpointType;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 
 /**
@@ -51,8 +53,8 @@ public final class WSTypeDeployer extends AbstractRealDeployer
       this.addInput(WebServiceDeployment.class);
 
       // outputs
-      this.addOutput(DeploymentType.class);
       this.addOutput(JBossWebMetaData.class);
+      this.addOutput(Deployment.class);
    }
 
    /**
@@ -64,25 +66,26 @@ public final class WSTypeDeployer extends AbstractRealDeployer
    @Override
    protected void internalDeploy(final DeploymentUnit unit) throws DeploymentException
    {
+      
       if (this.isJaxwsJseDeployment(unit))
       {
          this.log.debug("Detected JAXWS JSE deployment");
-         unit.addAttachment(DeploymentType.class, DeploymentType.JAXWS_JSE);
+         WSDeploymentBuilder.getInstance().build(unit, EndpointType.JAXWS_JSE);
       }
-      else if (this.isJaxwsEjbDeployment(unit))
+      if (this.isJaxwsEjbDeployment(unit))
       {
          this.log.debug("Detected JAXWS EJB3 deployment");
-         unit.addAttachment(DeploymentType.class, DeploymentType.JAXWS_EJB3);
+         WSDeploymentBuilder.getInstance().build(unit, EndpointType.JAXWS_EJB3);
       }
-      else if (this.isJaxrpcJseDeployment(unit))
+      if (this.isJaxrpcJseDeployment(unit) && !isJaxwsJseDeployment(unit) && !isJaxwsEjbDeployment(unit))
       {
          this.log.debug("Detected JAXRPC JSE deployment");
-         unit.addAttachment(DeploymentType.class, DeploymentType.JAXRPC_JSE);
+         WSDeploymentBuilder.getInstance().build(unit, EndpointType.JAXRPC_JSE);
       }
-      else if (this.isJaxrpcEjbDeployment(unit))
+      if (this.isJaxrpcEjbDeployment(unit)  && !isJaxwsJseDeployment(unit) && !isJaxwsEjbDeployment(unit))
       {
          this.log.debug("Detected JAXRPC EJB21 deployment");
-         unit.addAttachment(DeploymentType.class, DeploymentType.JAXRPC_EJB21);
+         WSDeploymentBuilder.getInstance().build(unit, EndpointType.JAXRPC_EJB21);
       }
    }
 
