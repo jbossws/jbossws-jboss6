@@ -66,13 +66,13 @@ public final class ContainerMetaDataDeploymentAspect extends AbstractDeploymentA
          final JSEArchiveMetaData jseMetaData = this.metaDataBuilderJSE.create(dep);
          dep.addAttachment(JSEArchiveMetaData.class, jseMetaData);
       }
-      else if (WSHelper.isJaxwsEjbDeployment(dep))
+      if (WSHelper.isJaxwsEjbDeployment(dep))
       {
          this.log.debug("Creating JBoss agnostic EJB3 meta data for deployment: " + dep.getSimpleName());
          final EJBArchiveMetaData ejbMetaData = this.metaDataBuilderEJB3.create(dep);
          dep.addAttachment(EJBArchiveMetaData.class, ejbMetaData);
       }
-      else if (WSHelper.isJaxrpcEjbDeployment(dep))
+      if (WSHelper.isJaxrpcEjbDeployment(dep) && !WSHelper.isJaxwsJseDeployment(dep) && !WSHelper.isJaxwsEjbDeployment(dep))
       {
          this.log.debug("Creating JBoss agnostic EJB21 meta data for deployment: " + dep.getSimpleName());
          final EJBArchiveMetaData ejbMetaData = this.metaDataBuilderEJB21.create(dep);
