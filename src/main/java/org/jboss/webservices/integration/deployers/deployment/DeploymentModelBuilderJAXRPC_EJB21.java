@@ -21,11 +21,13 @@
  */
 package org.jboss.webservices.integration.deployers.deployment;
 
+import static org.jboss.wsf.spi.deployment.DeploymentType.JAXRPC;
+import static org.jboss.wsf.spi.deployment.EndpointType.JAXRPC_EJB21;
+
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.Endpoint.EndpointType;
 import org.jboss.webservices.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
@@ -43,7 +45,7 @@ final class DeploymentModelBuilderJAXRPC_EJB21 extends AbstractDeploymentModelBu
     */
    DeploymentModelBuilderJAXRPC_EJB21()
    {
-      super();
+      super(JAXRPC, JAXRPC_EJB21);
    }
 
    /**
@@ -70,7 +72,7 @@ final class DeploymentModelBuilderJAXRPC_EJB21 extends AbstractDeploymentModelBu
             final String ejbClass = beanMetaData.getEjbClass();
             this.log.debug("EJB21 class: " + ejbClass);
 
-            this.newHttpEndpoint(ejbClass, ejbName, dep, EndpointType.JAXRPC_EJB21);
+            this.newHttpEndpoint(ejbClass, ejbName, dep);
          }
       }
    }

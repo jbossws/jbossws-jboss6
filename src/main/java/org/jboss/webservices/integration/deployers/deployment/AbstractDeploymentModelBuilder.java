@@ -39,9 +39,10 @@ import org.jboss.wsf.spi.SPIProvider;
 import org.jboss.wsf.spi.SPIProviderResolver;
 import org.jboss.wsf.spi.deployment.ArchiveDeployment;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.deployment.DeploymentType;
 import org.jboss.wsf.spi.deployment.DeploymentModelFactory;
 import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.Endpoint.EndpointType;
+import org.jboss.wsf.spi.deployment.EndpointType;
 import org.jboss.wsf.spi.deployment.UnifiedVirtualFile;
 
 /**
@@ -60,17 +61,23 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
 
    /** Deployment model factory. */
    private final DeploymentModelFactory deploymentModelFactory;
+   
+   /** Deployment type this builder creates. */
+   private final DeploymentType deploymentType;
+   
+   /** Endpoint type this builder creates. */
+   private final EndpointType endpointType;
 
    /**
     * Constructor.
     */
-   protected AbstractDeploymentModelBuilder()
+   protected AbstractDeploymentModelBuilder(final DeploymentType deploymentType, final EndpointType endpointType)
    {
-      super();
-
       // deployment factory
       final SPIProvider spiProvider = SPIProviderResolver.getInstance().getProvider();
       this.deploymentModelFactory = spiProvider.getSPI(DeploymentModelFactory.class);
+      this.deploymentType = deploymentType;
+      this.endpointType = endpointType;
    }
 
    /**
@@ -87,18 +94,11 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
       }
       else
       {
-         try
-         {
-            dep = this.newDeployment(unit);
-
-         }
-         catch (Exception e)
-         {
-            throw new RuntimeException(e);
-         }
+         dep = this.newDeployment(unit);
          dep.addAttachment(DeploymentUnit.class, unit);
          unit.addAttachment(Deployment.class, dep);
       }
+
       this.build(dep, unit);
    }
 
@@ -118,7 +118,7 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
     * @param dep deployment
     * @return WS endpoint
     */
-   protected final Endpoint newHttpEndpoint(final String endpointClass, final String endpointName, final Deployment dep, final EndpointType endpointType)
+   protected final Endpoint newHttpEndpoint(final String endpointClass, final String endpointName, final Deployment dep)
    {
       if (endpointName == null)
       {
@@ -132,35 +132,8 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
 
       final Endpoint endpoint = this.deploymentModelFactory.newHttpEndpoint(endpointClass);
       endpoint.setShortName(endpointName);
-      dep.getService().addEndpoint(endpoint);
       endpoint.setType(endpointType);
-      return endpoint;
-   }
-
-   /**
-    * Creates new JMS Web Service endpoint.
-    *
-    * @param endpointClass endpoint class name
-    * @param endpointName endpoint name
-    * @param dep deployment
-    * @return WS endpoint
-    */
-   protected final Endpoint newJMSEndpoint(final String endpointClass, final String endpointName, final Deployment dep, final EndpointType endpointType)
-   {
-      if (endpointName == null)
-      {
-         throw new NullPointerException(BundleUtils.getMessage(bundle, "NULL_ENDPOINT_NAME"));
-      }
-
-      if (endpointClass == null)
-      {
-         throw new NullPointerException(BundleUtils.getMessage(bundle, "NULL_ENDPOINT_CLASS"));
-      }
-
-      final Endpoint endpoint = this.deploymentModelFactory.newJMSEndpoint(endpointClass);
-      endpoint.setShortName(endpointName);
       dep.getService().addEndpoint(endpoint);
-      endpoint.setType(endpointType);
 
       return endpoint;
    }
@@ -208,6 +181,7 @@ abstract class AbstractDeploymentModelBuilder implements DeploymentModelBuilder
          dep.setRootFile(new ResourceLoaderAdapter(unit.getClassLoader()));
       }
       dep.setRuntimeClassLoader(unit.getClassLoader());
+      dep.setType(deploymentType);
 
       return dep;
    }

@@ -19,55 +19,51 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.webservices.integration.deployers.deployment;
+package org.jboss.webservices.integration.deployers;
 
-import static org.jboss.wsf.spi.deployment.DeploymentType.JAXWS;
-import static org.jboss.wsf.spi.deployment.EndpointType.JAXWS_JSE;
-
-import java.util.List;
-
+import org.jboss.deployers.spi.DeploymentException;
+import org.jboss.deployers.spi.deployer.helpers.AbstractRealDeployer;
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
-import org.jboss.metadata.web.spec.ServletMetaData;
-import org.jboss.webservices.integration.util.ASHelper;
+import org.jboss.webservices.integration.WebServiceDeployment;
+import org.jboss.webservices.integration.deployers.deployment.WSDeploymentBuilder;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 
 /**
- * Creates new JAXWS JSE deployment.
+ * This deployer initializes JBossWS deployment meta data.
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-final class DeploymentModelBuilderJAXWS_JSE extends AbstractDeploymentModelBuilder
+public final class WSDeploymentDeployer extends AbstractRealDeployer
 {
    /**
     * Constructor.
     */
-   DeploymentModelBuilderJAXWS_JSE()
+   public WSDeploymentDeployer()
    {
-      super(JAXWS, JAXWS_JSE);
+      super();
+
+      // inputs
+      this.addInput(JBossWebMetaData.class);
+      this.addInput(WebservicesMetaData.class);
+      this.addInput(WebServiceDeployment.class);
+
+      // outputs
+      this.addOutput(JBossWebMetaData.class);
+      this.addOutput(Deployment.class);
    }
 
    /**
-    * Creates new JAXWS JSE deployment and registers it with deployment unit.
+    * Creates new Web Service deployment and registers it with deployment unit.
     *
-    * @param dep webservice deployment
     * @param unit deployment unit
+    * @throws DeploymentException if any error occurs
     */
    @Override
-   protected void build(final Deployment dep, final DeploymentUnit unit)
+   protected void internalDeploy(final DeploymentUnit unit) throws DeploymentException
    {
-      this.getAndPropagateAttachment(JBossWebMetaData.class, unit, dep);
-
-      this.log.debug("Creating JAXWS JSE endpoints meta data model");
-      final List<ServletMetaData> servlets = ASHelper.getJaxwsServlets(unit);
-      for (ServletMetaData servlet : servlets)
-      {
-         final String servletName = servlet.getName();
-         this.log.debug("JSE name: " + servletName);
-         final String servletClass = ASHelper.getEndpointName(servlet);
-         this.log.debug("JSE class: " + servletClass);
-
-         this.newHttpEndpoint(servletClass, servletName, dep);
-      }
+      log.trace("Building JBoss agnostic webservices meta data model");
+      WSDeploymentBuilder.getInstance().build(unit);
    }
 }

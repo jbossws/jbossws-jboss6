@@ -25,7 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
-import org.jboss.metadata.ejb.jboss.JBossMessageDrivenBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.ejb.jboss.JBossSessionBeanMetaData;
 import org.jboss.metadata.javaee.spec.PortComponent;
@@ -34,7 +33,6 @@ import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.MDBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
 
 /**
@@ -45,6 +43,7 @@ import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
  */
 final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
 {
+
    /**
     * Constructor.
     */
@@ -73,7 +72,7 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
       ejbArchiveMD.setEnterpriseBeans(wsEjbsMD);
 
       final String securityDomain = jbossMetaData.getSecurityDomain();
-      this.log.debug("Setting security domain: " + securityDomain);
+      log.debug("Setting security domain: " + securityDomain);
       ejbArchiveMD.setSecurityDomain(securityDomain);
    }
 
@@ -86,7 +85,7 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
    private void buildEnterpriseBeanMetaData(final List<EJBMetaData> wsEjbsMD,
          final JBossEnterpriseBeanMetaData jbossEjbMD)
    {
-      final EJBMetaData wsEjbMD = this.newEjbMetaData(jbossEjbMD);
+      final EJBMetaData wsEjbMD = newEjbMetaData(jbossEjbMD);
 
       if (wsEjbMD != null)
       {
@@ -135,22 +134,10 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
     */
    private EJBMetaData newEjbMetaData(final JBossEnterpriseBeanMetaData jbossEjbMD)
    {
-      if (jbossEjbMD.isSession())
-      {
-         this.log.debug("Creating JBoss agnostic EJB21 meta data for session bean: " + jbossEjbMD.getEjbClass());
-         return new SLSBMetaData();
-      }
-      else if (jbossEjbMD.isMessageDriven())
-      {
-         this.log.debug("Creating JBoss agnostic EJB21 meta data for message driven bean: " + jbossEjbMD.getEjbClass());
-         final MDBMetaData mdbMD = new MDBMetaData();
+      if (!jbossEjbMD.isSession()) return null;
 
-         final JBossMessageDrivenBeanMetaData jbossMessageBean = (JBossMessageDrivenBeanMetaData) jbossEjbMD;
-         ((MDBMetaData) mdbMD).setDestinationJndiName(jbossMessageBean.getDestinationJndiName());
-
-         return mdbMD;
-      }
-
-      return null;
+      log.debug("Creating JBoss agnostic EJB21 meta data for session bean: " + jbossEjbMD.getEjbClass());
+      return new SLSBMetaData();
    }
+
 }
