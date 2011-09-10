@@ -21,12 +21,14 @@
  */
 package org.jboss.webservices.integration.deployers.deployment;
 
+import static org.jboss.wsf.spi.deployment.DeploymentType.JAXRPC;
+import static org.jboss.wsf.spi.deployment.EndpointType.JAXRPC_JSE;
+
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
-import org.jboss.wsf.spi.deployment.Endpoint.EndpointType;
 import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
@@ -43,7 +45,7 @@ final class DeploymentModelBuilderJAXRPC_JSE extends AbstractDeploymentModelBuil
     */
    DeploymentModelBuilderJAXRPC_JSE()
    {
-      super();
+      super(JAXRPC, JAXRPC_JSE);
    }
 
    /**
@@ -69,7 +71,7 @@ final class DeploymentModelBuilderJAXRPC_JSE extends AbstractDeploymentModelBuil
             final String servletClass = ASHelper.getEndpointName(servletMD);
             this.log.debug("JSE class: " + servletClass);
 
-            this.newHttpEndpoint(servletClass, servletName, dep, EndpointType.JAXRPC_JSE);
+            this.newHttpEndpoint(servletClass, servletName, dep);
          }
       }
    }

@@ -21,12 +21,14 @@
  */
 package org.jboss.webservices.integration.deployers.deployment;
 
+import static org.jboss.wsf.spi.deployment.DeploymentType.JAXWS;
+import static org.jboss.wsf.spi.deployment.EndpointType.JAXWS_EJB3;
+
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.deployment.Endpoint.EndpointType;
 import org.jboss.webservices.integration.WebServiceDeclaration;
 import org.jboss.webservices.integration.WebServiceDeployment;
 
@@ -42,7 +44,7 @@ final class DeploymentModelBuilderJAXWS_EJB3 extends AbstractDeploymentModelBuil
     */
    DeploymentModelBuilderJAXWS_EJB3()
    {
-      super();
+      super(JAXWS, JAXWS_EJB3);
    }
 
    /**
@@ -65,7 +67,7 @@ final class DeploymentModelBuilderJAXWS_EJB3 extends AbstractDeploymentModelBuil
          final String ejbClass = container.getComponentClassName();
          this.log.debug("EJB3 class: " + ejbClass);
 
-         final Endpoint ep = this.newHttpEndpoint(ejbClass, ejbName, dep, EndpointType.JAXWS_EJB3);
+         final Endpoint ep = this.newHttpEndpoint(ejbClass, ejbName, dep);
          ep.setProperty(ASHelper.CONTAINER_NAME, container.getContainerName());
       }
    }

@@ -34,11 +34,13 @@ import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.common.jboss.WebserviceDescriptionMetaData;
 import org.jboss.metadata.common.jboss.WebserviceDescriptionsMetaData;
+import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.web.jboss.JBossServletMetaData;
 import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.ws.api.util.BundleUtils;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 import org.jboss.webservices.integration.WebServiceDeclaration;
 import org.jboss.webservices.integration.WebServiceDeployment;
 
@@ -75,6 +77,75 @@ public final class ASHelper
    public static boolean isWebServiceDeployment(final DeploymentUnit unit)
    {
       return ASHelper.getOptionalAttachment(unit, Deployment.class) != null;
+   }
+
+   /**
+    * Returns true if unit contains JAXRPC EJB deployment.
+    *
+    * @param unit deployment unit
+    * @return true if JAXRPC EJB deployment, false otherwise
+    */
+   public static boolean isJaxrpcEjbDeployment(final DeploymentUnit unit)
+   {
+      final boolean hasWebservicesMD = hasAttachment(unit, WebservicesMetaData.class);
+      final boolean hasJBossMD = unit.getAllMetaData(JBossMetaData.class).size() > 0;
+
+      return hasWebservicesMD && hasJBossMD;
+   }
+
+   /**
+    * Returns true if unit contains JAXRPC JSE deployment.
+    *
+    * @param unit deployment unit
+    * @return true if JAXRPC JSE deployment, false otherwise
+    */
+   public static boolean isJaxrpcJseDeployment(final DeploymentUnit unit)
+   {
+      final boolean hasWebservicesMD = hasAttachment(unit, WebservicesMetaData.class);
+      final boolean hasJBossWebMD = hasAttachment(unit, JBossWebMetaData.class);
+
+      if (hasWebservicesMD && hasJBossWebMD)
+      {
+         return getJaxrpcServlets(unit).size() > 0;
+      }
+
+      return false;
+   }
+
+   /**
+    * Returns true if unit contains JAXWS EJB deployment.
+    *
+    * @param unit deployment unit
+    * @return true if JAXWS EJB deployment, false otherwise
+    */
+   public static boolean isJaxwsEjbDeployment(final DeploymentUnit unit)
+   {
+      final boolean hasWSDeployment = hasAttachment(unit, WebServiceDeployment.class);
+
+      if (hasWSDeployment)
+      {
+         return getJaxwsEjbs(unit).size() > 0;
+      }
+
+      return false;
+   }
+
+   /**
+    * Returns true if unit contains JAXWS JSE deployment.
+    *
+    * @param unit deployment unit
+    * @return true if JAXWS JSE deployment, false otherwise
+    */
+   public static boolean isJaxwsJseDeployment(final DeploymentUnit unit)
+   {
+      final boolean hasJBossWebMD = ASHelper.hasAttachment(unit, JBossWebMetaData.class);
+
+      if (hasJBossWebMD)
+      {
+         return ASHelper.getJaxwsServlets(unit).size() > 0;
+      }
+
+      return false;
    }
 
    /**

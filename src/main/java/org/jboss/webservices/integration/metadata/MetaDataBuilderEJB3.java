@@ -24,9 +24,6 @@ package org.jboss.webservices.integration.metadata;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-
 import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.webservices.integration.WebServiceDeclaration;
@@ -34,7 +31,6 @@ import org.jboss.webservices.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.MDBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.PortComponentSpec;
 import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
 
@@ -82,7 +78,7 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
     */
    private void buildEnterpriseBeanMetaData(final List<EJBMetaData> wsEjbsMD, final WebServiceDeclaration jbossEjbMD)
    {
-      final EJBMetaData wsEjbMD = this.newEjbMetaData(jbossEjbMD);
+      final EJBMetaData wsEjbMD = newEjbMetaData(jbossEjbMD);
 
       if (wsEjbMD != null)
       {
@@ -118,47 +114,8 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
     */
    private EJBMetaData newEjbMetaData(final WebServiceDeclaration jbossEjbMD)
    {
-      final MessageDriven mdbAnnotation = jbossEjbMD.getAnnotation(MessageDriven.class);
-
-      if (mdbAnnotation == null)
-      {
-         this.log.debug("Creating JBoss agnostic EJB3 meta data for session bean: "
-               + jbossEjbMD.getComponentClassName());
-         return new SLSBMetaData();
-      }
-      else
-      {
-         this.log.debug("Creating JBoss agnostic EJB3 meta data for message driven bean: "
-               + jbossEjbMD.getComponentClassName());
-         final MDBMetaData mdbMD = new MDBMetaData();
-
-         final String destinationName = this.getActivationProperty("destination", mdbAnnotation.activationConfig());
-         mdbMD.setDestinationJndiName(destinationName);
-
-         return mdbMD;
-      }
+      log.debug("Creating JBoss agnostic EJB3 meta data for session bean: " + jbossEjbMD.getComponentClassName());
+      return new SLSBMetaData();
    }
 
-   /**
-    * Returns activation config property value or null if not found.
-    *
-    * @param name activation property name
-    * @param activationConfigProperties activation config properties
-    * @return activation config property value
-    */
-   private String getActivationProperty(final String name, final ActivationConfigProperty[] activationConfigProperties)
-   {
-      if (activationConfigProperties != null)
-      {
-         for (final ActivationConfigProperty activationConfigProperty : activationConfigProperties)
-         {
-            if (activationConfigProperty.propertyName().equals(name))
-            {
-               return activationConfigProperty.propertyValue();
-            }
-         }
-      }
-
-      return null;
-   }
 }
