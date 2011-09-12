@@ -28,7 +28,6 @@ import static org.jboss.webservices.integration.util.ASHelper.isJaxwsJseDeployme
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
 import org.jboss.logging.Logger;
-import org.jboss.webservices.integration.util.ASHelper;
 
 /**
  * JBossWS deployment model builder.
@@ -37,10 +36,8 @@ import org.jboss.webservices.integration.util.ASHelper;
  */
 public final class WSDeploymentBuilder
 {
-   private static final Logger log = Logger.getLogger(ASHelper.class);
-   /** Builder instance. */
+   private static final Logger log = Logger.getLogger(WSDeploymentBuilder.class);
    private static final WSDeploymentBuilder SINGLETON = new WSDeploymentBuilder();
-
    private static final DeploymentModelBuilder JAXWS_JSE = new DeploymentModelBuilderJAXWS_JSE(); 
    private static final DeploymentModelBuilder JAXRPC_JSE = new DeploymentModelBuilderJAXRPC_JSE(); 
    private static final DeploymentModelBuilder JAXWS_EJB = new DeploymentModelBuilderJAXWS_EJB3(); 
