@@ -24,6 +24,10 @@ package org.jboss.webservices.integration.metadata;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
+import org.jboss.metadata.ejb.jboss.JBossMetaData;
+import org.jboss.metadata.ejb.jboss.JBossSessionBeanMetaData;
+import org.jboss.metadata.javaee.spec.PortComponent;
 import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.webservices.integration.WebServiceDeclaration;
@@ -31,7 +35,6 @@ import org.jboss.webservices.integration.WebServiceDeployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.PortComponentSpec;
 import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
 
 /**
@@ -59,11 +62,14 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
    @Override
    protected void buildEnterpriseBeansMetaData(final Deployment dep, final EJBArchiveMetaData ejbArchiveMD)
    {
+      final JBossMetaData jbossMetaData = WSHelper.getRequiredAttachment(dep, JBossMetaData.class);
       final WebServiceDeployment ejb3Deployment = WSHelper.getRequiredAttachment(dep, WebServiceDeployment.class);
       final List<EJBMetaData> wsEjbsMD = new LinkedList<EJBMetaData>();
 
-      for (final WebServiceDeclaration jbossEjbMD : ejb3Deployment.getServiceEndpoints())
+      for (final WebServiceDeclaration ejbEndpoint : ejb3Deployment.getServiceEndpoints())
       {
+         final String ejbName = ejbEndpoint.getComponentName();
+         final JBossEnterpriseBeanMetaData jbossEjbMD = jbossMetaData.getEnterpriseBean(ejbName);
          this.buildEnterpriseBeanMetaData(wsEjbsMD, jbossEjbMD);
       }
 
@@ -76,46 +82,33 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
     * @param wsEjbsMD jboss agnostic EJBs meta data
     * @param jbossEjbMD jboss specific EJB meta data
     */
-   private void buildEnterpriseBeanMetaData(final List<EJBMetaData> wsEjbsMD, final WebServiceDeclaration jbossEjbMD)
+   private void buildEnterpriseBeanMetaData(final List<EJBMetaData> wsEjbsMD, final JBossEnterpriseBeanMetaData jbossEjbMD)
    {
-      final EJBMetaData wsEjbMD = newEjbMetaData(jbossEjbMD);
+      log.debug("Creating JBoss agnostic EJB3 meta data for session bean: " + jbossEjbMD.getEjbClass());
+      final EJBMetaData wsEjbMD = new SLSBMetaData();
+      wsEjbMD.setEjbName(jbossEjbMD.getEjbName());
+      wsEjbMD.setEjbClass(jbossEjbMD.getEjbClass());
 
-      if (wsEjbMD != null)
+      if (jbossEjbMD.isSession())
       {
-         // set EJB name and class
-         wsEjbMD.setEjbName(jbossEjbMD.getComponentName());
-         wsEjbMD.setEjbClass(jbossEjbMD.getComponentClassName());
-
-         final PortComponentSpec portComponentAnnotation = jbossEjbMD.getAnnotation(PortComponentSpec.class);
-         if (portComponentAnnotation != null)
+         final JBossSessionBeanMetaData sessionEjbMD = (JBossSessionBeanMetaData) jbossEjbMD;
+         final PortComponent portComponentMD = sessionEjbMD.getPortComponent();
+         if (portComponentMD != null)
          {
             // set port component meta data
-            wsEjbMD.setPortComponentName(portComponentAnnotation.portComponentName());
-            wsEjbMD.setPortComponentURI(portComponentAnnotation.portComponentURI());
+            wsEjbMD.setPortComponentName(portComponentMD.getPortComponentName());
+            wsEjbMD.setPortComponentURI(portComponentMD.getPortComponentURI());
 
             // set security meta data
-            final EJBSecurityMetaData wsEjbSecurityMD = new EJBSecurityMetaData();
-            wsEjbSecurityMD.setAuthMethod(portComponentAnnotation.authMethod());
-            wsEjbSecurityMD.setTransportGuarantee(portComponentAnnotation.transportGuarantee());
-            wsEjbSecurityMD.setSecureWSDLAccess(portComponentAnnotation.secureWSDLAccess());
-            wsEjbMD.setSecurityMetaData(wsEjbSecurityMD);
+            final EJBSecurityMetaData smd = new EJBSecurityMetaData();
+            smd.setAuthMethod(portComponentMD.getAuthMethod());
+            smd.setTransportGuarantee(portComponentMD.getTransportGuarantee());
+            smd.setSecureWSDLAccess(portComponentMD.getSecureWSDLAccess());
+            wsEjbMD.setSecurityMetaData(smd);
          }
-
-         wsEjbsMD.add(wsEjbMD);
       }
 
-   }
-
-   /**
-    * Creates new JBoss agnostic EJB bean meta data model.
-    *
-    * @param jbossEjbMD jboss EJB meta data
-    * @return webservices EJB meta data
-    */
-   private EJBMetaData newEjbMetaData(final WebServiceDeclaration jbossEjbMD)
-   {
-      log.debug("Creating JBoss agnostic EJB3 meta data for session bean: " + jbossEjbMD.getComponentClassName());
-      return new SLSBMetaData();
+      wsEjbsMD.add(wsEjbMD);
    }
 
 }
