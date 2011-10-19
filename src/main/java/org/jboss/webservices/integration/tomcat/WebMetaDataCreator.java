@@ -21,6 +21,7 @@
  */
 package org.jboss.webservices.integration.tomcat;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.deployers.structure.spi.DeploymentUnit;
@@ -136,9 +137,12 @@ final class WebMetaDataCreator
       }
 
       // Set virtual hosts
-      final List<String> virtualHosts = dep.getService().getVirtualHosts();
-      this.log.debug("Setting virtual hosts: " + virtualHosts);
-      jbossWebMD.setVirtualHosts(virtualHosts);
+      final String virtualHost = dep.getService().getVirtualHost();
+      if (virtualHost != null)
+      {
+         this.log.debug("Setting virtual host: " + virtualHost);
+         jbossWebMD.setVirtualHosts(Arrays.asList(virtualHost));
+      }
    }
 
    /**
