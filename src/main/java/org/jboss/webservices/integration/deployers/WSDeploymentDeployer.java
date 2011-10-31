@@ -28,6 +28,7 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.webservices.integration.WebServiceDeployment;
 import org.jboss.webservices.integration.deployers.deployment.WSDeploymentBuilder;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
 
 /**
@@ -47,6 +48,7 @@ public final class WSDeploymentDeployer extends AbstractRealDeployer
       // inputs
       this.addInput(JBossWebMetaData.class);
       this.addInput(WebservicesMetaData.class);
+      this.addInput(JBossWebservicesMetaData.class);
       this.addInput(WebServiceDeployment.class);
 
       // outputs

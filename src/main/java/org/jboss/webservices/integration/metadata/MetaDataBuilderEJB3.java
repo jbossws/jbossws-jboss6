@@ -26,16 +26,16 @@ import java.util.List;
 
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
-import org.jboss.metadata.ejb.jboss.JBossSessionBeanMetaData;
-import org.jboss.metadata.javaee.spec.PortComponent;
-import org.jboss.ws.common.integration.WSHelper;
-import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.webservices.integration.WebServiceDeclaration;
 import org.jboss.webservices.integration.WebServiceDeployment;
+import org.jboss.ws.common.integration.WSHelper;
+import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
+import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 
 /**
  * Builds container independent meta data from EJB3 container meta data. 
@@ -65,12 +65,13 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
       final JBossMetaData jbossMetaData = WSHelper.getRequiredAttachment(dep, JBossMetaData.class);
       final WebServiceDeployment ejb3Deployment = WSHelper.getRequiredAttachment(dep, WebServiceDeployment.class);
       final List<EJBMetaData> wsEjbsMD = new LinkedList<EJBMetaData>();
+      final JBossWebservicesMetaData jbossWebservicesMD = WSHelper.getOptionalAttachment(dep, JBossWebservicesMetaData.class);
 
       for (final WebServiceDeclaration ejbEndpoint : ejb3Deployment.getServiceEndpoints())
       {
          final String ejbName = ejbEndpoint.getComponentName();
          final JBossEnterpriseBeanMetaData jbossEjbMD = jbossMetaData.getEnterpriseBean(ejbName);
-         this.buildEnterpriseBeanMetaData(wsEjbsMD, jbossEjbMD);
+         this.buildEnterpriseBeanMetaData(wsEjbsMD, jbossEjbMD, jbossWebservicesMD);
       }
 
       ejbArchiveMD.setEnterpriseBeans(wsEjbsMD);
@@ -82,7 +83,7 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
     * @param wsEjbsMD jboss agnostic EJBs meta data
     * @param jbossEjbMD jboss specific EJB meta data
     */
-   private void buildEnterpriseBeanMetaData(final List<EJBMetaData> wsEjbsMD, final JBossEnterpriseBeanMetaData jbossEjbMD)
+   private void buildEnterpriseBeanMetaData(final List<EJBMetaData> wsEjbsMD, final JBossEnterpriseBeanMetaData jbossEjbMD, final JBossWebservicesMetaData jbossWebservicesMD)
    {
       log.debug("Creating JBoss agnostic EJB3 meta data for session bean: " + jbossEjbMD.getEjbClass());
       final EJBMetaData wsEjbMD = new SLSBMetaData();
@@ -91,8 +92,7 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
 
       if (jbossEjbMD.isSession())
       {
-         final JBossSessionBeanMetaData sessionEjbMD = (JBossSessionBeanMetaData) jbossEjbMD;
-         final PortComponent portComponentMD = sessionEjbMD.getPortComponent();
+         final PortComponentMetaData portComponentMD = getPortComponent(jbossEjbMD.getEjbName(), jbossWebservicesMD);
          if (portComponentMD != null)
          {
             // set port component meta data

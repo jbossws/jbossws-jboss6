@@ -27,13 +27,14 @@ import java.util.List;
 import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.metadata.ejb.jboss.JBossSessionBeanMetaData;
-import org.jboss.metadata.javaee.spec.PortComponent;
 import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
+import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 
 /**
  * Builds container independent meta data from EJB21 container meta data. 
@@ -63,10 +64,11 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
    {
       final JBossMetaData jbossMetaData = WSHelper.getRequiredAttachment(dep, JBossMetaData.class);
       final List<EJBMetaData> wsEjbsMD = new LinkedList<EJBMetaData>();
+      final JBossWebservicesMetaData jbossWebservicesMD = WSHelper.getOptionalAttachment(dep, JBossWebservicesMetaData.class);
 
       for (final JBossEnterpriseBeanMetaData jbossEjbMD : jbossMetaData.getEnterpriseBeans())
       {
-         this.buildEnterpriseBeanMetaData(wsEjbsMD, jbossEjbMD);
+         this.buildEnterpriseBeanMetaData(wsEjbsMD, jbossEjbMD, jbossWebservicesMD);
       }
 
       ejbArchiveMD.setEnterpriseBeans(wsEjbsMD);
@@ -83,7 +85,7 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
     * @param jbossEjbMD jboss specific EJB meta data
     */
    private void buildEnterpriseBeanMetaData(final List<EJBMetaData> wsEjbsMD,
-         final JBossEnterpriseBeanMetaData jbossEjbMD)
+         final JBossEnterpriseBeanMetaData jbossEjbMD, final JBossWebservicesMetaData jbossWebservicesMD)
    {
       final EJBMetaData wsEjbMD = newEjbMetaData(jbossEjbMD);
 
@@ -106,19 +108,19 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
             wsEjbMD.setJndiName(sessionEjbMD.determineJndiName());
             wsEjbMD.setLocalJndiName(jbossEjbMD.determineLocalJndiName());
 
-            final PortComponent portComponentMD = sessionEjbMD.getPortComponent();
+            final PortComponentMetaData portComponentMD = getPortComponent(jbossEjbMD.getEjbName(), jbossWebservicesMD);
             if (portComponentMD != null)
             {
-               // set port component meta data
-               wsEjbMD.setPortComponentName(portComponentMD.getPortComponentName());
-               wsEjbMD.setPortComponentURI(portComponentMD.getPortComponentURI());
+                // set port component meta data
+                wsEjbMD.setPortComponentName(portComponentMD.getPortComponentName());
+                wsEjbMD.setPortComponentURI(portComponentMD.getPortComponentURI());
 
-               // set security meta data
-               final EJBSecurityMetaData smd = new EJBSecurityMetaData();
-               smd.setAuthMethod(portComponentMD.getAuthMethod());
-               smd.setTransportGuarantee(portComponentMD.getTransportGuarantee());
-               smd.setSecureWSDLAccess(portComponentMD.getSecureWSDLAccess());
-               wsEjbMD.setSecurityMetaData(smd);
+                // set security meta data
+                final EJBSecurityMetaData smd = new EJBSecurityMetaData();
+                smd.setAuthMethod(portComponentMD.getAuthMethod());
+                smd.setTransportGuarantee(portComponentMD.getTransportGuarantee());
+                smd.setSecureWSDLAccess(portComponentMD.getSecureWSDLAccess());
+                wsEjbMD.setSecurityMetaData(smd);
             }
          }
 
