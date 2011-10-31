@@ -49,6 +49,7 @@ import org.jboss.wsf.spi.metadata.j2ee.JSEArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.JSESecurityMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.JSESecurityMetaData.JSEResourceCollection;
 import org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
 
 /**
  * Builds container independent meta data from WEB container meta data.
@@ -97,15 +98,19 @@ final class MetaDataBuilderJSE
       jseArchiveMD.setSecurityDomain(securityDomain);
 
       // set wsdl location resolver
-      final PublishLocationAdapter resolver = new PublishLocationAdapterImpl(jbossWebMD.getWebserviceDescriptions());
-      jseArchiveMD.setPublishLocationAdapter(resolver);
+      final JBossWebservicesMetaData jbossWebservicesMD = WSHelper.getOptionalAttachment(dep, JBossWebservicesMetaData.class);
+      if (jbossWebservicesMD != null)
+      {
+          final PublishLocationAdapter resolver = new PublishLocationAdapterImpl(jbossWebservicesMD.getWebserviceDescriptions());
+          jseArchiveMD.setPublishLocationAdapter(resolver);
+      }
+
+      // set config name and file
+      this.setConfigNameAndFile(jseArchiveMD, jbossWebMD, jbossWebservicesMD);
 
       // set security meta data
       final List<JSESecurityMetaData> jseSecurityMDs = this.getSecurityMetaData(jbossWebMD.getSecurityConstraints());
       jseArchiveMD.setSecurityMetaData(jseSecurityMDs);
-
-      // set config name and file
-      this.setConfigNameAndFile(jseArchiveMD, jbossWebMD);
 
       return jseArchiveMD;
    }
@@ -116,16 +121,14 @@ final class MetaDataBuilderJSE
     * @param jseArchiveMD universal JSE meta data model
     * @param jbossWebMD jboss web meta data
     */
-   private void setConfigNameAndFile(final JSEArchiveMetaData jseArchiveMD, final JBossWebMetaData jbossWebMD)
+   private void setConfigNameAndFile(final JSEArchiveMetaData jseArchiveMD, final JBossWebMetaData jbossWebMD, final JBossWebservicesMetaData jbossWebservicesMD)
    {
-      final WebserviceDescriptionsMetaData wsDescriptionsMD = jbossWebMD.getWebserviceDescriptions();
-      final WebserviceDescriptionMetaData wsDescriptionMD = ASHelper.getWebserviceDescriptionMetaData(wsDescriptionsMD);
-      if (wsDescriptionMD != null)
+      if (jbossWebservicesMD != null)
       {
-         if (wsDescriptionMD.getConfigName() != null)
+         if (jbossWebservicesMD.getConfigName() != null)
          {
-            jseArchiveMD.setConfigName(wsDescriptionMD.getConfigName());
-            jseArchiveMD.setConfigFile(wsDescriptionMD.getConfigFile());
+            jseArchiveMD.setConfigName(jbossWebservicesMD.getConfigName());
+            jseArchiveMD.setConfigFile(jbossWebservicesMD.getConfigFile());
 
             // ensure higher priority against web.xml context parameters
             return;

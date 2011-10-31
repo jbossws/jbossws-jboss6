@@ -29,6 +29,7 @@ import org.jboss.metadata.ejb.jboss.JBossEnterpriseBeanMetaData;
 import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.webservices.integration.WebServiceDeployment;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
 import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
@@ -60,6 +61,10 @@ final class DeploymentModelBuilderJAXRPC_EJB21 extends AbstractDeploymentModelBu
       final JBossMetaData jbmd = this.getAndPropagateAttachment(JBossMetaData.class, unit, dep);
       final WebservicesMetaData wsMetaData = this.getAndPropagateAttachment(WebservicesMetaData.class, unit, dep);
       this.getAndPropagateAttachment(WebServiceDeployment.class, unit, dep);
+      if (unit.isAttachmentPresent(JBossWebservicesMetaData.class))
+      {
+         this.getAndPropagateAttachment(JBossWebservicesMetaData.class, unit, dep);
+      }
 
       this.log.debug("Creating JAXRPC EJB21 endpoints meta data model");
       for (final WebserviceDescriptionMetaData webserviceDescriptionMD : wsMetaData.getWebserviceDescriptions())

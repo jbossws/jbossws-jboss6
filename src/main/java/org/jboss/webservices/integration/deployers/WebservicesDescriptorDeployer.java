@@ -29,13 +29,13 @@ import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-public final class WSDescriptorDeployer extends AbstractDescriptorDeployer<WebservicesDescriptorParser, WebservicesMetaData>
+public final class WebservicesDescriptorDeployer extends AbstractDescriptorDeployer<WebservicesDescriptorParser, WebservicesMetaData>
 {
 
    /**
     * Constructor.
     */
-   public WSDescriptorDeployer()
+   public WebservicesDescriptorDeployer()
    {
       super(WebservicesMetaData.class);
    }

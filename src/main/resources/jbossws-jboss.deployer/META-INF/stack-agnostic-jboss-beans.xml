@@ -54,7 +54,10 @@
   </bean>
 
   <!-- deployers -->
-  <bean name="WSDescriptorDeployer" class="org.jboss.webservices.integration.deployers.WSDescriptorDeployer">
+  <bean name="WSWebservicesDescriptorDeployer" class="org.jboss.webservices.integration.deployers.WebservicesDescriptorDeployer">
+    <incallback method="setParser"/>
+  </bean>
+  <bean name="WSJBossWebservicesDescriptorDeployer" class="org.jboss.webservices.integration.deployers.JBossWebservicesDescriptorDeployer">
     <incallback method="setParser"/>
   </bean>
 

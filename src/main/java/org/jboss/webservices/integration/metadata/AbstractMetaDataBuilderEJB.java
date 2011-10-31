@@ -21,19 +21,14 @@
  */
 package org.jboss.webservices.integration.metadata;
 
-import java.util.Iterator;
-
 import org.jboss.logging.Logger;
-import org.jboss.metadata.common.jboss.WebserviceDescriptionMetaData;
-import org.jboss.metadata.common.jboss.WebserviceDescriptionsMetaData;
-import org.jboss.metadata.ejb.jboss.JBossMetaData;
-import org.jboss.metadata.ejb.jboss.WebservicesMetaData;
-import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.ws.common.integration.WSHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
-import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
+import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
+import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
 
 /**
  * Common class for EJB meta data builders.
@@ -86,67 +81,41 @@ abstract class AbstractMetaDataBuilderEJB
     */
    private void buildWebservicesMetaData(final Deployment dep, final EJBArchiveMetaData ejbArchiveMD)
    {
-      final JBossMetaData jbossMD = WSHelper.getRequiredAttachment(dep, JBossMetaData.class);
-      final WebservicesMetaData webservicesMD = jbossMD.getWebservices();
+      final JBossWebservicesMetaData webservicesMD = WSHelper.getOptionalAttachment(dep, JBossWebservicesMetaData.class);
 
-      if (webservicesMD == null)
-      {
-         return;
-      }
+      if (webservicesMD == null) return;
 
       // set context root
-      String contextRoot = webservicesMD.getContextRoot();
-      final WebserviceDescriptionsMetaData wsDescriptionsMD = webservicesMD.getWebserviceDescriptions();
-
-      if (wsDescriptionsMD != null)
-      {
-         // set wsdl location resolver
-         final PublishLocationAdapter resolver = new PublishLocationAdapterImpl(wsDescriptionsMD);
-         ejbArchiveMD.setPublishLocationAdapter(resolver);
-
-         final WebserviceDescriptionMetaData wsDescriptionMD = ASHelper
-               .getWebserviceDescriptionMetaData(wsDescriptionsMD);
-         if (wsDescriptionMD != null)
-         {
-            if (contextRoot == null && !hasContextRoot(ejbArchiveMD))
-            {
-               contextRoot = wsDescriptionMD.getWebserviceDescriptionName(); // TCK6 fallback
-            }
-
-            final String configName = wsDescriptionMD.getConfigName();
-            final String configFile = wsDescriptionMD.getConfigFile();
-
-            // set config name
-            this.log.debug("Setting config name: " + configName);
-            ejbArchiveMD.setConfigName(wsDescriptionMD.getConfigName());
-
-            // set config file
-            this.log.debug("Setting config file: " + configFile);
-            ejbArchiveMD.setConfigFile(wsDescriptionMD.getConfigFile());
-         }
-      }
-
+      final String contextRoot = webservicesMD.getContextRoot();
       ejbArchiveMD.setWebServiceContextRoot(contextRoot);
       this.log.debug("Setting context root: " + contextRoot);
+
+      // set config name
+      final String configName = webservicesMD.getConfigName();
+      this.log.debug("Setting config name: " + configName);
+      ejbArchiveMD.setConfigName(configName);
+
+      // set config file
+      final String configFile = webservicesMD.getConfigFile();
+      this.log.debug("Setting config file: " + configFile);
+      ejbArchiveMD.setConfigFile(configFile);
+      
+      // set wsdl location resolver
+      final WebserviceDescriptionMetaData[] wsDescriptionsMD = webservicesMD.getWebserviceDescriptions();
+      final PublishLocationAdapter resolver = new PublishLocationAdapterImpl(wsDescriptionsMD);
+      ejbArchiveMD.setPublishLocationAdapter(resolver);
    }
 
-   /**
-    * Returns true if has context root, false otherwise.
-    *
-    * @param ejbArchiveMD ejb archive MD
-    * @return true if has context root, false otherwise
-    */
-   private boolean hasContextRoot(final EJBArchiveMetaData ejbArchiveMD)
-   {
-      for (final Iterator<EJBMetaData> ejbMDs = ejbArchiveMD.getEnterpriseBeans(); ejbMDs.hasNext(); )
-      {
-         final EJBMetaData ejbMD = ejbMDs.next();
-         if (ejbMD.getPortComponentURI() != null)
-         {
-            return true;
-         }
-      }
+   protected PortComponentMetaData getPortComponent(final String ejbName, final JBossWebservicesMetaData jbossWebservicesMD) {
+       if (jbossWebservicesMD == null) return null;
 
-      return false;
+       PortComponentMetaData portComponentMD = null;
+       for (final WebserviceDescriptionMetaData webserviceDescriptionMD : jbossWebservicesMD.getWebserviceDescriptions()) {
+           portComponentMD = webserviceDescriptionMD.getPortComponentByEjbLinkName(ejbName);
+           if (portComponentMD != null) return portComponentMD;
+       }
+       
+       return null;
    }
+
 }

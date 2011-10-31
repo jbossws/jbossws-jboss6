@@ -31,6 +31,7 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
 
 /**
  * Creates new JAXWS JSE deployment.
@@ -57,6 +58,10 @@ final class DeploymentModelBuilderJAXWS_JSE extends AbstractDeploymentModelBuild
    protected void build(final Deployment dep, final DeploymentUnit unit)
    {
       this.getAndPropagateAttachment(JBossWebMetaData.class, unit, dep);
+      if (unit.isAttachmentPresent(JBossWebservicesMetaData.class))
+      {
+         this.getAndPropagateAttachment(JBossWebservicesMetaData.class, unit, dep);
+      }
 
       this.log.debug("Creating JAXWS JSE endpoints meta data model");
       final List<ServletMetaData> servlets = ASHelper.getJaxwsServlets(unit);

@@ -29,6 +29,7 @@ import org.jboss.metadata.ejb.jboss.JBossMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.deployment.Endpoint;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
 import org.jboss.webservices.integration.WebServiceDeclaration;
 import org.jboss.webservices.integration.WebServiceDeployment;
 
@@ -58,6 +59,10 @@ final class DeploymentModelBuilderJAXWS_EJB3 extends AbstractDeploymentModelBuil
    {
       this.getAndPropagateAttachment(WebServiceDeployment.class, unit, dep);
       this.getAndPropagateAttachment(JBossMetaData.class, unit, dep);
+      if (unit.isAttachmentPresent(JBossWebservicesMetaData.class))
+      {
+         this.getAndPropagateAttachment(JBossWebservicesMetaData.class, unit, dep);
+      }
 
       this.log.debug("Creating JAXWS EJB3 endpoints meta data model");
       for (final WebServiceDeclaration container : ASHelper.getJaxwsEjbs(unit))

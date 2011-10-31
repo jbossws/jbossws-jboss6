@@ -29,6 +29,7 @@ import org.jboss.metadata.web.jboss.JBossWebMetaData;
 import org.jboss.metadata.web.spec.ServletMetaData;
 import org.jboss.webservices.integration.util.ASHelper;
 import org.jboss.wsf.spi.deployment.Deployment;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
 import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
 import org.jboss.wsf.spi.metadata.webservices.WebservicesMetaData;
@@ -59,6 +60,10 @@ final class DeploymentModelBuilderJAXRPC_JSE extends AbstractDeploymentModelBuil
    {
       final JBossWebMetaData webMetaData = this.getAndPropagateAttachment(JBossWebMetaData.class, unit, dep);
       final WebservicesMetaData wsMetaData = this.getAndPropagateAttachment(WebservicesMetaData.class, unit, dep);
+      if (unit.isAttachmentPresent(JBossWebservicesMetaData.class))
+      {
+         this.getAndPropagateAttachment(JBossWebservicesMetaData.class, unit, dep);
+      }
 
       this.log.debug("Creating JAXRPC JSE endpoints meta data model");
       for (WebserviceDescriptionMetaData wsd : wsMetaData.getWebserviceDescriptions())
