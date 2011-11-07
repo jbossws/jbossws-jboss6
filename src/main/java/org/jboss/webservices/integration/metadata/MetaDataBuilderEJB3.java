@@ -35,7 +35,7 @@ import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
 import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
-import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
+import org.jboss.wsf.spi.metadata.webservices.JBossPortComponentMetaData;
 
 /**
  * Builds container independent meta data from EJB3 container meta data. 
@@ -92,7 +92,7 @@ final class MetaDataBuilderEJB3 extends AbstractMetaDataBuilderEJB
 
       if (jbossEjbMD.isSession())
       {
-         final PortComponentMetaData portComponentMD = getPortComponent(jbossEjbMD.getEjbName(), jbossWebservicesMD);
+         final JBossPortComponentMetaData portComponentMD = getPortComponent(jbossEjbMD.getEjbName(), jbossWebservicesMD);
          if (portComponentMD != null)
          {
             // set port component meta data
