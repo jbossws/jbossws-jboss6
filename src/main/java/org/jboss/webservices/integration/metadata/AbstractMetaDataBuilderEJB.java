@@ -27,8 +27,8 @@ import org.jboss.wsf.spi.deployment.Deployment;
 import org.jboss.wsf.spi.metadata.j2ee.EJBArchiveMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter;
 import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
-import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
-import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
+import org.jboss.wsf.spi.metadata.webservices.JBossPortComponentMetaData;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebserviceDescriptionMetaData;
 
 /**
  * Common class for EJB meta data builders.
@@ -101,18 +101,16 @@ abstract class AbstractMetaDataBuilderEJB
       ejbArchiveMD.setConfigFile(configFile);
       
       // set wsdl location resolver
-      final WebserviceDescriptionMetaData[] wsDescriptionsMD = webservicesMD.getWebserviceDescriptions();
+      final JBossWebserviceDescriptionMetaData[] wsDescriptionsMD = webservicesMD.getWebserviceDescriptions();
       final PublishLocationAdapter resolver = new PublishLocationAdapterImpl(wsDescriptionsMD);
       ejbArchiveMD.setPublishLocationAdapter(resolver);
    }
 
-   protected PortComponentMetaData getPortComponent(final String ejbName, final JBossWebservicesMetaData jbossWebservicesMD) {
+   protected JBossPortComponentMetaData getPortComponent(final String ejbName, final JBossWebservicesMetaData jbossWebservicesMD) {
        if (jbossWebservicesMD == null) return null;
-
-       PortComponentMetaData portComponentMD = null;
-       for (final WebserviceDescriptionMetaData webserviceDescriptionMD : jbossWebservicesMD.getWebserviceDescriptions()) {
-           portComponentMD = webserviceDescriptionMD.getPortComponentByEjbLinkName(ejbName);
-           if (portComponentMD != null) return portComponentMD;
+       
+       for (final JBossPortComponentMetaData jbossPortComponentMD : jbossWebservicesMD.getPortComponents()) {
+           if (ejbName.equals(jbossPortComponentMD.getEjbName())) return jbossPortComponentMD;
        }
        
        return null;

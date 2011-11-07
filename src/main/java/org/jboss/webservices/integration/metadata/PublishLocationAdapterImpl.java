@@ -22,7 +22,7 @@
 package org.jboss.webservices.integration.metadata;
 
 import org.jboss.wsf.spi.metadata.j2ee.PublishLocationAdapter;
-import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
+import org.jboss.wsf.spi.metadata.webservices.JBossWebserviceDescriptionMetaData;
 
 /**
  * Publish location adapter implementation.
@@ -33,14 +33,14 @@ import org.jboss.wsf.spi.metadata.webservices.WebserviceDescriptionMetaData;
 final class PublishLocationAdapterImpl implements PublishLocationAdapter
 {
    /** Webservice descriptions meta data. */
-   private final WebserviceDescriptionMetaData[] wsDescriptionsMD;
+   private final JBossWebserviceDescriptionMetaData[] wsDescriptionsMD;
 
    /**
     * Constructor.
     *
     * @param wsDescriptionsMD webservice descriptions meta data
     */
-   PublishLocationAdapterImpl(final WebserviceDescriptionMetaData[] wsDescriptionsMD)
+   PublishLocationAdapterImpl(final JBossWebserviceDescriptionMetaData[] wsDescriptionsMD)
    {
       this.wsDescriptionsMD = wsDescriptionsMD;
    }
@@ -55,7 +55,7 @@ final class PublishLocationAdapterImpl implements PublishLocationAdapter
    {
       if (wsDescriptionsMD != null)
       {
-         for (final WebserviceDescriptionMetaData wsDescriptionMD : wsDescriptionsMD)
+         for (final JBossWebserviceDescriptionMetaData wsDescriptionMD : wsDescriptionsMD)
          {
              if (endpointName.equals(wsDescriptionMD.getWebserviceDescriptionName()))
                  return wsDescriptionMD.getWsdlPublishLocation();
@@ -64,4 +64,5 @@ final class PublishLocationAdapterImpl implements PublishLocationAdapter
 
       return null;
    }
+
 }

@@ -34,7 +34,7 @@ import org.jboss.wsf.spi.metadata.j2ee.EJBMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.EJBSecurityMetaData;
 import org.jboss.wsf.spi.metadata.j2ee.SLSBMetaData;
 import org.jboss.wsf.spi.metadata.webservices.JBossWebservicesMetaData;
-import org.jboss.wsf.spi.metadata.webservices.PortComponentMetaData;
+import org.jboss.wsf.spi.metadata.webservices.JBossPortComponentMetaData;
 
 /**
  * Builds container independent meta data from EJB21 container meta data. 
@@ -108,18 +108,18 @@ final class MetaDataBuilderEJB21 extends AbstractMetaDataBuilderEJB
             wsEjbMD.setJndiName(sessionEjbMD.determineJndiName());
             wsEjbMD.setLocalJndiName(jbossEjbMD.determineLocalJndiName());
 
-            final PortComponentMetaData portComponentMD = getPortComponent(jbossEjbMD.getEjbName(), jbossWebservicesMD);
-            if (portComponentMD != null)
+            final JBossPortComponentMetaData jbossPortComponentMD = getPortComponent(jbossEjbMD.getEjbName(), jbossWebservicesMD);
+            if (jbossPortComponentMD != null)
             {
                 // set port component meta data
-                wsEjbMD.setPortComponentName(portComponentMD.getPortComponentName());
-                wsEjbMD.setPortComponentURI(portComponentMD.getPortComponentURI());
+                wsEjbMD.setPortComponentName(jbossPortComponentMD.getPortComponentName());
+                wsEjbMD.setPortComponentURI(jbossPortComponentMD.getPortComponentURI());
 
                 // set security meta data
                 final EJBSecurityMetaData smd = new EJBSecurityMetaData();
-                smd.setAuthMethod(portComponentMD.getAuthMethod());
-                smd.setTransportGuarantee(portComponentMD.getTransportGuarantee());
-                smd.setSecureWSDLAccess(portComponentMD.getSecureWSDLAccess());
+                smd.setAuthMethod(jbossPortComponentMD.getAuthMethod());
+                smd.setTransportGuarantee(jbossPortComponentMD.getTransportGuarantee());
+                smd.setSecureWSDLAccess(jbossPortComponentMD.getSecureWSDLAccess());
                 wsEjbMD.setSecurityMetaData(smd);
             }
          }
